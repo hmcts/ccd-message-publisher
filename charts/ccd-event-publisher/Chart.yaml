@@ -1,0 +1,12 @@
+apiVersion: v2
+appVersion: "1.0"
+description: A Helm chart for ccd-event-publisher App
+name: ccd-ccd-event-publisher
+home: https://github.com/hmcts/ccd-event-publisher
+version: 0.0.1
+maintainers:
+  - name: HMCTS ccd team
+dependencies:
+  - name: java
+    version: 3.4.4
+    repository: '@hmctspublic'
