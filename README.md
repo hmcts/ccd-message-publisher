@@ -1,7 +1,5 @@
 # ccd-message-publisher
 
-[![Build Status](https://travis-ci.org/hmcts/ccd-message-publisher.svg?branch=master)](https://travis-ci.org/hmcts/ccd-messageDTO-publisher)
-
 ## Notes
 
 Since Spring Boot 2.1 bean overriding is disabled. If you want to enable it you will need to set `spring.main.allow-bean-definition-overriding` to `true`.
