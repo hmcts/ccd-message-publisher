@@ -35,5 +35,4 @@ public class JacksonConfiguration {
         converter.setTypeIdPropertyName("_type");
         return converter;
     }
-
 }

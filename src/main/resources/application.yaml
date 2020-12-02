@@ -20,6 +20,8 @@ spring:
     servicebus: 
       connection-string: ${SERVICE_BUS_CONNECTION_STRING}
       idle-timeout: ${SERVICE_BUS_IDLE_TIMEOUT:1800000}
+  jpa:
+    database: postgresql
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://${DATA_STORE_DB_HOST:localhost}:${DATA_STORE_DB_PORT:5452}/${DATA_STORE_DB_NAME:ccd_data}${DATA_STORE_DB_OPTIONS:?stringtype=unspecified}
@@ -39,7 +41,7 @@ spring:
 message-publisher:
   tasks[0]:
     message-type: ${CCD_CASE_EVENTS_MESSAGE_TYPE:CASE_EVENT}
-    destination: ${CCD_CASE_EVENTS_DESTINATION:ccd-case-events-demo}
+    destination: ${CCD_CASE_EVENTS_DESTINATION:ccd-case-events}
     schedule: ${CCD_CASE_EVENTS_SCHEDULE:*/10 * * * * *}
     batch-size: ${CCD_CASE_EVENTS_BATCH_SIZE:1000}
     published-retention-days: ${CCD_CASE_EVENTS_PUBLISHED_RETENTION_DAYS:7}

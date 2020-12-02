@@ -12,7 +12,6 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.config.CronTask;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
-import uk.gov.hmcts.ccd.data.MessageMapper;
 import uk.gov.hmcts.ccd.data.MessageQueueCandidateRepository;
 import uk.gov.hmcts.ccd.service.messaging.MessagePublisherParams;
 import uk.gov.hmcts.ccd.service.messaging.MessagePublisherRunnable;
@@ -46,8 +45,6 @@ class SchedulingConfigurationTest {
     private MessageQueueCandidateRepository messageQueueCandidateRepository;
     @Mock
     private JmsTemplate jmsTemplate;
-    @Mock
-    private MessageMapper messageMapper;
     @Captor
     private ArgumentCaptor<CronTask> cronTaskCaptor;
 

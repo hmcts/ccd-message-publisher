@@ -1,5 +1,7 @@
 package uk.gov.hmcts.ccd.service.messaging;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.TextNode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -10,8 +12,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.jms.IllegalStateException;
 import org.springframework.jms.core.JmsTemplate;
-import uk.gov.hmcts.ccd.data.MessageDTO;
-import uk.gov.hmcts.ccd.data.MessageMapper;
 import uk.gov.hmcts.ccd.data.MessageQueueCandidateEntity;
 import uk.gov.hmcts.ccd.data.MessageQueueCandidateRepository;
 
@@ -24,6 +24,7 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.never;
@@ -45,10 +46,8 @@ class MessagePublisherRunnableTest {
     private MessageQueueCandidateRepository messageQueueCandidateRepository;
     @Mock
     private JmsTemplate jmsTemplate;
-    @Mock
-    private MessageMapper messageMapper;
     @Captor
-    private ArgumentCaptor<MessageDTO> messageDtoCaptor;
+    private ArgumentCaptor<String> messageCaptor;
     @Captor
     private ArgumentCaptor<List<MessageQueueCandidateEntity>> processedEntitiesCaptor;
 
@@ -57,9 +56,9 @@ class MessagePublisherRunnableTest {
     private MessageQueueCandidateEntity messageQueueCandidate1;
     private MessageQueueCandidateEntity messageQueueCandidate2;
     private MessageQueueCandidateEntity messageQueueCandidate3;
-    private MessageDTO messageDto1;
-    private MessageDTO messageDto2;
-    private MessageDTO messageDto3;
+    private JsonNode message1;
+    private JsonNode message2;
+    private JsonNode message3;
 
     @BeforeEach
     void setUp() {
@@ -71,19 +70,18 @@ class MessagePublisherRunnableTest {
             .destination(DESTINATION)
             .batchSize(BATCH_SIZE).build();
 
+        message1 = new TextNode("Message1");
+        message2 = new TextNode("Message2");
+        message3 = new TextNode("Message3");
         messageQueueCandidate1 = new MessageQueueCandidateEntity();
         messageQueueCandidate2 = new MessageQueueCandidateEntity();
         messageQueueCandidate3 = new MessageQueueCandidateEntity();
-        messageDto1 = new MessageDTO();
-        messageDto2 = new MessageDTO();
-        messageDto3 = new MessageDTO();
-
-        when(messageMapper.toMessageDto(messageQueueCandidate1)).thenReturn(messageDto1);
-        when(messageMapper.toMessageDto(messageQueueCandidate2)).thenReturn(messageDto2);
-        when(messageMapper.toMessageDto(messageQueueCandidate3)).thenReturn(messageDto3);
+        messageQueueCandidate1.setMessageInformation(message1);
+        messageQueueCandidate2.setMessageInformation(message2);
+        messageQueueCandidate3.setMessageInformation(message3);
 
         messagePublisher = new MessagePublisherRunnable(messageQueueCandidateRepository, jmsTemplate,
-            publishMessageTask, messageMapper);
+            publishMessageTask);
     }
 
     @Test
@@ -96,10 +94,10 @@ class MessagePublisherRunnableTest {
         messagePublisher.run();
 
         assertAll(
-            () -> verify(jmsTemplate, times(3)).convertAndSend(eq(DESTINATION), messageDtoCaptor.capture()),
-            () -> assertThat(messageDtoCaptor.getAllValues().get(0), is(messageDto1)),
-            () -> assertThat(messageDtoCaptor.getAllValues().get(1), is(messageDto2)),
-            () -> assertThat(messageDtoCaptor.getAllValues().get(2), is(messageDto3)),
+            () -> verify(jmsTemplate, times(3)).convertAndSend(eq(DESTINATION), messageCaptor.capture()),
+            () -> assertThat(messageCaptor.getAllValues().get(0), is(message1.toString())),
+            () -> assertThat(messageCaptor.getAllValues().get(1), is(message2.toString())),
+            () -> assertThat(messageCaptor.getAllValues().get(2), is(message3.toString())),
             () -> verify(messageQueueCandidateRepository).saveAll(processedEntitiesCaptor.capture()),
             () -> assertThat(processedEntitiesCaptor.getValue().size(), is(3)),
             () -> assertThat(processedEntitiesCaptor.getValue().get(0), is(messageQueueCandidate1)),
@@ -122,10 +120,10 @@ class MessagePublisherRunnableTest {
         messagePublisher.run();
 
         assertAll(
-            () -> verify(jmsTemplate, times(3)).convertAndSend(eq(DESTINATION), messageDtoCaptor.capture()),
-            () -> assertThat(messageDtoCaptor.getAllValues().get(0), is(messageDto1)),
-            () -> assertThat(messageDtoCaptor.getAllValues().get(1), is(messageDto2)),
-            () -> assertThat(messageDtoCaptor.getAllValues().get(2), is(messageDto3)),
+            () -> verify(jmsTemplate, times(3)).convertAndSend(eq(DESTINATION), messageCaptor.capture()),
+            () -> assertThat(messageCaptor.getAllValues().get(0), is(message1.toString())),
+            () -> assertThat(messageCaptor.getAllValues().get(1), is(message2.toString())),
+            () -> assertThat(messageCaptor.getAllValues().get(2), is(message3.toString())),
             () -> verify(messageQueueCandidateRepository).saveAll(processedEntitiesCaptor.capture()),
             () -> assertThat(processedEntitiesCaptor.getValue().size(), is(3)),
             () -> assertThat(processedEntitiesCaptor.getValue().get(0), is(messageQueueCandidate1)),
@@ -159,14 +157,14 @@ class MessagePublisherRunnableTest {
 
         // Throw exception on processing of second message
         doNothing().doThrow(new IllegalStateException(new javax.jms.IllegalStateException("Error")))
-            .when(jmsTemplate).convertAndSend(eq(DESTINATION), any(MessageDTO.class));
+            .when(jmsTemplate).convertAndSend(eq(DESTINATION), anyString());
 
         messagePublisher.run();
 
         assertAll(
-            () -> verify(jmsTemplate, times(2)).convertAndSend(eq(DESTINATION), messageDtoCaptor.capture()),
-            () -> assertThat(messageDtoCaptor.getAllValues().get(0), is(messageDto1)),
-            () -> assertThat(messageDtoCaptor.getAllValues().get(1), is(messageDto2)),
+            () -> verify(jmsTemplate, times(2)).convertAndSend(eq(DESTINATION), messageCaptor.capture()),
+            () -> assertThat(messageCaptor.getAllValues().get(0), is(message1.toString())),
+            () -> assertThat(messageCaptor.getAllValues().get(1), is(message2.toString())),
             () -> verify(messageQueueCandidateRepository).saveAll(processedEntitiesCaptor.capture()),
             () -> assertThat(processedEntitiesCaptor.getValue().size(), is(1)),
             () -> assertThat(processedEntitiesCaptor.getValue().get(0), is(messageQueueCandidate1)),

@@ -8,7 +8,6 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.ccd.BaseTest;
-import uk.gov.hmcts.ccd.data.MessageMapper;
 import uk.gov.hmcts.ccd.data.MessageQueueCandidateEntity;
 import uk.gov.hmcts.ccd.data.MessageQueueCandidateRepository;
 
@@ -45,8 +44,6 @@ class MessagePublisherRunnableIT extends BaseTest {
     private MessageQueueCandidateRepository messageQueueCandidateRepository;
     @Autowired
     private JmsTemplate jmsTemplate;
-    @Autowired
-    private MessageMapper messageMapper;
 
     @BeforeEach
     void setUp() {
@@ -60,7 +57,7 @@ class MessagePublisherRunnableIT extends BaseTest {
             .publishedRetentionDays(RETENTION_DAYS).build();
 
         messagePublisher = new MessagePublisherRunnable(messageQueueCandidateRepository, jmsTemplate,
-            publishMessageTask, messageMapper);
+            publishMessageTask);
     }
 
     @Test
@@ -141,21 +138,11 @@ class MessagePublisherRunnableIT extends BaseTest {
 
     private void assertEnqueuedMessages(List<TextMessage> enqueuedMessages) {
         assertAll(
-            () -> assertThat(enqueuedMessages.get(0).getText(),
-                is("{\"message_type\":\"FIRST_MESSAGE_TYPE\",\"time_stamp\":\"2020-11-20T18:00:00\","
-                    + "\"message_information\":{\"key\":\"1\"}}")),
-            () -> assertThat(enqueuedMessages.get(1).getText(),
-                is("{\"message_type\":\"FIRST_MESSAGE_TYPE\",\"time_stamp\":\"2020-11-28T12:30:00\","
-                    + "\"message_information\":{\"key\":\"2\"}}")),
-            () -> assertThat(enqueuedMessages.get(2).getText(),
-                is("{\"message_type\":\"FIRST_MESSAGE_TYPE\",\"time_stamp\":\"2020-11-28T18:00:00\","
-                    + "\"message_information\":{\"key\":\"3\"}}")),
-            () -> assertThat(enqueuedMessages.get(3).getText(),
-                is("{\"message_type\":\"FIRST_MESSAGE_TYPE\",\"time_stamp\":\"2020-11-29T18:00:00\","
-                    + "\"message_information\":{\"key\":\"4\"}}")),
-            () -> assertThat(enqueuedMessages.get(4).getText(),
-                is("{\"message_type\":\"FIRST_MESSAGE_TYPE\",\"time_stamp\":\"2020-11-30T18:00:00\","
-                    + "\"message_information\":{\"key\":\"5\"}}"))
+            () -> assertThat(enqueuedMessages.get(0).getText(), is("{\"key\":\"1\"}")),
+            () -> assertThat(enqueuedMessages.get(1).getText(), is("{\"key\":\"2\"}")),
+            () -> assertThat(enqueuedMessages.get(2).getText(), is("{\"key\":\"3\"}")),
+            () -> assertThat(enqueuedMessages.get(3).getText(), is("{\"key\":\"4\"}")),
+            () -> assertThat(enqueuedMessages.get(4).getText(), is("{\"key\":\"5\"}"))
         );
     }
 }
