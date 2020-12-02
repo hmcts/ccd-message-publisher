@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.uk.gov.hmcts.ccd;
+package uk.gov.hmcts.ccd;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

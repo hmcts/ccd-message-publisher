@@ -1,6 +1,0 @@
-java:
-  applicationPort: 4455
-  image: 'hmctspublic.azurecr.io/ccd/event-publisher:latest'
-  ingressHost: ccd-event-publisher-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
-  aadIdentityName: ccd
-  environment:

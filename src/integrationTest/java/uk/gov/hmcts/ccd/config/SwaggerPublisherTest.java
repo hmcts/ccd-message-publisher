@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.uk.gov.hmcts.ccd.config;
+package uk.gov.hmcts.ccd.config;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
