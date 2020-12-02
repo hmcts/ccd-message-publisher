@@ -15,5 +15,6 @@ public class PublishMessageTask {
     private String destination;
     private String schedule;
     private int batchSize;
+    private int publishedRetentionDays;
     private boolean enabled;
 }

@@ -13,7 +13,7 @@ import uk.gov.hmcts.ccd.data.MessageQueueCandidateEntity;
 import uk.gov.hmcts.ccd.data.MessageQueueCandidateRepository;
 
 import javax.jms.TextMessage;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +25,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Transactional
@@ -36,6 +37,7 @@ class MessagePublisherRunnableIT extends BaseTest {
     private static final String MESSAGE_TYPE = "FIRST_MESSAGE_TYPE";
     private static final String DESTINATION = "DESTINATION";
     private static final int BATCH_SIZE = 1000;
+    private static final int RETENTION_DAYS = 30;
 
     private MessagePublisherRunnable messagePublisher;
 
@@ -54,7 +56,8 @@ class MessagePublisherRunnableIT extends BaseTest {
             .schedule(SCHEDULE)
             .messageType(MESSAGE_TYPE)
             .destination(DESTINATION)
-            .batchSize(BATCH_SIZE).build();
+            .batchSize(BATCH_SIZE)
+            .publishedRetentionDays(RETENTION_DAYS).build();
 
         messagePublisher = new MessagePublisherRunnable(messageQueueCandidateRepository, jmsTemplate,
             publishMessageTask, messageMapper);
@@ -67,12 +70,42 @@ class MessagePublisherRunnableIT extends BaseTest {
 
         messagePublisher.run();
 
-        List<TextMessage> enqueuedMessages = getMessagesFromQueue();
+        List<TextMessage> enqueuedMessages = getMessagesFromDestination();
         assertAll(
             () -> assertThat(enqueuedMessages.size(), is(5)),
             () -> assertEnqueuedMessages(enqueuedMessages),
             () -> assertAllPublishedValues(newArrayList(allMessageQueueCandidates))
         );
+    }
+
+    @Test
+    @Sql(INSERT_DATA_SCRIPT)
+    void shouldDeletePublishedMessagesPastRetentionPeriod() {
+        List<MessageQueueCandidateEntity> entitiesBefore = newArrayList(messageQueueCandidateRepository.findAll());
+        assertThat(entitiesBefore.size(), is(11));
+        List<Long> expectedEntityIdsToBeDeleted = entitiesBefore.stream()
+            .filter(entity -> entity.getMessageType().equals(MESSAGE_TYPE))
+            .filter(entity -> entity.getPublished() != null
+                && entity.getPublished().isBefore(LocalDateTime.now().minusDays(RETENTION_DAYS)))
+            .map(MessageQueueCandidateEntity::getId)
+            .collect(Collectors.toList());
+
+        messagePublisher.run();
+
+        List<MessageQueueCandidateEntity> entitiesAfter = newArrayList(messageQueueCandidateRepository.findAll());
+        assertAll(
+            () -> assertThat(newArrayList(entitiesAfter).size(), is(9)),
+            () -> assertEntitiesNotPresent(entitiesAfter, expectedEntityIdsToBeDeleted)
+        );
+    }
+
+    private void assertEntitiesNotPresent(List<MessageQueueCandidateEntity> entities,
+                                          List<Long> idsToAssertNotPresent) {
+        List<Long> entitiesIds = entities.stream()
+            .map(MessageQueueCandidateEntity::getId)
+            .collect(Collectors.toList());
+
+        idsToAssertNotPresent.forEach(id -> assertFalse(entitiesIds.contains(id)));
     }
 
     private void assertAllPublishedValues(List<MessageQueueCandidateEntity> allMessageQueueCandidates) {
@@ -101,7 +134,7 @@ class MessagePublisherRunnableIT extends BaseTest {
     }
 
     @SuppressWarnings("unchecked")
-    private ArrayList<TextMessage> getMessagesFromQueue() {
+    private List<TextMessage> getMessagesFromDestination() {
         return jmsTemplate
             .browse(DESTINATION, (session, browser) -> Collections.list(browser.getEnumeration()));
     }

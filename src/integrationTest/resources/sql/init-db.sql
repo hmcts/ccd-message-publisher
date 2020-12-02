@@ -8,4 +8,3 @@ create table message_queue_candidates
 );
 
 create index idx_message_queue_candidates_time_stamp on message_queue_candidates (time_stamp);
-

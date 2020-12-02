@@ -75,6 +75,16 @@ class MessageQueueCandidateRepositoryIT extends BaseTest {
         );
     }
 
+    @Test
+    @Sql(INSERT_DATA_SCRIPT)
+    void shouldDeleteMessagesWithRetentionPeriod() {
+        int result = repository.deletePublishedMessages(LocalDateTime.now().minusDays(30), MESSAGE_TYPE);
+
+        assertAll(
+            () -> assertThat(result, is(2))
+        );
+    }
+
     private void assertOrderedByTimestamp(List<MessageQueueCandidateEntity> list) {
         IntStream.range(0, list.size() - 1).forEach(i ->
             assertTrue(list.get(i).getTimeStamp().isBefore(list.get(i + 1).getTimeStamp())));

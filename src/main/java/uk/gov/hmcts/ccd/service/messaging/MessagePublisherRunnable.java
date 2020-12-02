@@ -35,6 +35,7 @@ public class MessagePublisherRunnable implements Runnable {
     @Override
     public void run() {
         processUnpublishedMessages(PageRequest.of(0, publishMessageTask.getBatchSize()), newArrayList());
+        deletePublishedMessages();
     }
 
     private void processUnpublishedMessages(Pageable pageable,
@@ -45,12 +46,7 @@ public class MessagePublisherRunnable implements Runnable {
         try {
             unpublishedMessagesPaginated = messageQueueCandidateRepository
                 .findUnpublishedMessages(publishMessageTask.getMessageType(), pageable);
-
-            unpublishedMessagesPaginated.get().forEach(entity -> {
-                jmsTemplate.convertAndSend(publishMessageTask.getDestination(), messageMapper.toMessageDto(entity));
-                entity.setPublished(LocalDateTime.now());
-                processedEntities.add(entity);
-            });
+            publishMessages(unpublishedMessagesPaginated, processedEntities);
         } catch (Exception e) {
             log.error(String.format("Error encountered during processing of unpublished messages for "
                 + "message type '%s'", publishMessageTask.getMessageType()), e);
@@ -61,6 +57,25 @@ public class MessagePublisherRunnable implements Runnable {
             processUnpublishedMessages(unpublishedMessagesPaginated.nextPageable(), processedEntities);
         } else if (!processedEntities.isEmpty()) {
             messageQueueCandidateRepository.saveAll(processedEntities);
+            log.info("[Message Type '%s'] Published %s messages to destination %s",
+                publishMessageTask.getMessageType(), processedEntities.size(), publishMessageTask.getDestination());
         }
+    }
+
+    private void publishMessages(Slice<MessageQueueCandidateEntity> messagesToPublish,
+                                 List<MessageQueueCandidateEntity> processedEntities) {
+        messagesToPublish.get().forEach(entity -> {
+            jmsTemplate.convertAndSend(publishMessageTask.getDestination(), messageMapper.toMessageDto(entity));
+            entity.setPublished(LocalDateTime.now());
+            processedEntities.add(entity);
+        });
+    }
+
+    private void deletePublishedMessages() {
+        LocalDateTime retentionDate = LocalDateTime.now().minusDays(publishMessageTask.getPublishedRetentionDays());
+        int result = messageQueueCandidateRepository
+            .deletePublishedMessages(retentionDate, publishMessageTask.getMessageType());
+        log.debug(String.format("[Message Type '%s'] Deleted %s records with publish date before %s",
+            publishMessageTask.getMessageType(), result, retentionDate.toString()));
     }
 }
