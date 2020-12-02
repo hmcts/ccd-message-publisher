@@ -149,7 +149,6 @@ repositories {
 def versions = [
   junit           : '5.7.0',
   junitPlatform   : '1.7.0',
-  mapstruct       : '1.4.1.Final',
   reformLogging   : '5.1.5',
   springBoot      : springBoot.class.package.implementationVersion,
   springfoxSwagger: '2.9.2',
@@ -188,9 +187,6 @@ dependencies {
   implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
   annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 
-  implementation group: 'org.mapstruct', name: 'mapstruct', version: versions.mapstruct
-  annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapstruct
-
   compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.14.0'
   compile group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: '2.14.0'
   
@@ -206,7 +202,6 @@ dependencies {
   }
 
   testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
-  testAnnotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapstruct
 
   integrationTestImplementation sourceSets.main.runtimeClasspath
   integrationTestImplementation sourceSets.test.runtimeClasspath
