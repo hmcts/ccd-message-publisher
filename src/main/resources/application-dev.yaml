@@ -1,0 +1,21 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, prometheus, hawtio, jolokia
+
+endpoints:
+  jolokia:
+    sensitive: false
+
+hawtio:
+  authenticationEnabled: false
+
+spring:
+  jms:
+    servicebus:
+      enabled: false
+  activemq:
+    in-memory: true
+  autoconfigure:
+    exclude:

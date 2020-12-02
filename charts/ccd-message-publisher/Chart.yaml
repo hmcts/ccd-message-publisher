@@ -1,0 +1,12 @@
+apiVersion: v2
+appVersion: "1.0"
+description: A Helm chart for ccd-message-publisher App
+name: ccd-message-publisher
+home: https://github.com/hmcts/ccd-message-publisher
+version: 0.0.1
+maintainers:
+  - name: HMCTS CCD Team
+dependencies:
+  - name: java
+    version: 3.4.4
+    repository: '@hmctspublic'

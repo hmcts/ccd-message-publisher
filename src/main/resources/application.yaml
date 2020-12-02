@@ -1,3 +1,4 @@
+# TODO: Use env vars in all places where appropriate, with sensible defaults
 server:
   port: 4455
 
@@ -11,28 +12,36 @@ management:
       exposure:
         include: health, info, prometheus
 
-#If you use a database then uncomment below lines and update db properties accordingly
 spring:
   application:
-    name: Spring Boot Template
-#  datasource:
-#    driver-class-name: org.postgresql.Driver
-#    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}${DB_OPTIONS:}
-#    username: ${DB_USER_NAME}
-#    password: ${DB_PASSWORD}
-#    properties:
-#      charSet: UTF-8
-#    hikari:
-#      minimumIdle: 2
-#      maximumPoolSize: 10
-#      idleTimeout: 10000
-#      poolName: {to-be-defined}HikariCP
-#      maxLifetime: 7200000
-#      connectionTimeout: 30000
-#  jpa:
-#    properties:
-#      hibernate:
-#        jdbc:
-#          lob:
-#            # silence the 'wall-of-text' - unnecessary exception throw about blob types
-#            non_contextual_creation: true
+    name: ccd-message-publisher
+  main:
+    allow-bean-definition-overriding: true
+  jms:
+    servicebus: 
+      connection-string: 
+      idle-timeout: 1800000
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5050/ccd_data?stringtype=unspecified
+    username: ccd
+    password: ccd
+    properties:
+      charSet: UTF-8
+    hikari:
+      minimumIdle: 2
+      maximumPoolSize: 10
+      idleTimeout: 10000
+      maxLifetime: 7200000
+      connectionTimeout: 30000
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.jms.activemq.ActiveMQAutoConfiguration
+
+message-publisher:
+  tasks[0]:
+    message-type: CASE_EVENT
+    destination: ccd-case-events-demo
+    schedule: "*/10 * * * * *"
+    batch-size: 1000
+    enabled: true
+

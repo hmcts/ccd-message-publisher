@@ -1,6 +1,6 @@
-# ccd-event-publisher
+# ccd-message-publisher
 
-[![Build Status](https://travis-ci.org/hmcts/ccd-event-publisher.svg?branch=master)](https://travis-ci.org/hmcts/ccd-event-publisher)
+[![Build Status](https://travis-ci.org/hmcts/ccd-message-publisher.svg?branch=master)](https://travis-ci.org/hmcts/ccd-messageDTO-publisher)
 
 ## Notes
 
@@ -35,7 +35,7 @@ Create docker image:
   docker-compose build
 ```
 
-Run the distribution (created in `build/install/ccd-event-publisher` directory)
+Run the distribution (created in `build/install/ccd-message-publisher` directory)
 by executing the following command:
 
 ```bash
