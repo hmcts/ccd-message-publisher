@@ -1,6 +1,10 @@
 java:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
+  keyVaults:
+    ccd:
+      resourceGroup: ccd-shared
+      secrets: # Empty list to force override
   environment:
     SPRING_PROFILES_ACTIVE: dev
     DATA_STORE_DB_HOST: ccd-data-store-api-pr-601-postgresql
