@@ -8,7 +8,7 @@ java:
     ccd:
       secrets:
         - data-store-api-POSTGRES-PASS
-        - ccd-servicebus-connection-string
+        # - ccd-servicebus-connection-string
         - AppInsightsInstrumentationKey
   environment:
     DATA_STORE_DB_PORT: 5432
