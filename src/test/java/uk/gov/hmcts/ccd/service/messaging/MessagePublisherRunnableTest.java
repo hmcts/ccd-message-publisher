@@ -24,7 +24,6 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.never;
@@ -47,7 +46,7 @@ class MessagePublisherRunnableTest {
     @Mock
     private JmsTemplate jmsTemplate;
     @Captor
-    private ArgumentCaptor<String> messageCaptor;
+    private ArgumentCaptor<JsonNode> messageCaptor;
     @Captor
     private ArgumentCaptor<List<MessageQueueCandidateEntity>> processedEntitiesCaptor;
 
@@ -95,9 +94,9 @@ class MessagePublisherRunnableTest {
 
         assertAll(
             () -> verify(jmsTemplate, times(3)).convertAndSend(eq(DESTINATION), messageCaptor.capture()),
-            () -> assertThat(messageCaptor.getAllValues().get(0), is(message1.toString())),
-            () -> assertThat(messageCaptor.getAllValues().get(1), is(message2.toString())),
-            () -> assertThat(messageCaptor.getAllValues().get(2), is(message3.toString())),
+            () -> assertThat(messageCaptor.getAllValues().get(0), is(message1)),
+            () -> assertThat(messageCaptor.getAllValues().get(1), is(message2)),
+            () -> assertThat(messageCaptor.getAllValues().get(2), is(message3)),
             () -> verify(messageQueueCandidateRepository).saveAll(processedEntitiesCaptor.capture()),
             () -> assertThat(processedEntitiesCaptor.getValue().size(), is(3)),
             () -> assertThat(processedEntitiesCaptor.getValue().get(0), is(messageQueueCandidate1)),
@@ -121,9 +120,9 @@ class MessagePublisherRunnableTest {
 
         assertAll(
             () -> verify(jmsTemplate, times(3)).convertAndSend(eq(DESTINATION), messageCaptor.capture()),
-            () -> assertThat(messageCaptor.getAllValues().get(0), is(message1.toString())),
-            () -> assertThat(messageCaptor.getAllValues().get(1), is(message2.toString())),
-            () -> assertThat(messageCaptor.getAllValues().get(2), is(message3.toString())),
+            () -> assertThat(messageCaptor.getAllValues().get(0), is(message1)),
+            () -> assertThat(messageCaptor.getAllValues().get(1), is(message2)),
+            () -> assertThat(messageCaptor.getAllValues().get(2), is(message3)),
             () -> verify(messageQueueCandidateRepository).saveAll(processedEntitiesCaptor.capture()),
             () -> assertThat(processedEntitiesCaptor.getValue().size(), is(3)),
             () -> assertThat(processedEntitiesCaptor.getValue().get(0), is(messageQueueCandidate1)),
@@ -157,14 +156,14 @@ class MessagePublisherRunnableTest {
 
         // Throw exception on processing of second message
         doNothing().doThrow(new IllegalStateException(new javax.jms.IllegalStateException("Error")))
-            .when(jmsTemplate).convertAndSend(eq(DESTINATION), anyString());
+            .when(jmsTemplate).convertAndSend(eq(DESTINATION), any(JsonNode.class));
 
         messagePublisher.run();
 
         assertAll(
             () -> verify(jmsTemplate, times(2)).convertAndSend(eq(DESTINATION), messageCaptor.capture()),
-            () -> assertThat(messageCaptor.getAllValues().get(0), is(message1.toString())),
-            () -> assertThat(messageCaptor.getAllValues().get(1), is(message2.toString())),
+            () -> assertThat(messageCaptor.getAllValues().get(0), is(message1)),
+            () -> assertThat(messageCaptor.getAllValues().get(1), is(message2)),
             () -> verify(messageQueueCandidateRepository).saveAll(processedEntitiesCaptor.capture()),
             () -> assertThat(processedEntitiesCaptor.getValue().size(), is(1)),
             () -> assertThat(processedEntitiesCaptor.getValue().get(0), is(messageQueueCandidate1)),
