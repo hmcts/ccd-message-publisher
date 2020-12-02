@@ -4,6 +4,7 @@ java:
   environment:
     SPRING_PROFILES_ACTIVE: dev
     DATA_STORE_DB_HOST: ccd-data-store-api-pr-601-postgresql
+    DATA_STORE_DB_HOST: 5432
     DATA_STORE_DB_NAME: "{{ .Values.postgresql.postgresqlDatabase}}"
     DATA_STORE_DB_USERNAME: "{{ .Values.postgresql.postgresqlUsername}}"
     DATA_STORE_DB_PASSWORD: "{{ .Values.postgresql.postgresqlPassword}}"
