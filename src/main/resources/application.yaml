@@ -26,7 +26,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://${DATA_STORE_DB_HOST:localhost}:${DATA_STORE_DB_PORT:5452}/${DATA_STORE_DB_NAME:ccd_data}${DATA_STORE_DB_OPTIONS:?stringtype=unspecified}
     username: ${DATA_STORE_DB_USERNAME:ccd}
-    password: javapassword
+    password: ${DATA_STORE_DB_PASSWORD:ccd}
     properties:
       charSet: UTF-8
     hikari:
