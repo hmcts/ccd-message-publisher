@@ -11,11 +11,14 @@ services:
     image: hmcts/ccd-message-publisher
     container_name: ccd-message-publisher
     environment:
-      SPRING_PROFILES_ACTIVE: dev
       DATA_STORE_DB_HOST: ccd-shared-database
       DATA_STORE_DB_PORT: 5432
       DATA_STORE_DB_USERNAME: "${DB_USERNAME}"
       DATA_STORE_DB_PASSWORD: "${DB_PASSWORD}"
+      CCD_CASE_EVENTS_DESTINATION: ccd-case-events
+      SERVICE_BUS_CONNECTION_STRING: <AzureServiceBusConnectionString>
+      # Comment below line to use real Azure Service Bus
+      SPRING_PROFILES_ACTIVE: dev
       # For debug
       # JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
     ports:

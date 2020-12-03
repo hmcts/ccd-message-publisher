@@ -1,4 +1,4 @@
-package uk.gov.hmcts.ccd.service.messaging;
+package uk.gov.hmcts.ccd.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.TextNode;
@@ -14,6 +14,7 @@ import org.springframework.jms.IllegalStateException;
 import org.springframework.jms.core.JmsTemplate;
 import uk.gov.hmcts.ccd.data.MessageQueueCandidateEntity;
 import uk.gov.hmcts.ccd.data.MessageQueueCandidateRepository;
+import uk.gov.hmcts.ccd.config.PublishMessageTask;
 
 import java.util.List;
 

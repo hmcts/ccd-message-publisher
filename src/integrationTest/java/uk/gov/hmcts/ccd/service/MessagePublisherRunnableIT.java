@@ -1,4 +1,4 @@
-package uk.gov.hmcts.ccd.service.messaging;
+package uk.gov.hmcts.ccd.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.ccd.BaseTest;
 import uk.gov.hmcts.ccd.data.MessageQueueCandidateEntity;
 import uk.gov.hmcts.ccd.data.MessageQueueCandidateRepository;
+import uk.gov.hmcts.ccd.config.PublishMessageTask;
 
 import javax.jms.TextMessage;
 import java.time.LocalDateTime;

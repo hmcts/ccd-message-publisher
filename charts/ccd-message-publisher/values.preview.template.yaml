@@ -9,3 +9,4 @@ java:
     DATA_STORE_DB_USERNAME: "{{ .Values.postgresql.postgresqlUsername }}"
     DATA_STORE_DB_PASSWORD: "{{ .Values.postgresql.postgresqlPassword }}"
     DATA_STORE_DB_OPTIONS: "?stringtype=unspecified"
+    CCD_CASE_EVENTS_DESTINATION: ccd-case-events

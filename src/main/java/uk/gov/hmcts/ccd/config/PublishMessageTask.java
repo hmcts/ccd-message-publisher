@@ -1,4 +1,4 @@
-package uk.gov.hmcts.ccd.service.messaging;
+package uk.gov.hmcts.ccd.config;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

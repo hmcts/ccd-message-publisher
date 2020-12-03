@@ -1,5 +1,6 @@
 package uk.gov.hmcts.ccd.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
@@ -7,13 +8,12 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.config.CronTask;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import uk.gov.hmcts.ccd.data.MessageQueueCandidateRepository;
-import uk.gov.hmcts.ccd.service.messaging.MessagePublisherParams;
-import uk.gov.hmcts.ccd.service.messaging.MessagePublisherRunnable;
-import uk.gov.hmcts.ccd.service.messaging.PublishMessageTask;
+import uk.gov.hmcts.ccd.service.MessagePublisherRunnable;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Configuration
 public class SchedulingConfiguration implements SchedulingConfigurer {
 
@@ -48,5 +48,6 @@ public class SchedulingConfiguration implements SchedulingConfigurer {
             new MessagePublisherRunnable(messageQueueCandidateRepository, jmsTemplate, task);
         CronTask cronTask = new CronTask(runnableTask, task.getSchedule());
         taskRegistrar.scheduleCronTask(cronTask);
+        log.info(String.format("Task scheduled: %s", task));
     }
 }

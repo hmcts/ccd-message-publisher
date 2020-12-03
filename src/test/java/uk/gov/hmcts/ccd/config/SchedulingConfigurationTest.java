@@ -13,9 +13,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.config.CronTask;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import uk.gov.hmcts.ccd.data.MessageQueueCandidateRepository;
-import uk.gov.hmcts.ccd.service.messaging.MessagePublisherParams;
-import uk.gov.hmcts.ccd.service.messaging.MessagePublisherRunnable;
-import uk.gov.hmcts.ccd.service.messaging.PublishMessageTask;
+import uk.gov.hmcts.ccd.service.MessagePublisherRunnable;
 
 import java.util.List;
 
