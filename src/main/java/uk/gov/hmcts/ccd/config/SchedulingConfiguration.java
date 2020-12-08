@@ -3,6 +3,7 @@ package uk.gov.hmcts.ccd.config;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.config.CronTask;
@@ -11,9 +12,9 @@ import uk.gov.hmcts.ccd.data.MessageQueueCandidateRepository;
 import uk.gov.hmcts.ccd.service.MessagePublisherRunnable;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
+@EnableScheduling
 @Configuration
 public class SchedulingConfiguration implements SchedulingConfigurer {
 
@@ -31,9 +32,7 @@ public class SchedulingConfiguration implements SchedulingConfigurer {
 
     @Override
     public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
-        List<PublishMessageTask> enabledTasks = messagePublisherParams.getTasks().stream()
-            .filter(PublishMessageTask::isEnabled)
-            .collect(Collectors.toList());
+        List<PublishMessageTask> enabledTasks = messagePublisherParams.getEnabledTasks();
 
         ThreadPoolTaskScheduler taskScheduler = new ThreadPoolTaskScheduler();
         taskScheduler.setPoolSize(Math.max(enabledTasks.size(), 1));

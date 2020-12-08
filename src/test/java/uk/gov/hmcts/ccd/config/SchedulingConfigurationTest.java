@@ -54,11 +54,11 @@ class SchedulingConfigurationTest {
     @Test
     void shouldConfigureTasks() {
         List<PublishMessageTask> tasks = newArrayList(
-            PublishMessageTask.builder().schedule(SCHEDULE_1).enabled(true).build(),
-            PublishMessageTask.builder().schedule(SCHEDULE_2).enabled(true).build(),
-            PublishMessageTask.builder().schedule(SCHEDULE_3).enabled(true).build()
+            PublishMessageTask.builder().schedule(SCHEDULE_1).build(),
+            PublishMessageTask.builder().schedule(SCHEDULE_2).build(),
+            PublishMessageTask.builder().schedule(SCHEDULE_3).build()
         );
-        when(messagePublisherParams.getTasks()).thenReturn(tasks);
+        when(messagePublisherParams.getEnabledTasks()).thenReturn(tasks);
 
         schedulingConfiguration.configureTasks(scheduledTaskRegistrar);
 
@@ -73,26 +73,6 @@ class SchedulingConfigurationTest {
                 instanceOf(MessagePublisherRunnable.class)),
             () -> assertThat(cronTaskCaptor.getAllValues().get(2).getExpression(), is(SCHEDULE_3)),
             () -> assertThat(cronTaskCaptor.getAllValues().get(2).getRunnable(),
-                instanceOf(MessagePublisherRunnable.class))
-        );
-    }
-
-    @Test
-    void shouldOnlyConfigureEnabledTasks() {
-        List<PublishMessageTask> tasks = newArrayList(
-            PublishMessageTask.builder().schedule(SCHEDULE_1).enabled(false).build(),
-            PublishMessageTask.builder().schedule(SCHEDULE_2).enabled(true).build(),
-            PublishMessageTask.builder().schedule(SCHEDULE_3).enabled(false).build()
-        );
-        when(messagePublisherParams.getTasks()).thenReturn(tasks);
-
-        schedulingConfiguration.configureTasks(scheduledTaskRegistrar);
-
-        assertAll(
-            () -> assertThat(((ThreadPoolTaskScheduler)scheduledTaskRegistrar.getScheduler()).getPoolSize(), is(1)),
-            () -> verify(scheduledTaskRegistrar, times(1)).scheduleCronTask(cronTaskCaptor.capture()),
-            () -> assertThat(cronTaskCaptor.getAllValues().get(0).getExpression(), is(SCHEDULE_2)),
-            () -> assertThat(cronTaskCaptor.getAllValues().get(0).getRunnable(),
                 instanceOf(MessagePublisherRunnable.class))
         );
     }
