@@ -8,10 +8,10 @@ java:
     DATA_STORE_DB_USERNAME: "{{ .Values.postgresql.postgresqlUsername }}"
     DATA_STORE_DB_PASSWORD: "{{ .Values.postgresql.postgresqlPassword }}"
     DATA_STORE_DB_OPTIONS: "?stringtype=unspecified"
-    CCD_CASE_EVENTS_DESTINATION: ccd-case-events-{{ .Values.global.environment }}
+    CCD_CASE_EVENTS_DESTINATION: ccd-case-events-{{ .Release.Name }}
   secrets:
     SERVICE_BUS_CONNECTION_STRING:
-      secretRef: servicebus-secret-topic-{{ .Release.Name }}-servicebus-ccd-case-events
+      secretRef: servicebus-secret-topic-{{ .Release.Name }}-ccd-case-events-{{ .Release.Name }}
       key: connectionString
 
 servicebus:
@@ -20,5 +20,5 @@ servicebus:
   resourceGroup: ccd-shared-rg
   setup:
     topics:
-      - name: ccd-case-events-{{ .Values.global.environment }}
+      - name: ccd-case-events-{{ .Release.Name }}
         subscriptionNeeded: yes
