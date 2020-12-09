@@ -17,7 +17,7 @@ java:
 servicebus:
   enabled: true
   teamName: CCD
-  resourceGroup: ccd-shared-sandbox
+  resourceGroup: ccd-shared-rg
   serviceplan: standard
   setup:
     topics:
