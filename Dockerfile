@@ -7,5 +7,5 @@ FROM hmctspublic.azurecr.io/base/java:openjdk-11-distroless-1.2
 COPY lib/AI-Agent.xml /opt/app/
 COPY build/libs/ccd-message-publisher.jar /opt/app/
 
-EXPOSE 4455
+EXPOSE 4456
 CMD [ "ccd-message-publisher.jar" ]
