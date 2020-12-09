@@ -11,7 +11,7 @@ java:
     CCD_CASE_EVENTS_DESTINATION: ccd-case-events
   secrets:
     SERVICE_BUS_CONNECTION_STRING:
-      secretRef: servicebus-secret-topic-{{ .Release.Name }}-ccd-case-events
+      secretRef: servicebus-secret-topic-{{ .Release.Name }}-servicebus-ccd-case-events
       key: connectionString
 
 servicebus:
