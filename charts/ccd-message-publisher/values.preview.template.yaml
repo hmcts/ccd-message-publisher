@@ -18,6 +18,7 @@ servicebus:
   enabled: true
   teamName: CCD
   resourceGroup: ccd-shared-rg
+  serviceplan: standard
   setup:
     topics:
       - name: ccd-case-events
