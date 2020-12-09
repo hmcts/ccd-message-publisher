@@ -17,3 +17,6 @@ java:
     DATA_STORE_DB_USERNAME: ccd@ccd-data-store-api-postgres-db-{{ .Values.global.environment }}
     DATA_STORE_DB_OPTIONS: "?stringtype=unspecified&sslmode=require&gssEncMode=disable"
     CCD_CASE_EVENTS_DESTINATION: ccd-case-events-{{ .Values.global.environment }}
+
+servicebus:
+  enabled: false
