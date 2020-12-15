@@ -7,5 +7,6 @@ def product = "ccd"
 def component = "message-publisher"
 
 withPipeline(type, product, component) {
+    enableAksStagingDeployment()
     disableLegacyDeployment()
 }
