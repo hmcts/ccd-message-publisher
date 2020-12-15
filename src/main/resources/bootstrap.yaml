@@ -1,0 +1,9 @@
+spring:
+  cloud:
+    propertiesvolume:
+      paths: /mnt/secrets/ccd
+      prefixed: false
+      aliases:
+        data-store-api-POSTGRES-PASS: DATA_STORE_DB_PASSWORD
+        ccd-servicebus-connection-string: SERVICE_BUS_CONNECTION_STRING
+        AppInsightsInstrumentationKey: azure.application-insights.instrumentation-key        

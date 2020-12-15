@@ -9,9 +9,6 @@ plugins {
   id 'uk.gov.hmcts.java' version '0.11.0'
 }
 
-group = 'uk.gov.hmcts.reform'
-version = '0.0.1'
-
 allprojects {
   sourceCompatibility = '11'
   targetCompatibility = '11'
@@ -151,7 +148,8 @@ def versions = [
   junitPlatform   : '1.7.0',
   reformLogging   : '5.1.5',
   springBoot      : springBoot.class.package.implementationVersion,
-  springfoxSwagger: '2.9.2'
+  springfoxSwagger: '2.9.2',
+  testcontainers  : '1.15.0'
 ]
 
 ext.libraries = [
@@ -169,13 +167,25 @@ dependencies {
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-json'
+  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
+  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-activemq'
+  implementation group: 'com.microsoft.azure', name: 'azure-servicebus-jms-spring-boot-starter', version: '2.3.5'
+
+  implementation group: 'io.hawt', name: 'hawtio-springboot', version: '2.12.0'
 
   implementation group: 'io.springfox', name: 'springfox-swagger2', version: versions.springfoxSwagger
 
   implementation group: 'uk.gov.hmcts.reform', name: 'logging', version: versions.reformLogging
   implementation group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformLogging
-  implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.6.RELEASE'
   implementation group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.1.0'
+
+  implementation group: 'com.vladmihalcea', name: 'hibernate-types-52', version: '2.10.0'
+
+  implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
+  annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
+
+  implementation group: 'org.hibernate', name: 'hibernate-core', version: '5.4.25.Final' // For CVE-2020-25638
+  implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13' // For CVE-2020-13956
 
   compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.14.0'
   compile group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: '2.14.0'
@@ -183,21 +193,32 @@ dependencies {
   compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.40'
   compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '9.0.40'
 
+  runtime group: 'org.postgresql', name: 'postgresql', version: '42.2.18'
+
   testImplementation libraries.junit5
   testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', {
     exclude group: 'junit', module: 'junit'
     exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
   }
 
+  testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
+
   integrationTestImplementation sourceSets.main.runtimeClasspath
   integrationTestImplementation sourceSets.test.runtimeClasspath
+  integrationTestImplementation group: 'org.testcontainers', name: 'testcontainers', version: versions.testcontainers
+  integrationTestImplementation group: 'org.testcontainers', name: 'junit-jupiter', version: versions.testcontainers
+  integrationTestImplementation group: 'org.testcontainers', name: 'postgresql', version: versions.testcontainers
 
   functionalTestImplementation sourceSets.main.runtimeClasspath
 
   smokeTestImplementation sourceSets.main.runtimeClasspath
 }
 
-mainClassName = 'uk.gov.hmcts.reform.uk.gov.hmcts.ccd.Application'
+mainClassName = 'uk.gov.hmcts.ccd.MessagePublisherApplication'
+
+run {
+  args = ["--spring.profiles.active=dev"]
+}
 
 bootJar {
   getArchiveFileName().set(provider {
