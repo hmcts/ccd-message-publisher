@@ -94,7 +94,7 @@ class MessagePublisherRunnableTest {
         messagePublisher.run();
 
         assertAll(
-            () -> verify(jmsTemplate, times(3)).convertAndSend(eq(DESTINATION), messageCaptor.capture()),
+            () -> verify(jmsTemplate, times(3)).convertAndSend(eq(DESTINATION), messageCaptor.capture(), any()),
             () -> assertThat(messageCaptor.getAllValues().get(0), is(message1)),
             () -> assertThat(messageCaptor.getAllValues().get(1), is(message2)),
             () -> assertThat(messageCaptor.getAllValues().get(2), is(message3)),
@@ -120,7 +120,7 @@ class MessagePublisherRunnableTest {
         messagePublisher.run();
 
         assertAll(
-            () -> verify(jmsTemplate, times(3)).convertAndSend(eq(DESTINATION), messageCaptor.capture()),
+            () -> verify(jmsTemplate, times(3)).convertAndSend(eq(DESTINATION), messageCaptor.capture(), any()),
             () -> assertThat(messageCaptor.getAllValues().get(0), is(message1)),
             () -> assertThat(messageCaptor.getAllValues().get(1), is(message2)),
             () -> assertThat(messageCaptor.getAllValues().get(2), is(message3)),
@@ -157,12 +157,12 @@ class MessagePublisherRunnableTest {
 
         // Throw exception on processing of second message
         doNothing().doThrow(new IllegalStateException(new javax.jms.IllegalStateException("Error")))
-            .when(jmsTemplate).convertAndSend(eq(DESTINATION), any(JsonNode.class));
+            .when(jmsTemplate).convertAndSend(eq(DESTINATION), any(JsonNode.class), any());
 
         messagePublisher.run();
 
         assertAll(
-            () -> verify(jmsTemplate, times(2)).convertAndSend(eq(DESTINATION), messageCaptor.capture()),
+            () -> verify(jmsTemplate, times(2)).convertAndSend(eq(DESTINATION), messageCaptor.capture(), any()),
             () -> assertThat(messageCaptor.getAllValues().get(0), is(message1)),
             () -> assertThat(messageCaptor.getAllValues().get(1), is(message2)),
             () -> verify(messageQueueCandidateRepository).saveAll(processedEntitiesCaptor.capture()),

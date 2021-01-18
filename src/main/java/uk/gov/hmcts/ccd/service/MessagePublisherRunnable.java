@@ -66,7 +66,11 @@ public class MessagePublisherRunnable implements Runnable {
     }
 
     private String getProperty(JsonNode data, String header) {
-        return data.get(header).asText();
+        try {
+            return data.get(header).asText();
+        } catch (NullPointerException e) {
+            return "null";
+        }
     }
 
     private void publishMessages(Slice<MessageQueueCandidateEntity> messagesToPublish,
