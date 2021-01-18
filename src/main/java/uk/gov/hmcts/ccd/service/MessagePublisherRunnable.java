@@ -1,5 +1,6 @@
 package uk.gov.hmcts.ccd.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +22,7 @@ public class MessagePublisherRunnable implements Runnable {
     private JmsTemplate jmsTemplate;
     private PublishMessageTask publishMessageTask;
     private String logPrefix;
+    private String[] properties = {"jurisdiction_id", "case_type_id", "case_id", "event_id"};
 
     public MessagePublisherRunnable(MessageQueueCandidateRepository messageQueueCandidateRepository,
                                     JmsTemplate jmsTemplate,
@@ -63,10 +65,27 @@ public class MessagePublisherRunnable implements Runnable {
         }
     }
 
+    private String getProperty(JsonNode data, String header) {
+        return data.get(header).asText();
+    }
+
     private void publishMessages(Slice<MessageQueueCandidateEntity> messagesToPublish,
                                  List<MessageQueueCandidateEntity> processedEntities) {
         messagesToPublish.get().forEach(entity -> {
-            jmsTemplate.convertAndSend(publishMessageTask.getDestination(), entity.getMessageInformation());
+            jmsTemplate.convertAndSend(
+                publishMessageTask.getDestination(),
+                entity.getMessageInformation(),
+                messagePostProcessor -> {
+                    for (String property : properties) {
+                        if (!(getProperty(entity.getMessageInformation(), property).equals("null"))) {
+                            messagePostProcessor.setStringProperty(property,
+                                getProperty(entity.getMessageInformation(), property)
+                            );
+                        }
+                    }
+                    return messagePostProcessor;
+                }
+            );
             entity.setPublished(LocalDateTime.now());
             processedEntities.add(entity);
         });
