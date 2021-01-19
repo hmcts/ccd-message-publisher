@@ -149,7 +149,7 @@ def versions = [
   reformLogging   : '5.1.5',
   springBoot      : springBoot.class.package.implementationVersion,
   springfoxSwagger: '2.9.2',
-  testcontainers  : '1.15.0'
+  testcontainers  : '1.15.1'
 ]
 
 ext.libraries = [
