@@ -6,7 +6,18 @@ def type = "java"
 def product = "ccd"
 def component = "message-publisher"
 
+def dataStoreDevelopPr = "pr-1260"
+
 withPipeline(type, product, component) {
     enableAksStagingDeployment()
     disableLegacyDeployment()
+
+    after('build') {
+        def chartFile = 'charts/ccd-message-publisher/values.yaml'
+        def data = readYaml file: chartFile
+
+        data.java.environment.DATA_STORE_DB_HOST = "ccd-data-store-api-${dataStoreDevelopPr}-postgresql"
+
+        writeYaml file: chartFile, data: data, overwrite: true
+    }
 }
