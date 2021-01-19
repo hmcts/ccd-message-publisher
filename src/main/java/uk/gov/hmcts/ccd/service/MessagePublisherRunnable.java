@@ -25,13 +25,6 @@ public class MessagePublisherRunnable implements Runnable {
     private PublishMessageTask publishMessageTask;
     private String logPrefix;
 
-    public enum MessageProperties {
-        jurisdiction_id,
-        case_type_id,
-        case_id,
-        event_id
-    }
-
     public MessagePublisherRunnable(MessageQueueCandidateRepository messageQueueCandidateRepository,
                                     JmsTemplate jmsTemplate,
                                     PublishMessageTask publishMessageTask) {
@@ -76,28 +69,13 @@ public class MessagePublisherRunnable implements Runnable {
 
     private String getPropertyValue(JsonNode data, MessageProperties property) {
 
-        return data.get(property.toString()).asText();
+        return data.get(property.propertyString()).asText();
     }
 
     private Message setProperties(Message message, JsonNode data) throws JMSException {
         for (MessageProperties property : MessageProperties.values()) {
-            if (data.has(property.toString())) {
-                switch (property.toString()) {
-                    case "jurisdiction_id":
-                        message.setStringProperty("Jurisdiction-Id", getPropertyValue(data, property));
-                        break;
-                    case "case_type_id":
-                        message.setStringProperty("CaseType-Id", getPropertyValue(data, property));
-                        break;
-                    case "case_id":
-                        message.setStringProperty("Case-Id", getPropertyValue(data, property));
-                        break;
-                    case "event_id":
-                        message.setStringProperty("Event-Id", getPropertyValue(data, property));
-                        break;
-                    default:
-                        message.setStringProperty(property.toString(), getPropertyValue(data, property));
-                }
+            if ((data.has(property.propertyString())) && (!(getPropertyValue(data, property).equals("null")))) {
+                message.setStringProperty(property.value(), getPropertyValue(data, property));
             }
         }
         return message;
