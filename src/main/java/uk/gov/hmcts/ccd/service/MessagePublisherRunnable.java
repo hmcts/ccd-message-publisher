@@ -10,6 +10,8 @@ import uk.gov.hmcts.ccd.config.PublishMessageTask;
 import uk.gov.hmcts.ccd.data.MessageQueueCandidateEntity;
 import uk.gov.hmcts.ccd.data.MessageQueueCandidateRepository;
 
+import javax.jms.JMSException;
+import javax.jms.Message;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,7 +24,13 @@ public class MessagePublisherRunnable implements Runnable {
     private JmsTemplate jmsTemplate;
     private PublishMessageTask publishMessageTask;
     private String logPrefix;
-    private String[] properties = {"jurisdiction_id", "case_type_id", "case_id", "event_id"};
+
+    public enum MessageProperties {
+        jurisdiction_id,
+        case_type_id,
+        case_id,
+        event_id
+    }
 
     public MessagePublisherRunnable(MessageQueueCandidateRepository messageQueueCandidateRepository,
                                     JmsTemplate jmsTemplate,
@@ -61,16 +69,38 @@ public class MessagePublisherRunnable implements Runnable {
         } else if (!processedEntities.isEmpty()) {
             messageQueueCandidateRepository.saveAll(processedEntities);
             log.info(String.format("%s Published %s messages to destination '%s'",
-                logPrefix, processedEntities.size(), publishMessageTask.getDestination()));
+                                   logPrefix, processedEntities.size(), publishMessageTask.getDestination()
+            ));
         }
     }
 
-    private String getProperty(JsonNode data, String header) {
-        try {
-            return data.get(header).asText();
-        } catch (NullPointerException e) {
-            return "null";
+    private String getPropertyValue(JsonNode data, MessageProperties property) {
+
+        return data.get(property.toString()).asText();
+    }
+
+    private Message setProperties(Message message, JsonNode data) throws JMSException {
+        for (MessageProperties property : MessageProperties.values()) {
+            if (data.has(property.toString())) {
+                switch (property.toString()) {
+                    case "jurisdiction_id":
+                        message.setStringProperty("Jurisdiction-Id", getPropertyValue(data, property));
+                        break;
+                    case "case_type_id":
+                        message.setStringProperty("CaseType-Id", getPropertyValue(data, property));
+                        break;
+                    case "case_id":
+                        message.setStringProperty("Case-Id", getPropertyValue(data, property));
+                        break;
+                    case "event_id":
+                        message.setStringProperty("Event-Id", getPropertyValue(data, property));
+                        break;
+                    default:
+                        message.setStringProperty(property.toString(), getPropertyValue(data, property));
+                }
+            }
         }
+        return message;
     }
 
     private void publishMessages(Slice<MessageQueueCandidateEntity> messagesToPublish,
@@ -78,17 +108,7 @@ public class MessagePublisherRunnable implements Runnable {
         messagesToPublish.get().forEach(entity -> {
             jmsTemplate.convertAndSend(
                 publishMessageTask.getDestination(),
-                entity.getMessageInformation(),
-                messagePostProcessor -> {
-                    for (String property : properties) {
-                        if (!(getProperty(entity.getMessageInformation(), property).equals("null"))) {
-                            messagePostProcessor.setStringProperty(property,
-                                getProperty(entity.getMessageInformation(), property)
-                            );
-                        }
-                    }
-                    return messagePostProcessor;
-                }
+                entity.getMessageInformation(), message -> setProperties(message, entity.getMessageInformation())
             );
             entity.setPublished(LocalDateTime.now());
             processedEntities.add(entity);
@@ -100,6 +120,7 @@ public class MessagePublisherRunnable implements Runnable {
         int result = messageQueueCandidateRepository
             .deletePublishedMessages(retentionDate, publishMessageTask.getMessageType());
         log.debug(String.format("%s Deleted %s records with publish date before %s",
-            logPrefix, result, retentionDate.toString()));
+                                logPrefix, result, retentionDate.toString()
+        ));
     }
 }
