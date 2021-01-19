@@ -1,10 +1,10 @@
 package uk.gov.hmcts.ccd.service;
 
 public enum MessageProperties {
-    JURISDICTION_ID("jurisdiction_id", "jurisdictionid"),
-    CASE_TYPE_ID("case_type_id", "casetypeid"),
-    CASE_ID("case_id", "caseid"),
-    EVENT_ID("event_id", "eventid");
+    JURISDICTION_ID("jurisdiction_id", "jurisdiction_id"),
+    CASE_TYPE_ID("case_type_id", "case_type_id"),
+    CASE_ID("case_id", "case_id"),
+    EVENT_ID("event_id", "event_id");
 
 
     private final String property;
