@@ -12,12 +12,14 @@ withPipeline(type, product, component) {
     enableAksStagingDeployment()
     disableLegacyDeployment()
 
-    after('build') {
+    before('deploy:preview') {
         def chartFile = 'charts/ccd-message-publisher/values.yaml'
         def data = readYaml file: chartFile
 
         data.java.environment.DATA_STORE_DB_HOST = "ccd-data-store-api-${dataStoreDevelopPr}-postgresql"
 
         writeYaml file: chartFile, data: data, overwrite: true
+
+        echo "Set file : ${readYaml file: chartFile}"
     }
 }
