@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.ccd.BaseTest;
@@ -69,6 +70,7 @@ class MessagePublisherRunnableIT extends BaseTest {
 
     @Test
     @Sql(INSERT_DATA_SCRIPT)
+    @DirtiesContext
     void shouldProcessUnpublishedMessages() {
         Iterable<MessageQueueCandidateEntity> allMessageQueueCandidates = messageQueueCandidateRepository.findAll();
 
@@ -119,7 +121,7 @@ class MessagePublisherRunnableIT extends BaseTest {
             .collect(Collectors.toList());
 
         assertAll(
-            () -> asssertPublishedInOrder(expectedMessageTypeEntitiesOrdered),
+            () -> assertPublishedInOrder(expectedMessageTypeEntitiesOrdered),
             () -> assertThat(allMessageQueueCandidates.get(0).getPublished(), notNullValue()),
             () -> assertThat(allMessageQueueCandidates.get(1).getPublished(), notNullValue()),
             () -> assertThat(allMessageQueueCandidates.get(2).getPublished(), nullValue()),
@@ -131,7 +133,7 @@ class MessagePublisherRunnableIT extends BaseTest {
         );
     }
 
-    private void asssertPublishedInOrder(List<MessageQueueCandidateEntity> entitiesOrderedByTimestamp) {
+    private void assertPublishedInOrder(List<MessageQueueCandidateEntity> entitiesOrderedByTimestamp) {
         IntStream.range(0, entitiesOrderedByTimestamp.size() - 1).forEach(i ->
             assertTrue(entitiesOrderedByTimestamp.get(i).getPublished()
                 .isBefore(entitiesOrderedByTimestamp.get(i + 1).getPublished())));
@@ -155,6 +157,7 @@ class MessagePublisherRunnableIT extends BaseTest {
 
     @Test
     @Sql(INSERT_DATA_SCRIPT_PROPERTIES)
+    @DirtiesContext
     void assertPropertiesSet() {
         messagePublisher.run();
         List<TextMessage> output = getMessagesFromDestination();
