@@ -27,11 +27,17 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static uk.gov.hmcts.ccd.service.MessageProperties.CASE_ID;
+import static uk.gov.hmcts.ccd.service.MessageProperties.CASE_TYPE_ID;
+import static uk.gov.hmcts.ccd.service.MessageProperties.EVENT_ID;
+import static uk.gov.hmcts.ccd.service.MessageProperties.JURISDICTION_ID;
+
 
 @Transactional
 class MessagePublisherRunnableIT extends BaseTest {
 
     private static final String INSERT_DATA_SCRIPT = "classpath:sql/insert-message-queue-candidates.sql";
+    private static final String INSERT_DATA_SCRIPT_PROPERTIES = "classpath:sql/insert-message-property-candidates.sql";
 
     private static final String SCHEDULE = "SCHEDULE";
     private static final String MESSAGE_TYPE = "FIRST_MESSAGE_TYPE";
@@ -144,6 +150,22 @@ class MessagePublisherRunnableIT extends BaseTest {
             () -> assertThat(enqueuedMessages.get(2).getText(), is("{\"key\":\"3\"}")),
             () -> assertThat(enqueuedMessages.get(3).getText(), is("{\"key\":\"4\"}")),
             () -> assertThat(enqueuedMessages.get(4).getText(), is("{\"key\":\"5\"}"))
+        );
+    }
+
+    @Test
+    @Sql(INSERT_DATA_SCRIPT_PROPERTIES)
+    void assertPropertiesSet() {
+        messagePublisher.run();
+        List<TextMessage> output = getMessagesFromDestination();
+        assertAll(
+            () -> assertThat(output.get(0).getStringProperty(JURISDICTION_ID.getPropertyId()), is("test1")),
+            () -> assertThat(output.get(3).getStringProperty(CASE_ID.getPropertyId()), is("test4")),
+            () -> assertThat(output.get(4).getStringProperty(CASE_TYPE_ID.getPropertyId()), is("test5")),
+            () -> assertFalse(output.get(1).propertyExists(EVENT_ID.getPropertyId())),
+            () -> assertFalse(output.get(2).propertyExists("test_property")),
+            () -> assertFalse(output.get(3).propertyExists("test_property")),
+            () -> assertFalse(output.get(4).propertyExists(CASE_ID.getPropertyId()))
         );
     }
 }

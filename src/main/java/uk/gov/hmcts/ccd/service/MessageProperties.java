@@ -7,20 +7,20 @@ public enum MessageProperties {
     EVENT_ID("event_id", "event_id");
 
 
-    private final String property;
-    private final String value;
+    private final String propertyId;
+    private final String propertySourceId;
 
-    MessageProperties(String property, String value) {
-        this.value = value;
-        this.property = property;
+    MessageProperties(String propertyId, String propertySourceId) {
+        this.propertySourceId = propertySourceId;
+        this.propertyId = propertyId;
     }
 
-    public String value() {
-        return value;
+    public String getpropertySourceId() {
+        return propertySourceId;
     }
 
-    public String propertyString() {
-        return property;
+    public String getPropertyId() {
+        return propertyId;
     }
 
 }
