@@ -67,15 +67,18 @@ public class MessagePublisherRunnable implements Runnable {
         }
     }
 
-    private String getPropertyValue(JsonNode data, MessageProperties property) {
+    private String getPropertyValue(JsonNode data, String propertyId) {
 
-        return data.get(property.getPropertyId()).asText();
+        return data.get(propertyId).asText();
     }
 
     private Message setProperties(Message message, JsonNode data) throws JMSException {
         for (MessageProperties property : MessageProperties.values()) {
-            if ((data.has(property.getPropertyId())) && (!(getPropertyValue(data, property).equals("null")))) {
-                message.setStringProperty(property.getpropertySourceId(), getPropertyValue(data, property));
+            if ((data.has(property.getPropertyId())) && (!(getPropertyValue(
+                data, property.getPropertyId()).equals("null")))) {
+                message.setStringProperty(property.getPropertySourceId(), getPropertyValue(
+                    data, property.getPropertyId())
+                );
             }
         }
         return message;

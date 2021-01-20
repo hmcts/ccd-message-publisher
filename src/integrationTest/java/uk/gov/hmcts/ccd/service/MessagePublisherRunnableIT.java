@@ -165,6 +165,7 @@ class MessagePublisherRunnableIT extends BaseTest {
             () -> assertThat(output.get(0).getStringProperty(JURISDICTION_ID.getPropertyId()), is("test1")),
             () -> assertThat(output.get(3).getStringProperty(CASE_ID.getPropertyId()), is("test4")),
             () -> assertThat(output.get(4).getStringProperty(CASE_TYPE_ID.getPropertyId()), is("test5")),
+            () -> assertFalse(output.get(0).propertyExists(EVENT_ID.getPropertyId())),
             () -> assertFalse(output.get(1).propertyExists(EVENT_ID.getPropertyId())),
             () -> assertFalse(output.get(2).propertyExists("test_property")),
             () -> assertFalse(output.get(3).propertyExists("test_property")),

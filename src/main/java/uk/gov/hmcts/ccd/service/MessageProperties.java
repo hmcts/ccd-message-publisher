@@ -15,7 +15,7 @@ public enum MessageProperties {
         this.propertyId = propertyId;
     }
 
-    public String getpropertySourceId() {
+    public String getPropertySourceId() {
         return propertySourceId;
     }
 
