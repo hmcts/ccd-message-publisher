@@ -16,8 +16,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static uk.gov.hmcts.ccd.service.MessageProperties.CASE_ID;
-import static uk.gov.hmcts.ccd.service.MessageProperties.SESSION_ID;
 
 @Slf4j
 public class MessagePublisherRunnable implements Runnable {
@@ -82,10 +80,6 @@ public class MessagePublisherRunnable implements Runnable {
                     data, property.getPropertySourceId())
                 );
             }
-        }
-        if (message.propertyExists(CASE_ID.getPropertyId())) {
-            message.setStringProperty(SESSION_ID.getPropertyId(), (getPropertyValue(
-                data, CASE_ID.getPropertySourceId())));
         }
         return message;
     }
