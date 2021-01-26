@@ -1,0 +1,26 @@
+plugins {
+  id 'application'
+}
+
+allprojects {
+  sourceCompatibility = '11'
+  targetCompatibility = '11'
+}
+
+tasks.withType(JavaCompile) {
+  options.compilerArgs << "-Xlint:unchecked" << "-Werror"
+}
+
+repositories {
+  mavenLocal()
+  jcenter()
+  mavenCentral()
+}
+
+application {
+    mainClass = 'topic.TopicReader'
+}
+
+dependencies {
+  compile "com.azure:azure-messaging-servicebus:7.0.0"
+}
