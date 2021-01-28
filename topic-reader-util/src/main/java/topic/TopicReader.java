@@ -23,6 +23,7 @@ public class TopicReader {
     private static final String[] REQUIRED_ENV = { CONNECTION_STRING_KEY, TOPIC_KEY, SUBSCRIPTION_KEY };
 
     public static void main(String[] args) {
+        logger.info("Starting topic reader util");
         verifyEnv();
         readFromTopic();
     }
@@ -55,7 +56,7 @@ public class TopicReader {
         ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
             .connectionString(System.getenv(CONNECTION_STRING_KEY))
             .sessionProcessor()
-            .topicName(System.getenv(TOPIC_KEY)) // "ccd-case-events-demo"
+            .topicName(System.getenv(TOPIC_KEY))
             .subscriptionName(System.getenv(SUBSCRIPTION_KEY))
             .processMessage(processMessage)
             .processError(processError)
