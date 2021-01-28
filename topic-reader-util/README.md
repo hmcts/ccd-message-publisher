@@ -6,7 +6,7 @@ Reads one message at a time then exits.
 ## Running
 
 Set up the following environment variables:
-- `CONNECTION_STRING`: Azure Service Bus connection string
+- `CONNECTION_STRING`: Azure Service Bus connection string for the namespace containing the topic
 - `TOPIC`: Topic name
 - `SUBSCRIPTION`: Session-enabled subscription name
 
