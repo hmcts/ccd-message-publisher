@@ -28,10 +28,12 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static uk.gov.hmcts.ccd.service.MessageProperties.CASE_ID;
 import static uk.gov.hmcts.ccd.service.MessageProperties.CASE_TYPE_ID;
+import static uk.gov.hmcts.ccd.service.MessageProperties.CASE_ID;
+import static uk.gov.hmcts.ccd.service.MessageProperties.SESSION_ID;
 import static uk.gov.hmcts.ccd.service.MessageProperties.EVENT_ID;
 import static uk.gov.hmcts.ccd.service.MessageProperties.JURISDICTION_ID;
+
 
 
 @Transactional
@@ -165,11 +167,14 @@ class MessagePublisherRunnableIT extends BaseTest {
             () -> assertThat(output.get(0).getStringProperty(JURISDICTION_ID.getPropertyId()), is("test1")),
             () -> assertThat(output.get(3).getStringProperty(CASE_ID.getPropertyId()), is("test4")),
             () -> assertThat(output.get(4).getStringProperty(CASE_TYPE_ID.getPropertyId()), is("test5")),
+            () -> assertThat(output.get(5).getStringProperty(CASE_ID.getPropertyId()), is("test6")),
+            () -> assertThat(output.get(5).getStringProperty(SESSION_ID.getPropertyId()), is("test6")),
             () -> assertFalse(output.get(0).propertyExists(EVENT_ID.getPropertyId())),
             () -> assertFalse(output.get(1).propertyExists(EVENT_ID.getPropertyId())),
             () -> assertFalse(output.get(2).propertyExists("test_property")),
             () -> assertFalse(output.get(3).propertyExists("test_property")),
-            () -> assertFalse(output.get(4).propertyExists(CASE_ID.getPropertyId()))
+            () -> assertFalse(output.get(4).propertyExists(CASE_ID.getPropertyId())),
+            () -> assertFalse(output.get(4).propertyExists(SESSION_ID.getPropertyId()))
         );
     }
 }
