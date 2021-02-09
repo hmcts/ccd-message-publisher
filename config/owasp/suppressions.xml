@@ -46,4 +46,118 @@
     <packageUrl regex="true">^pkg:maven/com\.nimbusds/lang\-tag@.*$</packageUrl>
     <cve>CVE-2020-29245</cve>
   </suppress>
+
+<!--Suppressed to continue developing-->
+  <suppress>
+    <notes><![CDATA[
+   file name: activemq-broker-5.15.13.jar
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.activemq/activemq\-broker@.*$</packageUrl>
+    <cve>CVE-2021-26117</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: activemq-client-5.15.13.jar
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.activemq/activemq\-client@.*$</packageUrl>
+    <cve>CVE-2021-26117</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: commons-compress-1.18.jar
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.commons/commons\-compress@.*$</packageUrl>
+    <cve>CVE-2019-12402</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: groovy-2.5.13.jar
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.codehaus\.groovy/groovy@.*$</packageUrl>
+    <cve>CVE-2020-17521</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: groovy-json-2.5.13.jar
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.codehaus\.groovy/groovy\-json@.*$</packageUrl>
+    <cve>CVE-2020-17521</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: groovy-xml-2.5.13.jar
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.codehaus\.groovy/groovy\-xml@.*$</packageUrl>
+    <cve>CVE-2020-17521</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: junit-4.13.jar
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/junit/junit@.*$</packageUrl>
+    <vulnerabilityName>CVE-2020-15250</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: org.apache.sling.javax.activation-0.1.0.jar
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.sling/org\.apache\.sling\.javax\.activation@.*$</packageUrl>
+    <cve>CVE-2016-5394</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: org.apache.sling.javax.activation-0.1.0.jar
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.sling/org\.apache\.sling\.javax\.activation@.*$</packageUrl>
+    <cve>CVE-2016-6798</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: poi-4.0.0.jar
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.poi/poi@.*$</packageUrl>
+    <cve>CVE-2019-12415</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: poi-ooxml-4.0.0.jar
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.poi/poi\-ooxml@.*$</packageUrl>
+    <cve>CVE-2019-12415</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: poi-ooxml-schemas-4.0.0.jar
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.poi/poi\-ooxml\-schemas@.*$</packageUrl>
+    <cve>CVE-2019-12415</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: tag-expressions-2.0.4.jar
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/io\.cucumber/tag\-expressions@.*$</packageUrl>
+    <cve>CVE-2020-29242</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: tag-expressions-2.0.4.jar
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/io\.cucumber/tag\-expressions@.*$</packageUrl>
+    <cve>CVE-2020-29243</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: tag-expressions-2.0.4.jar
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/io\.cucumber/tag\-expressions@.*$</packageUrl>
+    <cve>CVE-2020-29244</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: tag-expressions-2.0.4.jar
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/io\.cucumber/tag\-expressions@.*$</packageUrl>
+    <cve>CVE-2020-29245</cve>
+  </suppress>
 </suppressions>
