@@ -7,6 +7,7 @@ plugins {
   id 'com.github.ben-manes.versions' version '0.36.0'
   id 'org.sonarqube' version '3.0'
   id 'uk.gov.hmcts.java' version '0.11.0'
+  id 'com.github.spacialcircumstances.gradle-cucumber-reporting' version '0.1.14'
 }
 
 allprojects {
@@ -14,7 +15,31 @@ allprojects {
   targetCompatibility = '11'
 }
 
+ext {
+  junitJupiterVersion = '5.5.2'
+  junitVintageVersion = '5.5.2'
+}
+
+configurations {
+  providedRuntime
+  annotationProcessor
+  aatCompile.extendsFrom(testCompile)
+  aatRuntime.extendsFrom(testRuntime)
+  cucumberRuntime.extendsFrom(functionalRuntime)
+}
+
 sourceSets {
+  aat {
+    java {
+      srcDir('src/aat/java')
+      compileClasspath += main.output
+      runtimeClasspath += main.output
+    }
+    resources {
+      srcDir('src/aat/resources')
+    }
+  }
+
   functionalTest {
     java {
       compileClasspath += main.output
@@ -60,10 +85,42 @@ test {
 }
 
 task functional(type: Test) {
-  description = "Runs functional tests"
-  group = "Verification"
-  testClassesDirs = sourceSets.functionalTest.output.classesDirs
-  classpath = sourceSets.functionalTest.runtimeClasspath
+  description = 'Executes functional tests against an the CCD Message Publisher API instance just deployed'
+  dependsOn aatClasses
+  new File("$buildDir/test-results/test").mkdirs()
+  copy {
+    from "src/aat/resources/DummyTest.xml"
+    into "$buildDir/test-results/test"
+  }
+
+  doFirst {
+    generateCucumberReports.enabled = true
+    javaexec {
+      main = "uk.gov.hmcts.ccd.messagepublisher.befta.MessagePublisherBeftaMain"
+      classpath += configurations.cucumberRuntime + sourceSets.aat.runtimeClasspath + sourceSets.main.output + sourceSets.test.output
+      args = [
+        '--threads', '10',
+        '--plugin', "json:${rootDir}/target/cucumber.json",
+        '--tags', 'not @Ignore',
+        '--glue', 'uk.gov.hmcts.befta.player',
+        '--glue', 'uk.gov.hmcts.ccd.messagepublisher.befta', 'src/aat/resources/features'
+      ]
+      jvmArgs = [ '--add-opens=java.base/java.lang.reflect=ALL-UNNAMED' ]
+    }
+
+  }
+
+  finalizedBy {
+    generateCucumberReports {
+      doLast{
+        delete "${rootDir}/BEFTA Report for Functional Tests/"
+        new File("${rootDir}/BEFTA Report for Functional Tests").mkdirs()
+        file("${rootDir}/target/cucumber/cucumber-html-reports").renameTo(file("${rootDir}/BEFTA Report for Functional Tests"))
+        logger.quiet("Functional test report moved to ---> file://${rootDir}/BEFTA%20Report%20for%20Functional%20Tests/overview-features.html")
+      }
+    }
+  }
+  outputs.upToDateWhen { false }
 }
 
 task integration(type: Test) {
@@ -76,9 +133,38 @@ task integration(type: Test) {
 }
 
 task smoke(type: Test) {
-  description = "Runs Smoke Tests"
-  testClassesDirs = sourceSets.smokeTest.output.classesDirs
-  classpath = sourceSets.smokeTest.runtimeClasspath
+  description = 'Executes smoke tests against an the CCD Data Store API instance just deployed'
+  dependsOn aatClasses
+
+  new File("$buildDir/test-results/test").mkdirs()
+  copy {
+    from "src/aat/resources/DummyTest.xml"
+    into "$buildDir/test-results/test"
+  }
+
+  doLast {
+    generateCucumberReports.enabled = true
+    javaexec {
+      main = "uk.gov.hmcts.ccd.messagepublisher.befta.MessagePublisherBeftaMain"
+      classpath += configurations.cucumberRuntime + sourceSets.aat.runtimeClasspath
+      args = ['--plugin', "json:${rootDir}/target/cucumber.json", '--tags', '@Smoke and not @Ignore', '--glue',
+              'uk.gov.hmcts.befta.player', '--glue', "uk.gov.hmcts.ccd.messagepublisher.befta", 'src/aat/resources/features']
+      jvmArgs = [ '--add-opens=java.base/java.lang.reflect=ALL-UNNAMED' ]
+    }
+  }
+
+  finalizedBy {
+    generateCucumberReports {
+      doLast{
+        delete "${rootDir}/BEFTA Report for Smoke Tests/"
+        new File("${rootDir}/BEFTA Report for Smoke Tests").mkdirs()
+        file("${rootDir}/target/cucumber/cucumber-html-reports").renameTo(file("${rootDir}/BEFTA Report for Smoke Tests"))
+        logger.quiet("Smoke test report moved to ---> file://${rootDir}/BEFTA%20Report%20for%20Smoke%20Tests/overview-features.html")
+      }
+    }
+  }
+
+  outputs.upToDateWhen { false }
 }
 
 check.dependsOn integration
@@ -141,6 +227,9 @@ repositories {
   mavenLocal()
   jcenter()
   mavenCentral()
+  maven {
+    url "https://dl.bintray.com/hmcts/hmcts-maven"
+  }
 }
 
 def versions = [
@@ -189,11 +278,17 @@ dependencies {
 
   compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.14.0'
   compile group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: '2.14.0'
-  
+
   compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.40'
   compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '9.0.40'
 
   runtime group: 'org.postgresql', name: 'postgresql', version: '42.2.18'
+
+  compile group: 'uk.gov.hmcts', name: 'befta-fw', version: '6.6.0-RDM-7165-2'
+
+  testCompile "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
+  testRuntime "org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}"
+  testRuntime "org.junit.vintage:junit-vintage-engine:${junitVintageVersion}"
 
   testImplementation libraries.junit5
   testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', {
