@@ -171,7 +171,7 @@ dependencies {
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-activemq'
   implementation group: 'com.microsoft.azure', name: 'azure-servicebus-jms-spring-boot-starter', version: '2.3.5'
 
-  implementation group: 'io.hawt', name: 'hawtio-springboot', version: '2.12.0'
+  implementation group: 'io.hawt', name: 'hawtio-springboot', version: '2.13.0'
 
   implementation group: 'io.springfox', name: 'springfox-swagger2', version: versions.springfoxSwagger
 
