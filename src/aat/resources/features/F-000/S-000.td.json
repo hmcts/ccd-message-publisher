@@ -13,18 +13,9 @@
 		"has the 200 OK code"
 	],
 
-	"users": {
-		"invokingUser": {
-			"username": "master.caseworker@gmail.com",
-			"password": "[[$CCD_BEFTA_MASTER_CASEWORKER_PWD]]"
-		}
-	},
-
 	"request": {
 		"extends": "",
 		"headers": {
-			"Authorization": "[[DEFAULT_AUTO_VALUE]]",
-			"ServiceAuthorization": "[[DEFAULT_AUTO_VALUE]]",
 			"Content-Type": "application/json"
 		}
 	},
@@ -48,7 +39,7 @@
           "details": {
             "database": "PostgreSQL",
             "result": 1,
-            "validationQuery": "SELECT 1"
+            "validationQuery": "[[ANYTHING_PRESENT]]"
           }
         },
         "diskSpace": {
