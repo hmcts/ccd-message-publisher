@@ -38,10 +38,6 @@ spring:
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.jms.activemq.ActiveMQAutoConfiguration
 
-idam:
-  s2s-auth:
-    url: ${S2S_URL:http://localhost:4502}
-
 message-publisher:
   tasks[0]:
     message-type: ${CCD_CASE_EVENTS_MESSAGE_TYPE:CASE_EVENT}
