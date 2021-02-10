@@ -6,6 +6,13 @@ def type = "java"
 def product = "ccd"
 def component = "message-publisher"
 
+// Variables to switch pipeline logic and wiring per type of build
+def definitionStoreDevelopPr = "PR-575" // This doesn't change frequently, but when it does, only change this value.
+
+// vars needed for functional tests
+// Assume a feature build branched off 'develop', with dependencies develop-to-develop.
+env.DEFINITION_STORE_HOST = "http://ccd-definition-store-api-${definitionStoreDevelopPr}.service.core-compute-preview.internal".toLowerCase()
+
 // Other env variables needed for BEFTA.
 env.IDAM_URL = "https://idam-api.aat.platform.hmcts.net"
 env.S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
