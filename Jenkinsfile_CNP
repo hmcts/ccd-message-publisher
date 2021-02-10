@@ -7,9 +7,6 @@ def product = "ccd"
 def component = "message-publisher"
 
 withPipeline(type, product, component) {
-  overrideVaultEnvironments(vaultOverrides)
-  loadVaultSecrets(secrets)
-
   enableAksStagingDeployment()
   disableLegacyDeployment()
 
