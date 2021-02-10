@@ -9,6 +9,7 @@ java:
     DATA_STORE_DB_PASSWORD: "{{ .Values.postgresql.postgresqlPassword }}"
     DATA_STORE_DB_OPTIONS: "?stringtype=unspecified"
     CCD_CASE_EVENTS_DESTINATION: ccd-case-events
+    S2S_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
   secrets:
     SERVICE_BUS_CONNECTION_STRING:
       secretRef: servicebus-secret-topic-{{ .Release.Name }}-servicebus-ccd-case-events
