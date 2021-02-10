@@ -26,18 +26,4 @@
     <cve>CVE-2020-29244</cve>
     <cve>CVE-2020-29245</cve>
   </suppress>
-  <suppress>
-    <notes><![CDATA[
-   file name: activemq-broker-5.15.13.jar
-   ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.apache\.activemq/activemq\-broker@.*$</packageUrl>
-    <cve>CVE-2021-26117</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-   file name: activemq-client-5.15.13.jar
-   ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.apache\.activemq/activemq\-client@.*$</packageUrl>
-    <cve>CVE-2021-26117</cve>
-  </suppress>
 </suppressions>
