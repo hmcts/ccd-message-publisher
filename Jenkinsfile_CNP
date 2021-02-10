@@ -12,7 +12,41 @@ env.S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.int
 env.BEFTA_S2S_CLIENT_ID = "ccd_gw"
 env.BEFTA_RESPONSE_HEADER_CHECK_POLICY="JUST_WARN"
 
+def secrets = [
+  'ccd-${env}': [
+    secret('ccd-importer-autotest-email', 'CCD_IMPORT_AUTOTEST_EMAIL'),
+    secret('ccd-importer-autotest-password', 'CCD_IMPORT_AUTOTEST_PASSWORD'),
+    secret('ccd-caseworker-autotest-email', 'CCD_CASEWORKER_AUTOTEST_EMAIL'),
+    secret('ccd-caseworker-autotest-password', 'CCD_CASEWORKER_AUTOTEST_PASSWORD'),
+    secret('ccd-api-gateway-oauth2-client-secret', 'OAUTH2_CLIENT_SECRET'),
+    secret('ccd-befta-caseworker-3-pwd', 'CCD_BEFTA_CASEWORKER_3_PWD'),
+    secret('ccd-befta-master-caseworker-pwd', 'CCD_BEFTA_MASTER_CASEWORKER_PWD'),
+
+  ],
+  's2s-${env}': [
+    secret('microservicekey-ccd-gw', 'BEFTA_S2S_CLIENT_SECRET')
+  ]
+]
+
+static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
+  [
+    $class: 'AzureKeyVaultSecret',
+    secretType: 'Secret',
+    name: secretName,
+    version: '',
+    envVariable: envVar
+  ]
+}
+
+def vaultOverrides = [
+  'preview': 'aat',
+  'spreview': 'saat'
+]
+
+
 withPipeline(type, product, component) {
+  overrideVaultEnvironments(vaultOverrides)
+  loadVaultSecrets(secrets)
   enableAksStagingDeployment()
   disableLegacyDeployment()
 
