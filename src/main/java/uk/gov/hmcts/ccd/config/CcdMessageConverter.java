@@ -13,6 +13,9 @@ import java.io.IOException;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+/**
+ * JMS MessageConverter that supports publishing JSON content types in Azure Service Bus.
+ */
 public class CcdMessageConverter extends MappingJackson2MessageConverter {
 
     @Override
