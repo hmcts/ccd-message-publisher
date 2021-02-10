@@ -1,79 +1,73 @@
 {
-	"_guid_": "S-000",
-	"title": "must return a successful response when hitting message publisher Healthcheck Operation",
-
-	"productName": "CCD Message Publisher",
-	"operationName": "Healthcheck",
-
-	"method": "GET",
-	"uri": "/health",
-
-	"specs": [
-		"an active profile in CCD",
-		"has the 200 OK code"
-	],
-
-	"request": {
-		"extends": "",
-		"headers": {
-			"Content-Type": "application/json"
-		}
-	},
-
-	"expectedResponse": {
-		"responseCode": 200,
-		"responseMessage": "OK",
-		"headers": {
-			"Content-Encoding": "gzip",
-			"Content-Length": "[[ANYTHING_PRESENT]]",
-			"Content-Type": "application/vnd.spring-boot.actuator.v3+json",
-			"Date": "[[ANYTHING_PRESENT]]",
-			"Vary": "Accept-Encoding",
-			"Request-Context": "[[ANY_NULLABLE]]"
-		},
-    "body" : {
+  "_guid_": "S-000",
+  "title": "must return a successful response when hitting message publisher Healthcheck Operation",
+  "productName": "CCD Message Publisher",
+  "operationName": "Healthcheck",
+  "method": "GET",
+  "uri": "/health",
+  "specs": [
+    "an active profile in CCD",
+    "has the 200 OK code"
+  ],
+  "request": {
+    "extends": "",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  },
+  "expectedResponse": {
+    "responseCode": 200,
+    "responseMessage": "OK",
+    "headers": {
+      "Content-Encoding": "gzip",
+      "Content-Length": "[[ANYTHING_PRESENT]]",
+      "Content-Type": "application/vnd.spring-boot.actuator.v3+json",
+      "Date": "[[ANYTHING_PRESENT]]",
+      "Vary": "Accept-Encoding",
+      "Request-Context": "[[ANY_NULLABLE]]"
+    },
+    "body": {
       "status": "UP",
       "components": {
         "db": {
           "status": "UP",
           "details": {
             "database": "PostgreSQL",
-            "result": 1,
-            "validationQuery": "[[ANYTHING_PRESENT]]"
+            "validationQuery": "isValid()"
           }
         },
         "diskSpace": {
           "status": "UP",
           "details": {
-            "total": "[[ANYTHING_PRESENT]]",
-            "free": "[[ANYTHING_PRESENT]]",
-            "threshold": "[[ANYTHING_PRESENT]]"
+            "total": 103880232960,
+            "free": 59496370176,
+            "threshold": 10485760,
+            "exists": true
           }
         },
-        "hazelcast": {
+        "jms": {
           "status": "UP",
           "details": {
-            "name": "hazelcast-instance-ccd",
-            "uuid": "[[ANYTHING_PRESENT]]"
+            "provider": "QpidJMS"
           }
         },
-        "liveness": {
+        "livenessState": {
           "status": "UP"
         },
         "ping": {
           "status": "UP"
         },
-        "readiness": {
+        "readinessState": {
           "status": "UP"
         },
         "refreshScope": {
           "status": "UP"
-        },
-        "serviceAuth": {
-          "status": "UP"
         }
-      }
+      },
+      "groups": [
+        "liveness",
+        "readiness"
+      ]
     }
-
   }
 }
