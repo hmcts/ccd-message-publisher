@@ -17,7 +17,7 @@ spring:
   main:
     allow-bean-definition-overriding: true
   jms:
-    servicebus: 
+    servicebus:
       connection-string: ${SERVICE_BUS_CONNECTION_STRING}
       idle-timeout: ${SERVICE_BUS_IDLE_TIMEOUT:1800000}
   jpa:
@@ -37,6 +37,10 @@ spring:
       connectionTimeout: ${MESSAGE_PUBLISHER_DB_CONNECTION_TIMEOUT:40000}
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.jms.activemq.ActiveMQAutoConfiguration
+
+idam:
+  s2s-auth:
+    url: ${S2S_URL:http://localhost:4502}
 
 message-publisher:
   tasks[0]:
