@@ -27,20 +27,11 @@
     <cve>CVE-2020-29245</cve>
   </suppress>
 
-
 <!--Suppressed to continue developing-->
   <suppress>
     <notes><![CDATA[
    file name: activemq-broker-5.15.13.jar
    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.apache\.activemq/activemq\-broker@.*$</packageUrl>
-    <cve>CVE-2021-26117</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-   file name: activemq-client-5.15.13.jar
-   ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.apache\.activemq/activemq\-client@.*$</packageUrl>
     <cve>CVE-2021-26117</cve>
   </suppress>
   <suppress>
@@ -54,21 +45,6 @@
     <notes><![CDATA[
    file name: groovy-2.5.13.jar
    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.codehaus\.groovy/groovy@.*$</packageUrl>
-    <cve>CVE-2020-17521</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-   file name: groovy-json-2.5.13.jar
-   ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.codehaus\.groovy/groovy\-json@.*$</packageUrl>
-    <cve>CVE-2020-17521</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-   file name: groovy-xml-2.5.13.jar
-   ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.codehaus\.groovy/groovy\-xml@.*$</packageUrl>
     <cve>CVE-2020-17521</cve>
   </suppress>
   <suppress>
@@ -96,21 +72,6 @@
     <notes><![CDATA[
    file name: poi-4.0.0.jar
    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.apache\.poi/poi@.*$</packageUrl>
-    <cve>CVE-2019-12415</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-   file name: poi-ooxml-4.0.0.jar
-   ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.apache\.poi/poi\-ooxml@.*$</packageUrl>
-    <cve>CVE-2019-12415</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-   file name: poi-ooxml-schemas-4.0.0.jar
-   ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.apache\.poi/poi\-ooxml\-schemas@.*$</packageUrl>
     <cve>CVE-2019-12415</cve>
   </suppress>
   <suppress>
