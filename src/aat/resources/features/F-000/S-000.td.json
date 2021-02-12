@@ -6,11 +6,9 @@
   "method": "GET",
   "uri": "/health",
   "specs": [
-    "an active profile in CCD",
     "has the 200 OK code"
   ],
   "request": {
-    "extends": "",
     "headers": {
       "Content-Type": "application/json"
     }

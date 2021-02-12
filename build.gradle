@@ -15,11 +15,6 @@ allprojects {
   targetCompatibility = '11'
 }
 
-ext {
-  junitJupiterVersion = '5.5.2'
-  junitVintageVersion = '5.5.2'
-}
-
 configurations {
   providedRuntime
   annotationProcessor
@@ -40,14 +35,14 @@ sourceSets {
     }
   }
 
-  functionalTest {
-    java {
-      compileClasspath += main.output
-      runtimeClasspath += main.output
-      srcDir file('src/functionalTest/java')
-    }
-    resources.srcDir file('src/functionalTest/resources')
-  }
+//  functionalTest {
+//    java {
+//      compileClasspath += main.output
+//      runtimeClasspath += main.output
+//      srcDir file('src/functionalTest/java')
+//    }
+//    resources.srcDir file('src/functionalTest/resources')
+//  }
 
   integrationTest {
     java {
@@ -243,6 +238,7 @@ def versions = [
   junit           : '5.7.0',
   junitPlatform   : '1.7.0',
   reformLogging   : '5.1.5',
+  junitVintageVersion : '5.5.2',
   springBoot      : springBoot.class.package.implementationVersion,
   springfoxSwagger: '2.9.2',
   testcontainers  : '1.15.1'
@@ -254,7 +250,8 @@ ext.libraries = [
     "org.junit.jupiter:junit-jupiter-engine:${versions.junit}",
     "org.junit.jupiter:junit-jupiter-params:${versions.junit}",
     "org.junit.platform:junit-platform-commons:${versions.junitPlatform}",
-    "org.junit.platform:junit-platform-engine:${versions.junitPlatform}"
+    "org.junit.platform:junit-platform-engine:${versions.junitPlatform}",
+    "org.junit.vintage:junit-vintage-engine:${versions.junitVintageVersion}"
   ]
 ]
 
@@ -293,11 +290,7 @@ dependencies {
 
   runtime group: 'org.postgresql', name: 'postgresql', version: '42.2.18'
 
-  compile group: 'uk.gov.hmcts', name: 'befta-fw', version: '6.6.0-RDM-7165-2'
-
-  testCompile "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
-  testRuntime "org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}"
-  testRuntime "org.junit.vintage:junit-vintage-engine:${junitVintageVersion}"
+  testImplementation group: 'uk.gov.hmcts', name: 'befta-fw', version: '6.6.0-RDM-7165-2'
 
   testImplementation libraries.junit5
   testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', {
