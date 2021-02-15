@@ -33,6 +33,7 @@ public class MessagePublisherTestAutomationAdapter extends DefaultTestAutomation
             @Override
             public void doLoadTestData() {
                 logger.info("SERVICE BUS CONNECTION STRING: " + System.getenv("SERVICE_BUS_CONNECTION_STRING"));
+                logger.info("SERVICE BUS CONNECTION STRING: " + System.getenv("CCD_connection_string"));
                 logger.info("SERVICE BUS CONNECTION STRING 1: " + System.getenv("CONNECTION_STRING"));
                 logger.info("SERVICE BUS CONNECTION STRING 2: " + System.getenv("ccd-servicebus-connection-string"));
                 logger.info("DATA STORE: " + System.getenv("DATA_STORE_POSTGRES_PASS"));
