@@ -13,7 +13,7 @@ public class MessagePublisherTestAutomationAdapter extends DefaultTestAutomation
 
     private static final Logger logger = LoggerFactory.getLogger(MessagePublisherTestAutomationAdapter.class);
 
-    @Value("${spring.jms.servicebus.connection-string}")
+    @Value("${ccd-servicebus-connection-string}")
     private String connectionString;
 
     private TestDataLoaderToDefinitionStore loader = new TestDataLoaderToDefinitionStore(this);

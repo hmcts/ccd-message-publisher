@@ -24,6 +24,8 @@ env.OAUTH2_REDIRECT_URI = "https://www-ccd.aat.platform.hmcts.net/oauth2redirect
 
 def secrets = [
   'ccd-${env}': [
+    secret('ccd-importer-autotest-email', 'CCD_IMPORT_AUTOTEST_EMAIL'),
+    secret('ccd-importer-autotest-password', 'CCD_IMPORT_AUTOTEST_PASSWORD'),
     secret('ccd-api-gateway-oauth2-client-secret', 'OAUTH2_CLIENT_SECRET')
   ],
   's2s-${env}': [
