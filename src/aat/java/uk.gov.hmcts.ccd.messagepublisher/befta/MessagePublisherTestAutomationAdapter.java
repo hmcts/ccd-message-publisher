@@ -13,7 +13,7 @@ public class MessagePublisherTestAutomationAdapter extends DefaultTestAutomation
 
     private static final Logger logger = LoggerFactory.getLogger(MessagePublisherTestAutomationAdapter.class);
 
-    @Value("${ccd-servicebus-connection-string}")
+    @Value("${CONNECTION_STRING}")
     private String connectionString;
 
     private TestDataLoaderToDefinitionStore loader = new TestDataLoaderToDefinitionStore(this);
