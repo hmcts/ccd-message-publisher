@@ -57,11 +57,15 @@ withPipeline(type, product, component) {
     withAksClient('nonprod', product) {
       def subscription = env.SUBSCRIPTION_NAME
       def serviceBusSecret = "servicebus-secret-topic-${env.BRANCH_NAME}-servicebus-ccd-case-events"
+      echo "The SBS is ${serviceBusSecret}"
       def namespace = new TeamConfig(this).getNameSpace(product)
+      echo "The namepsace is ${namespace}"
       def kubectl = new Kubectl(this, subscription, namespace)
       kubectl.login()
       // Get queue connection string
       env.CONNECTION_STRING = kubectl.getSecret(serviceBusSecret, namespace, "{.data.connectionString}")
+      echo "The Connection string is ${env.CONNECTION_STRING}"
+
 
     }
   }
