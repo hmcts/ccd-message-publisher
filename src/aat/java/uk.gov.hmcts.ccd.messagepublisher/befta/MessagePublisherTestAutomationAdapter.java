@@ -32,7 +32,8 @@ public class MessagePublisherTestAutomationAdapter extends DefaultTestAutomation
         return new DefaultBeftaTestDataLoader() {
             @Override
             public void doLoadTestData() {
-                logger.info("SERVICE BUS CONNECTION STRING: " + connectionString);
+                logger.info("SERVICE BUS CONNECTION STRING: " + System.getenv("CONNECTION_STRING"));
+                logger.info("SERVICE BUS CONNECTION STRING 1: " + System.getenv("ccd-servicebus-connection-string"));
                 MessagePublisherTestAutomationAdapter.this.loader.addCcdRoles();
                 MessagePublisherTestAutomationAdapter.this.loader.importDefinitions();
             }
