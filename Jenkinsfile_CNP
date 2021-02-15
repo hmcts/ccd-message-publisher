@@ -26,9 +26,6 @@ def secrets = [
   'ccd-${env}': [
     secret('ccd-importer-autotest-email', 'CCD_IMPORT_AUTOTEST_EMAIL'),
     secret('ccd-importer-autotest-password', 'CCD_IMPORT_AUTOTEST_PASSWORD'),
-    secret('ccd-servicebus-connection-string', 'CONNECTION_STRING'),
-    secret('data-store-api-POSTGRES-PASS', 'DATA_STORE_POSTGRES_PASS'),
-    secret('AppInsightsInstrumentationKey', 'APP_IN_KEY'),
     secret('ccd-api-gateway-oauth2-client-secret', 'OAUTH2_CLIENT_SECRET')
   ],
   's2s-${env}': [
@@ -53,6 +50,18 @@ def vaultOverrides = [
 
 
 withPipeline(type, product, component) {
+  before('smoketest:preview') {
+    withAksClient('nonprod', product) {
+      def subscription = env.SUBSCRIPTION_NAME
+      def serviceBusSecret = "servicebus-secret-topic-${env.BRANCH_NAME}-servicebus-ccd-case-events"
+      def namespace = new TeamConfig(this).getNameSpace(product)
+      def kubectl = new Kubectl(this, subscription, namespace)
+      kubectl.login()
+      // Get queue connection string
+      env.CONNECTION_STRING = kubectl.getSecret(serviceBusSecret, namespace, "{.data.connectionString}")
+
+    }
+  }
   if (env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'demo' || env.BRANCH_NAME == 'perftest' || env.BRANCH_NAME == 'ithc' || prsToUseAat.toLowerCase().contains(env.BRANCH_NAME.toLowerCase())) {
     environmentOfDependencies = env.BRANCH_NAME
     // use aat environment for dependencies of master and CI/CD builds.
