@@ -56,7 +56,8 @@ withPipeline(type, product, component) {
   before('smoketest:preview') {
     withAksClient('nonprod', product) {
       def subscription = env.SUBSCRIPTION_NAME
-      def serviceBusSecret = "servicebus-secret-topic-${env.BRANCH_NAME}-servicebus-ccd-case-events"
+      def serviceBusSecret = "servicebus-secret-namespace-ccd-message-publisher-${env.BRANCH_NAME.toLowerCase()}-servicebus"
+
       echo "The SBS is ${serviceBusSecret}"
       def namespace = new TeamConfig(this).getNameSpace(product)
       echo "The namepsace is ${namespace}"
