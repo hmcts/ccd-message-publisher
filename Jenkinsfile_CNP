@@ -2,6 +2,9 @@
 
 @Library("Infrastructure")
 
+import uk.gov.hmcts.contino.Kubectl
+import uk.gov.hmcts.pipeline.TeamConfig
+
 def type = "java"
 def product = "ccd"
 def component = "message-publisher"
