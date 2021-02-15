@@ -31,9 +31,6 @@ def secrets = [
     secret('AppInsightsInstrumentationKey', 'APP_IN_KEY'),
     secret('ccd-api-gateway-oauth2-client-secret', 'OAUTH2_CLIENT_SECRET')
   ],
-  'ccd': [
-  secret('SERVICE_BUS_CONNECTION_STRING', 'CCD_connection_string')
-  ],
   's2s-${env}': [
     secret('microservicekey-ccd-gw', 'BEFTA_S2S_CLIENT_SECRET')
   ]
