@@ -1,7 +1,5 @@
 package uk.gov.hmcts.ccd.messagepublisher.befta;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.befta.BeftaTestDataLoader;
 import uk.gov.hmcts.befta.DefaultBeftaTestDataLoader;
 import uk.gov.hmcts.befta.DefaultTestAutomationAdapter;
@@ -9,8 +7,6 @@ import uk.gov.hmcts.befta.dse.ccd.TestDataLoaderToDefinitionStore;
 import uk.gov.hmcts.befta.player.BackEndFunctionalTestScenarioContext;
 
 public class MessagePublisherTestAutomationAdapter extends DefaultTestAutomationAdapter {
-
-    private static final Logger logger = LoggerFactory.getLogger(MessagePublisherTestAutomationAdapter.class);
 
     private TestDataLoaderToDefinitionStore loader = new TestDataLoaderToDefinitionStore(this);
 
@@ -28,7 +24,6 @@ public class MessagePublisherTestAutomationAdapter extends DefaultTestAutomation
         return new DefaultBeftaTestDataLoader() {
             @Override
             public void doLoadTestData() {
-                logger.info("SERVICE BUS CONNECTION STRING: " + System.getenv("CONNECTION_STRING"));
                 MessagePublisherTestAutomationAdapter.this.loader.addCcdRoles();
                 MessagePublisherTestAutomationAdapter.this.loader.importDefinitions();
             }
