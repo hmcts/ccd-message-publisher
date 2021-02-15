@@ -26,12 +26,10 @@ def secrets = [
   'ccd-${env}': [
     secret('ccd-importer-autotest-email', 'CCD_IMPORT_AUTOTEST_EMAIL'),
     secret('ccd-importer-autotest-password', 'CCD_IMPORT_AUTOTEST_PASSWORD'),
-    secret('ccd-api-gateway-oauth2-client-secret', 'OAUTH2_CLIENT_SECRET')
-  ],
-  'ccd': [
     secret('ccd-servicebus-connection-string', 'CONNECTION_STRING'),
     secret('data-store-api-POSTGRES-PASS', 'DATA_STORE_POSTGRES_PASS'),
     secret('AppInsightsInstrumentationKey', 'APP_IN_KEY'),
+    secret('ccd-api-gateway-oauth2-client-secret', 'OAUTH2_CLIENT_SECRET')
   ],
   's2s-${env}': [
     secret('microservicekey-ccd-gw', 'BEFTA_S2S_CLIENT_SECRET')

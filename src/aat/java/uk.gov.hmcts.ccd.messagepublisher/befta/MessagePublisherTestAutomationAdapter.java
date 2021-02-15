@@ -32,8 +32,9 @@ public class MessagePublisherTestAutomationAdapter extends DefaultTestAutomation
         return new DefaultBeftaTestDataLoader() {
             @Override
             public void doLoadTestData() {
-                logger.info("SERVICE BUS CONNECTION STRING: " + System.getenv("CONNECTION_STRING"));
-                logger.info("SERVICE BUS CONNECTION STRING 1: " + System.getenv("ccd-servicebus-connection-string"));
+                logger.info("SERVICE BUS CONNECTION STRING: " + System.getenv("SERVICE_BUS_CONNECTION_STRING"));
+                logger.info("SERVICE BUS CONNECTION STRING 1: " + System.getenv("CONNECTION_STRING"));
+                logger.info("SERVICE BUS CONNECTION STRING 2: " + System.getenv("ccd-servicebus-connection-string"));
                 logger.info("DATA STORE: " + System.getenv("DATA_STORE_POSTGRES_PASS"));
                 logger.info("DATA STORE 1: " + System.getenv("data-store-api-POSTGRES-PASS"));
                 logger.info("APP KEY: " + System.getenv("APP_IN_KEY"));
