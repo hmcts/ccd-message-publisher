@@ -25,22 +25,8 @@ public class MessagePublisherTestAutomationAdapter extends DefaultTestAutomation
     static final String JDBC_DRIVER = "org.postgresql.Driver";
     static final String DB_URL = "jdbc:mysql://localhost/STUDENTS";
 
-    String connectionStringTemp = "jdbc:postgresql://ccd-data-store-api-pr-1357-postgresql:5432/javadatabase?stringtype=unspecified";
-//        + System.getenv("DATA_STORE_DB_HOST")
-//        + ":"
-//        + System.getenv("DATA_STORE_DB_PORT")
-//        + "/"
-//        + System.getenv("DATA_STORE_DB_NAME")
-//        + System.getenv("DATA_STORE_DB_OPTIONS")
-//        + ":?stringtype=unspecified}";
-
-    @Value("${spring.datasource.datasource}")
-    String connectionString;
-    //  Database credentials
-    @Value("${spring.datasource.username}")
-    String user;
-    @Value("${spring.datasource.password}")
-    String pass;
+    String connectionStringTemp = "jdbc:postgresql://ccd-data-store-api-pr-1357-postgresql:5432"
+        + "/javadatabase?stringtype=unspecified";
 
     private void populateTable() {
         Connection conn = null;
@@ -55,9 +41,8 @@ public class MessagePublisherTestAutomationAdapter extends DefaultTestAutomation
             logger.info("Data store db name is: " + System.getenv("DATA_STORE_DB_NAME"));
             logger.info("data store db options is: " + System.getenv("DATA_STORE_DB_OPTIONS"));
             logger.info("Connection string temp is: " + connectionStringTemp);
-            logger.info("Connection string is: " + connectionString);
             logger.info("Connecting to a selected database...");
-            conn = DriverManager.getConnection(connectionStringTemp, user, pass);
+            conn = DriverManager.getConnection(connectionStringTemp, "javapostgres", "javapassword");
             logger.info("Connected database successfully...");
 
             //STEP 4: Execute a query
