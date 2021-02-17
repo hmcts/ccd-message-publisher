@@ -9,7 +9,11 @@ import uk.gov.hmcts.befta.DefaultTestAutomationAdapter;
 import uk.gov.hmcts.befta.dse.ccd.TestDataLoaderToDefinitionStore;
 import uk.gov.hmcts.befta.player.BackEndFunctionalTestScenarioContext;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 
 public class MessagePublisherTestAutomationAdapter extends DefaultTestAutomationAdapter {
 
@@ -22,10 +26,13 @@ public class MessagePublisherTestAutomationAdapter extends DefaultTestAutomation
     static final String DB_URL = "jdbc:mysql://localhost/STUDENTS";
 
     String connectionStringTemp = "jdbc:postgresql://"
-            +System.getenv("DATA_STORE_DB_HOST")+":"
-            + System.getenv("DATA_STORE_DB_PORT")+"/"
-            +System.getenv("DATA_STORE_DB_NAME")
-            +System.getenv("DATA_STORE_DB_OPTIONS")+":?stringtype=unspecified}";
+        + System.getenv("DATA_STORE_DB_HOST")
+        + ":"
+        + System.getenv("DATA_STORE_DB_PORT")
+        + "/"
+        + System.getenv("DATA_STORE_DB_NAME")
+        + System.getenv("DATA_STORE_DB_OPTIONS")
+        + ":?stringtype=unspecified}";
 
     @Value("${spring.datasource.datasource}")
     String connectionString;
@@ -53,17 +60,17 @@ public class MessagePublisherTestAutomationAdapter extends DefaultTestAutomation
             logger.info("Inserting records into the table...");
             stmt = conn.createStatement();
 
-            String sql = "INSERT INTO Registration " +
-                "VALUES (100, 'Zara', 'Ali', 18)";
+            String sql = "INSERT INTO Registration "
+                + "VALUES (100, 'Zara', 'Ali', 18)";
             stmt.executeUpdate(sql);
-            sql = "INSERT INTO Registration " +
-                "VALUES (101, 'Mahnaz', 'Fatma', 25)";
+            sql = "INSERT INTO Registration "
+                + "VALUES (101, 'Mahnaz', 'Fatma', 25)";
             stmt.executeUpdate(sql);
-            sql = "INSERT INTO Registration " +
-                "VALUES (102, 'Zaid', 'Khan', 30)";
+            sql = "INSERT INTO Registration "
+                + "VALUES (102, 'Zaid', 'Khan', 30)";
             stmt.executeUpdate(sql);
-            sql = "INSERT INTO Registration " +
-                "VALUES(103, 'Sumit', 'Mittal', 28)";
+            sql = "INSERT INTO Registration "
+                + "VALUES(103, 'Sumit', 'Mittal', 28)";
             stmt.executeUpdate(sql);
             logger.info("Inserted records into the table...");
 
@@ -76,17 +83,21 @@ public class MessagePublisherTestAutomationAdapter extends DefaultTestAutomation
         } finally {
             //finally block used to close resources
             try {
-                if (stmt != null)
+                if (stmt != null) {
                     conn.close();
-            } catch (SQLException se) {
-            }// do nothing
-            try {
-                if (conn != null)
-                    conn.close();
+                }
             } catch (SQLException se) {
                 se.printStackTrace();
-            }//end finally try
-        }//end try
+            } // do nothing
+
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException se) {
+                se.printStackTrace();
+            } //end finally try
+        } //end try
         logger.info("Goodbye!");
     }
 
