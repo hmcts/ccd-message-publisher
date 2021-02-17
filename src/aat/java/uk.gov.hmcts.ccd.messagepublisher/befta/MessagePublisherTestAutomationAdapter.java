@@ -50,7 +50,10 @@ public class MessagePublisherTestAutomationAdapter extends DefaultTestAutomation
             Class.forName(JDBC_DRIVER);
 
             //STEP 3: Open a connection
-            logger.info("Connection string is: " + connectionString);
+            logger.info("Host name is: " + System.getenv("DATA_STORE_DB_HOST"));
+            logger.info("port is: " + System.getenv("DATA_STORE_DB_PORT"));
+            logger.info("Data store db name is: " + System.getenv("DATA_STORE_DB_NAME"));
+            logger.info("data store db options is: " + System.getenv("DATA_STORE_DB_OPTIONS"));
             logger.info("Connection string temp is: " + connectionStringTemp);
             logger.info("Connecting to a selected database...");
             conn = DriverManager.getConnection(connectionString, user, pass);
