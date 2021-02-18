@@ -4,6 +4,7 @@
 
 import uk.gov.hmcts.contino.Kubectl
 import uk.gov.hmcts.pipeline.TeamConfig
+import groovy.sql.Sql
 
 def type = "java"
 def product = "ccd"
@@ -31,7 +32,11 @@ def secrets = [
   'ccd-${env}': [
     secret('ccd-importer-autotest-email', 'CCD_IMPORT_AUTOTEST_EMAIL'),
     secret('ccd-importer-autotest-password', 'CCD_IMPORT_AUTOTEST_PASSWORD'),
-    secret('ccd-api-gateway-oauth2-client-secret', 'OAUTH2_CLIENT_SECRET')
+    secret('ccd-api-gateway-oauth2-client-secret', 'OAUTH2_CLIENT_SECRET'),
+    secret('data-store-api-POSTGRES-DATABASE', 'data-store-api-POSTGRES-DATABASE'),
+    secret('data-store-api-POSTGRES-DATABASE', 'data-store-api-POSTGRES-HOST'),
+    secret('data-store-api-POSTGRES-DATABASE', 'data-store-api-POSTGRES-PASS'),
+    secret('data-store-api-POSTGRES-DATABASE', 'data-store-api-POSTGRES-USER')
   ],
   's2s-${env}': [
     secret('microservicekey-ccd-gw', 'BEFTA_S2S_CLIENT_SECRET')
@@ -79,6 +84,14 @@ withPipeline(type, product, component) {
       env.CONNECTION_STRING = kubectl.getSecret(serviceBusSecret, namespace, "{.data.connectionString}")
       env.PRIMARY_KEY = kubectl.getSecret(serviceBusSecret, namespace, "{.data.primaryKey}")
 
+    }
+
+    node{
+      Class.forName("org.postgresql.Driver")
+      def sql = Sql.newInstance("jdbc:postgresql://ccd-data-store-api-pr-1357-postgresql:5432" +
+        "javadatabase?stringtype=unspecified", "javapostgres","javapassword", "org.postgresql.Driver")
+      def rows = sql.execute "select count(*) from message_queue_candidates;"
+      echo rows.dump()
     }
   }
   if (env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'demo' || env.BRANCH_NAME == 'perftest' || env.BRANCH_NAME == 'ithc' || prsToUseAat.toLowerCase().contains(env.BRANCH_NAME.toLowerCase())) {
