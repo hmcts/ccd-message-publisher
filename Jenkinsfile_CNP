@@ -33,11 +33,7 @@ def secrets = [
   'ccd-${env}': [
     secret('ccd-importer-autotest-email', 'CCD_IMPORT_AUTOTEST_EMAIL'),
     secret('ccd-importer-autotest-password', 'CCD_IMPORT_AUTOTEST_PASSWORD'),
-    secret('ccd-api-gateway-oauth2-client-secret', 'OAUTH2_CLIENT_SECRET'),
-    secret('data-store-api-POSTGRES-DATABASE', 'data-store-api-POSTGRES-DATABASE'),
-    secret('data-store-api-POSTGRES-DATABASE', 'data-store-api-POSTGRES-HOST'),
-    secret('data-store-api-POSTGRES-DATABASE', 'data-store-api-POSTGRES-PASS'),
-    secret('data-store-api-POSTGRES-DATABASE', 'data-store-api-POSTGRES-USER')
+    secret('ccd-api-gateway-oauth2-client-secret', 'OAUTH2_CLIENT_SECRET')
   ],
   's2s-${env}': [
     secret('microservicekey-ccd-gw', 'BEFTA_S2S_CLIENT_SECRET')
