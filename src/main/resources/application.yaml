@@ -17,7 +17,7 @@ spring:
   main:
     allow-bean-definition-overriding: true
   jms:
-    servicebus: 
+    servicebus:
       connection-string: ${SERVICE_BUS_CONNECTION_STRING}
       idle-timeout: ${SERVICE_BUS_IDLE_TIMEOUT:1800000}
   jpa:

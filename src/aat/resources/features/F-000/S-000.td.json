@@ -1,0 +1,71 @@
+{
+  "_guid_": "S-000",
+  "title": "must return a successful response when hitting message publisher Healthcheck Operation",
+  "productName": "CCD Message Publisher",
+  "operationName": "Healthcheck",
+  "method": "GET",
+  "uri": "/health",
+  "specs": [
+    "has the 200 OK code"
+  ],
+  "request": {
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  },
+  "expectedResponse": {
+    "responseCode": 200,
+    "responseMessage": "OK",
+    "headers": {
+      "Content-Encoding": "gzip",
+      "Content-Length": "[[ANYTHING_PRESENT]]",
+      "Content-Type": "application/vnd.spring-boot.actuator.v3+json",
+      "Date": "[[ANYTHING_PRESENT]]",
+      "Vary": "Accept-Encoding",
+      "Request-Context": "[[ANY_NULLABLE]]"
+    },
+    "body": {
+      "status": "UP",
+      "components": {
+        "db": {
+          "status": "UP",
+          "details": {
+            "database": "PostgreSQL",
+            "validationQuery": "[[ANYTHING_PRESENT]]"
+          }
+        },
+        "diskSpace": {
+          "status": "UP",
+          "details": {
+            "total": "[[ANYTHING_PRESENT]]",
+            "free": "[[ANYTHING_PRESENT]]",
+            "threshold": "[[ANYTHING_PRESENT]]",
+            "exists": true
+          }
+        },
+        "jms": {
+          "status": "UP",
+          "details": {
+            "provider": "QpidJMS"
+          }
+        },
+        "livenessState": {
+          "status": "UP"
+        },
+        "ping": {
+          "status": "UP"
+        },
+        "readinessState": {
+          "status": "UP"
+        },
+        "refreshScope": {
+          "status": "UP"
+        }
+      },
+      "groups": [
+        "liveness",
+        "readiness"
+      ]
+    }
+  }
+}
