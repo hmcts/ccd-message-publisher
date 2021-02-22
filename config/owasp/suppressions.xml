@@ -141,4 +141,10 @@
     <packageUrl regex="true">^pkg:maven/io\.cucumber/tag\-expressions@.*$</packageUrl>
     <cve>CVE-2020-29245</cve>
   </suppress>
+
+
+
+  <suppress>
+    <cve>CVE-2021-21290</cve>
+  </suppress>
 </suppressions>
