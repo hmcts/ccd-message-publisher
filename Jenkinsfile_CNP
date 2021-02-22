@@ -5,6 +5,7 @@
 import uk.gov.hmcts.contino.Kubectl
 import uk.gov.hmcts.pipeline.TeamConfig
 import groovy.sql.Sql
+import java.lang.Class;
 
 def type = "java"
 def product = "ccd"
@@ -85,7 +86,6 @@ withPipeline(type, product, component) {
       env.PRIMARY_KEY = kubectl.getSecret(serviceBusSecret, namespace, "{.data.primaryKey}")
 
     }
-
     node{
       Class.forName("org.postgresql.Driver")
       def sql = Sql.newInstance("jdbc:postgresql://ccd-data-store-api-pr-1357-postgresql:5432" +
@@ -94,6 +94,7 @@ withPipeline(type, product, component) {
       echo rows.dump()
     }
   }
+
   if (env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'demo' || env.BRANCH_NAME == 'perftest' || env.BRANCH_NAME == 'ithc' || prsToUseAat.toLowerCase().contains(env.BRANCH_NAME.toLowerCase())) {
     environmentOfDependencies = env.BRANCH_NAME
     // use aat environment for dependencies of master and CI/CD builds.
