@@ -13,9 +13,12 @@ import uk.gov.hmcts.ccd.data.MessageQueueCandidateEntity;
 import uk.gov.hmcts.ccd.data.MessageQueueCandidateRepository;
 import uk.gov.hmcts.ccd.config.PublishMessageTask;
 
-import javax.jms.TextMessage;
+import javax.jms.BytesMessage;
+import javax.jms.JMSException;
+import javax.jms.Message;
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -78,7 +81,7 @@ class MessagePublisherRunnableIT extends BaseTest {
 
         messagePublisher.run();
 
-        List<TextMessage> enqueuedMessages = getMessagesFromDestination();
+        List<Message> enqueuedMessages = getMessagesFromDestination();
         assertAll(
             () -> assertThat(enqueuedMessages.size(), is(5)),
             () -> assertEnqueuedMessages(enqueuedMessages),
@@ -119,7 +122,7 @@ class MessagePublisherRunnableIT extends BaseTest {
     private void assertAllPublishedValues(List<MessageQueueCandidateEntity> allMessageQueueCandidates) {
         List<MessageQueueCandidateEntity> expectedMessageTypeEntitiesOrdered = allMessageQueueCandidates.stream()
             .filter(entity -> entity.getMessageType().equals(MESSAGE_TYPE))
-            .sorted((e1, e2) -> e1.getTimeStamp().compareTo(e2.getTimeStamp()))
+            .sorted(Comparator.comparing(MessageQueueCandidateEntity::getTimeStamp))
             .collect(Collectors.toList());
 
         assertAll(
@@ -142,19 +145,30 @@ class MessagePublisherRunnableIT extends BaseTest {
     }
 
     @SuppressWarnings("unchecked")
-    private List<TextMessage> getMessagesFromDestination() {
+    private List<Message> getMessagesFromDestination() {
         return jmsTemplate
             .browse(DESTINATION, (session, browser) -> Collections.list(browser.getEnumeration()));
     }
 
-    private void assertEnqueuedMessages(List<TextMessage> enqueuedMessages) {
+    private void assertEnqueuedMessages(List<Message> enqueuedMessages) {
         assertAll(
-            () -> assertThat(enqueuedMessages.get(0).getText(), is("{\"key\":\"1\"}")),
-            () -> assertThat(enqueuedMessages.get(1).getText(), is("{\"key\":\"2\"}")),
-            () -> assertThat(enqueuedMessages.get(2).getText(), is("{\"key\":\"3\"}")),
-            () -> assertThat(enqueuedMessages.get(3).getText(), is("{\"key\":\"4\"}")),
-            () -> assertThat(enqueuedMessages.get(4).getText(), is("{\"key\":\"5\"}"))
+            () -> assertThat(bytesMessageAsString(enqueuedMessages.get(0)), is("{\"key\":\"1\"}")),
+            () -> assertThat(bytesMessageAsString(enqueuedMessages.get(1)), is("{\"key\":\"2\"}")),
+            () -> assertThat(bytesMessageAsString(enqueuedMessages.get(2)), is("{\"key\":\"3\"}")),
+            () -> assertThat(bytesMessageAsString(enqueuedMessages.get(3)), is("{\"key\":\"4\"}")),
+            () -> assertThat(bytesMessageAsString(enqueuedMessages.get(4)), is("{\"key\":\"5\"}"))
         );
+    }
+
+    private String bytesMessageAsString(Message message) throws JMSException {
+        if (message instanceof BytesMessage) {
+            BytesMessage bytesMessage = (BytesMessage) message;
+            byte[] byteData = new byte[(int) bytesMessage.getBodyLength()];
+            bytesMessage.readBytes(byteData);
+            bytesMessage.reset();
+            return new String(byteData);
+        }
+        throw new IllegalArgumentException("Cannot convert non-bytes message.");
     }
 
     @Test
@@ -162,7 +176,7 @@ class MessagePublisherRunnableIT extends BaseTest {
     @DirtiesContext
     void assertPropertiesSet() {
         messagePublisher.run();
-        List<TextMessage> output = getMessagesFromDestination();
+        List<Message> output = getMessagesFromDestination();
         assertAll(
             () -> assertThat(output.get(0).getStringProperty(JURISDICTION_ID.getPropertyId()), is("test1")),
             () -> assertThat(output.get(3).getStringProperty(CASE_ID.getPropertyId()), is("test4")),
