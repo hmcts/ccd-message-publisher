@@ -3,7 +3,7 @@ java:
   ingressHost: ${SERVICE_FQDN}
   keyVaults:
   environment:
-    DATA_STORE_DB_HOST: ccd-data-store-api-pr-1357-postgresql
+    DATA_STORE_DB_HOST: ccd-data-store-api-pr-1260-postgresql
     DATA_STORE_DB_NAME: "{{ .Values.postgresql.postgresqlDatabase }}"
     DATA_STORE_DB_USERNAME: "{{ .Values.postgresql.postgresqlUsername }}"
     DATA_STORE_DB_PASSWORD: "{{ .Values.postgresql.postgresqlPassword }}"
