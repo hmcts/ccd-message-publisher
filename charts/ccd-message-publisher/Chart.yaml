@@ -15,4 +15,4 @@ dependencies:
     condition: servicebus.enabled
   - name: ccd-data-store-api
     version: 1.7.4
-    repository: '@hmctspublic
+    repository: '@hmctspublic'
