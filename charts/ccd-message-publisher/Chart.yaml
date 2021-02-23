@@ -13,3 +13,6 @@ dependencies:
     version: 0.3.0
     repository: '@hmctspublic'
     condition: servicebus.enabled
+  - name: ccd-data-store-api
+      version: 1.7.4
+      repository: '@hmctspublic'

@@ -82,13 +82,6 @@ withPipeline(type, product, component) {
       env.PRIMARY_KEY = kubectl.getSecret(serviceBusSecret, namespace, "{.data.primaryKey}")
 
     }
-//    withAksClient2{
-//      Class.forName("org.postgresql.Driver")
-//      def sql = Sql.newInstance("jdbc:postgresql://ccd-data-store-api-pr-1357-postgresql:5432" +
-//        "javadatabase?stringtype=unspecified", "javapostgres","javapassword", "org.postgresql.Driver")
-//      def rows = sql.execute "select count(*) from message_queue_candidates;"
-//      echo rows.dump()
-//    }
   }
 
   if (env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'demo' || env.BRANCH_NAME == 'perftest' || env.BRANCH_NAME == 'ithc' || prsToUseAat.toLowerCase().contains(env.BRANCH_NAME.toLowerCase())) {
