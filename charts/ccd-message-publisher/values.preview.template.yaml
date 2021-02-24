@@ -45,6 +45,7 @@ ccd:
       releaseNameOverride: "{{ .Release.Name }}-ccd-data-store-api"
       readinessDelay: 240
       livenessDelay: 240
+      applicationPort: 5432
       environment:
         DATA_STORE_DB_NAME: "data-store"
         DATA_STORE_DB_USERNAME: '{{ tpl .Values.global.postgresUsername $}}'
