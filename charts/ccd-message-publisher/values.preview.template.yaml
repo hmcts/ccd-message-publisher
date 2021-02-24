@@ -25,9 +25,6 @@ servicebus:
         subscriptionNeeded: yes
 
 ccd:
-  ingressHost: ${SERVICE_FQDN}
-  ingressIP: ${INGRESS_IP}
-  consulIP: ${CONSUL_LB_IP}
 
   global:
     idamApiUrl: https://idam-api.aat.platform.hmcts.net
