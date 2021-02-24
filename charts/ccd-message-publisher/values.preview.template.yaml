@@ -25,16 +25,6 @@ servicebus:
         subscriptionNeeded: yes
 
 ccd:
-  ccd:
-    definitionImporter:
-      enabled: false
-    managementWeb:
-      enabled: true
-    apiGatewayWeb:
-      enabled: true
-    s2s:
-      enabled: false
-
   ingressHost: ${SERVICE_FQDN}
   ingressIP: ${INGRESS_IP}
   consulIP: ${CONSUL_LB_IP}
@@ -49,14 +39,6 @@ ccd:
     postgresUsername: hmcts
     postgresPassword: hmcts
     s2sUrl: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
-
-  idam-pr:
-    releaseNameOverride: ${SERVICE_NAME}-ccd-idam-pr
-    redirect_uris:
-      CCD:
-        - https://case-management-web-${SERVICE_FQDN}/oauth2redirect
-      CCD Admin:
-        - https://admin-web-${SERVICE_FQDN}/oauth2redirect
 
   ccd-data-store-api:
     java:
