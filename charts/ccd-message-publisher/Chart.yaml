@@ -2,7 +2,7 @@ apiVersion: v2
 description: A Helm chart for the HMCTS CCD Message Publisher
 name: ccd-message-publisher
 home: https://github.com/hmcts/ccd-message-publisher
-version: 0.0.12
+version: 0.0.13
 maintainers:
   - name: HMCTS CCD Dev Team
 dependencies:
@@ -14,5 +14,5 @@ dependencies:
     repository: '@hmctspublic'
     condition: servicebus.enabled
   - name: ccd
-    version: ~4.3.2
+    version: ~5.0.0
     repository: '@hmctspublic'
