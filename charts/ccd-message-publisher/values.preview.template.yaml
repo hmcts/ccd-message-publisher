@@ -65,8 +65,8 @@ global:
   ccdApiGatewayIngress: gateway-${SERVICE_FQDN}
   ccdCaseManagementWebIngress: case-management-web-${SERVICE_FQDN}
   dmStoreUrl: "http://{{ .Release.Name }}-dm-store"
-  postgresUsername: hmcts
-  postgresPassword: hmcts
+  postgresUsername: javapostgres
+  postgresPassword: javapassword
   s2sUrl: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
 
 ccd-data-store-api:
