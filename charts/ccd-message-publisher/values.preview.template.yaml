@@ -27,7 +27,7 @@ ccd:
   postgresql:
     enabled: true
   s2s:
-    enabled: false
+    enabled: true
   draftStore:
     enabled: false
   dmStore:
