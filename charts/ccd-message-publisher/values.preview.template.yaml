@@ -3,10 +3,10 @@ java:
   ingressHost: ${SERVICE_FQDN}
   keyVaults:
   environment:
-    DATA_STORE_DB_HOST: ccd-data-store-api-pr-1260-postgresql
-    DATA_STORE_DB_NAME: "{{ .Values.postgresql.postgresqlDatabase }}"
-    DATA_STORE_DB_USERNAME: "{{ .Values.postgresql.postgresqlUsername }}"
-    DATA_STORE_DB_PASSWORD: "{{ .Values.postgresql.postgresqlPassword }}"
+    DATA_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
+    DATA_STORE_DB_NAME: "data-store"
+    DATA_STORE_DB_USERNAME: '{{ tpl .Values.global.postgresUsername $}}'
+    DATA_STORE_DB_PASSWORD: '{{ tpl .Values.global.postgresPassword $}}'
     DATA_STORE_DB_OPTIONS: "?stringtype=unspecified"
     CCD_CASE_EVENTS_DESTINATION: ccd-case-events
   secrets:
