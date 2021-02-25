@@ -56,6 +56,7 @@ ccd:
   ccd-user-profile-api:
     java:
       imagePullPolicy: Always
+      keyVaults: []
       enviroment:
         USER_PROFILE_DB_HOST: ${SERVICE_NAME}-postgresql
       ingressHost: ccd-user-profile-api-${SERVICE_FQDN}
@@ -63,6 +64,7 @@ ccd:
   ccd-data-store-api:
     java:
       imagePullPolicy: Always
+      keyVaults: []
       environment:
         DATA_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
         DATA_STORE_IDAM_KEY: ${DATA_STORE_S2S_KEY}
@@ -72,6 +74,7 @@ ccd:
   ccd-definition-store-api:
     java:
       imagePullPolicy: Always
+      keyVaults: []
       environment:
         DEFINITION_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
         DEFINITION_STORE_IDAM_KEY: ${DEFINITION_STORE_S2S_KEY}
