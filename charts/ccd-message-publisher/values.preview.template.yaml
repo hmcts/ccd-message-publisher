@@ -27,12 +27,12 @@ ccd:
   ccd:
     definitionImporter:
       enabled: false
-      managementWeb:
-        enabled: true
-      apiGatewayWeb:
-        enabled: true
-      s2s:
-        enabled: false
+    managementWeb:
+      enabled: false
+    apiGatewayWeb:
+      enabled: false
+    s2s:
+      enabled: false
 
   global:
     idamApiUrl: https://idam-api.aat.platform.hmcts.net
