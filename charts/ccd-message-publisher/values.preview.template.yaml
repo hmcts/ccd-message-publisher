@@ -14,15 +14,15 @@ java:
       secretRef: servicebus-secret-topic-{{ .Release.Name }}-servicebus-ccd-case-events
       key: connectionString
 
-servicebus:
-  enabled: true
-  teamName: CCD
-  resourceGroup: ccd-aks
-  serviceplan: standard
-  setup:
-    topics:
-      - name: ccd-case-events
-        subscriptionNeeded: yes
+#servicebus:
+#  enabled: true
+#  teamName: CCD
+#  resourceGroup: ccd-aks
+#  serviceplan: standard
+#  setup:
+#    topics:
+#      - name: ccd-case-events
+#        subscriptionNeeded: yes
 ccd:
   ccd:
     definitionImporter:
