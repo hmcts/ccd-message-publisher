@@ -280,6 +280,7 @@ dependencies {
   compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '9.0.40'
 
   runtime group: 'org.postgresql', name: 'postgresql', version: '42.2.18'
+  runtime group: 'com.zaxxer', name: 'HikariCP', version: '4.0.2'
 
   aatImplementation group: 'uk.gov.hmcts', name: 'befta-fw', version: '6.6.0-RDM-7165-2'
   aatImplementation libraries.junit5
