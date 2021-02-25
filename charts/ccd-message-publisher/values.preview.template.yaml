@@ -25,38 +25,14 @@ servicebus:
         subscriptionNeeded: yes
 ccd:
   ccd:
-    postgresql:
-      enabled: true
-    s2s:
-      enabled: true
-    draftStore:
-      enabled: false
-    dmStore:
-      enabled: false
-    managementWeb:
-      enabled: false
-    apiGatewayWeb:
-      enabled: false
-    adminWeb:
-      enabled: false
-    printService:
-      enabled: false
-    activityApi:
-      enabled: false
-    testStubsService:
-      enabled: false
     definitionImporter:
-      enabled: true
-    userProfileImporter:
-      enabled: true
-    blobstorage:
       enabled: false
-    emAnnotation:
-      enabled: false
-    ccpay:
-      enabled: false
-    elastic:
-      enabled: false
+      managementWeb:
+        enabled: true
+      apiGatewayWeb:
+        enabled: true
+      s2s:
+        enabled: false
 
   global:
     idamApiUrl: https://idam-api.aat.platform.hmcts.net
