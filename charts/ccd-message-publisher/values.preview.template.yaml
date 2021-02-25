@@ -42,118 +42,116 @@ ccd:
     ccdApiGatewayIngress: gateway-${SERVICE_FQDN}
     ccdCaseManagementWebIngress: case-management-web-${SERVICE_FQDN}
     dmStoreUrl: "http://{{ .Release.Name }}-dm-store"
-    postgresUsername: "{{ .Values.postgresql.postgresqlUsername }}"
-    postgresPassword: "{{ .Values.postgresql.postgresqlUsername }}"
+    postgresUsername: hmcts
+    postgresPassword: hmcts
     s2sUrl: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
 
-  ccd-data-store-api:
-    java:
-      image: 'hmctspublic.azurecr.io/ccd/data-store-api:latest'
-      imagePullPolicy: Always
-      applicationPort: 5432
-      environment:
-        DATA_STORE_DB_NAME: "data-store"
-        DATA_STORE_DB_USERNAME: '{{ tpl .Values.global.postgresUsername $}}'
-        DATA_STORE_DB_PASSWORD: '{{ tpl .Values.global.postgresPassword $}}'
-        DATA_STORE_DB_HOST: "{{ .Release.Name }}-postgresql"
-        DATA_STORE_DB_OPTIONS: "?stringtype=unspecified"
-        DATA_STORE_DB_MAX_POOL_SIZE: 10
-        CCD_DM_DOMAIN: https?://dm-store.*
-        IDAM_USER_URL: '{{ tpl .Values.global.idamWebUrl $}}'
-        IDAM_S2S_URL: '{{ tpl .Values.global.s2sUrl $}}'
-        DATA_STORE_IDAM_KEY: AAAAAAAAAAAAAAAA
-        DEFINITION_STORE_HOST: '{{ tpl .Values.global.ccdDefinitionStoreUrl $}}'
-        USER_PROFILE_HOST: '{{ tpl .Values.global.ccdUserProfileUrl $}}'
-        CCD_DRAFT_STORE_URL: '{{ tpl .Values.global.draftStoreUrl $}}'
-        ENABLE_DB_MIGRATE: true
-        ELASTIC_SEARCH_ENABLED: false
-        ELASTIC_SEARCH_NODES_DISCOVERY_ENABLED: false
+  # ccd-data-store-api:
+  #   java:
+  #     image: 'hmctspublic.azurecr.io/ccd/data-store-api:latest'
+  #     imagePullPolicy: Always
+  #     applicationPort: 5432
+  #     environment:
+  #       DATA_STORE_DB_NAME: "data-store"
+  #       DATA_STORE_DB_HOST: "{{ .Release.Name }}-postgresql"
+  #       DATA_STORE_DB_OPTIONS: "?stringtype=unspecified"
+  #       DATA_STORE_DB_MAX_POOL_SIZE: 10
+  #       CCD_DM_DOMAIN: https?://dm-store.*
+  #       IDAM_USER_URL: '{{ tpl .Values.global.idamWebUrl $}}'
+  #       IDAM_S2S_URL: '{{ tpl .Values.global.s2sUrl $}}'
+  #       DATA_STORE_IDAM_KEY: AAAAAAAAAAAAAAAA
+  #       DEFINITION_STORE_HOST: '{{ tpl .Values.global.ccdDefinitionStoreUrl $}}'
+  #       USER_PROFILE_HOST: '{{ tpl .Values.global.ccdUserProfileUrl $}}'
+  #       CCD_DRAFT_STORE_URL: '{{ tpl .Values.global.draftStoreUrl $}}'
+  #       ENABLE_DB_MIGRATE: true
+  #       ELASTIC_SEARCH_ENABLED: false
+  #       ELASTIC_SEARCH_NODES_DISCOVERY_ENABLED: false
 
-  ccd-user-profile-api:
-    java:
-      imagePullPolicy: Always
-      enviroment:
-        USER_PROFILE_DB_HOST: ${SERVICE_NAME}-postgresql
-      keyVaults: []
-      environment:
-        USER_PROFILE_S2S_AUTHORISED_SERVICES: ccd_admin,ccd_data,ccd_definition,divorce
-      ingressHost: ccd-user-profile-api-${SERVICE_FQDN}
+  # ccd-user-profile-api:
+  #   java:
+  #     imagePullPolicy: Always
+  #     enviroment:
+  #       USER_PROFILE_DB_HOST: ${SERVICE_NAME}-postgresql
+  #     keyVaults: []
+  #     environment:
+  #       USER_PROFILE_S2S_AUTHORISED_SERVICES: ccd_admin,ccd_data,ccd_definition,divorce
+  #     ingressHost: ccd-user-profile-api-${SERVICE_FQDN}
 
-  ccd-definition-store-api:
-    java:
-      imagePullPolicy: Always
-      keyVaults: []
-      environment:
-        DEFINITION_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
-        DEFINITION_STORE_IDAM_KEY: ${DEFINITION_STORE_S2S_KEY}
-        DEFINITION_STORE_S2S_AUTHORISED_SERVICES: ccd_admin,ccd_data,divorce,ccd_gw,divorce_ccd_submission
-        IDAM_USER_URL: https://idam-web-public.aat.platform.hmcts.net
-        OIDC_ISSUER: https://forgerock-am.service.core-compute-idam-aat.internal:8443/openam/oauth2/hmcts
-      ingressHost: ccd-definition-store-${SERVICE_FQDN}
+  # ccd-definition-store-api:
+  #   java:
+  #     imagePullPolicy: Always
+  #     keyVaults: []
+  #     environment:
+  #       DEFINITION_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
+  #       DEFINITION_STORE_IDAM_KEY: ${DEFINITION_STORE_S2S_KEY}
+  #       DEFINITION_STORE_S2S_AUTHORISED_SERVICES: ccd_admin,ccd_data,divorce,ccd_gw,divorce_ccd_submission
+  #       IDAM_USER_URL: https://idam-web-public.aat.platform.hmcts.net
+  #       OIDC_ISSUER: https://forgerock-am.service.core-compute-idam-aat.internal:8443/openam/oauth2/hmcts
+  #     ingressHost: ccd-definition-store-${SERVICE_FQDN}
 
-  ccd-admin-web:
-    nodejs:
-      image: hmctspublic.azurecr.io/ccd/admin-web:latest
-      ingressHost: admin-web-${SERVICE_FQDN}
-      keyVaults: []
-      environment:
-        USER_PROFILE_DB_HOST: ${SERVICE_NAME}-postgresql
-        IDAM_ADMIN_WEB_SERVICE_KEY: ${ADMIN_S2S_KEY}
-        IDAM_OAUTH2_AW_CLIENT_SECRET: ${ADMIN_WEB_IDAM_SECRET}
-    idam-pr:
-      enabled: true
+  # ccd-admin-web:
+  #   nodejs:
+  #     image: hmctspublic.azurecr.io/ccd/admin-web:latest
+  #     ingressHost: admin-web-${SERVICE_FQDN}
+  #     keyVaults: []
+  #     environment:
+  #       USER_PROFILE_DB_HOST: ${SERVICE_NAME}-postgresql
+  #       IDAM_ADMIN_WEB_SERVICE_KEY: ${ADMIN_S2S_KEY}
+  #       IDAM_OAUTH2_AW_CLIENT_SECRET: ${ADMIN_WEB_IDAM_SECRET}
+  #   idam-pr:
+  #     enabled: true
 
-  ccd-case-management-web:
-    nodejs:
-      devmemoryRequests: 512Mi
-      devcpuRequests: "1000m"
-      devmemoryLimits: 1024Mi
-      devcpuLimits: "2500m"
-      resources:
-        requests:
-          cpu: 1000m
-          memory: 512Mi
-      environment:
-        CCD_ACTIVITY_URL: null
-        DM_URL: https://gateway-${SERVICE_FQDN}/documents
-        DM_URL_REMOTE: https?://(gateway-${SERVICE_FQDN}:443|dm-store-aat.service.core-compute-aat.internal)/documents
-        NODE_TLS_REJECT_UNAUTHORIZED: 0
-        APPINSIGHTS_INSTRUMENTATIONKEY: ${APPINSIGHTS_INSTRUMENTATIONKEY}
-        APPINSIGHTS_ENABLED: false
-      ingressHost: case-management-web-${SERVICE_FQDN}
-      ingressIP: ${INGRESS_IP}
-    idam-pr:
-      enabled: true
+  # ccd-case-management-web:
+  #   nodejs:
+  #     devmemoryRequests: 512Mi
+  #     devcpuRequests: "1000m"
+  #     devmemoryLimits: 1024Mi
+  #     devcpuLimits: "2500m"
+  #     resources:
+  #       requests:
+  #         cpu: 1000m
+  #         memory: 512Mi
+  #     environment:
+  #       CCD_ACTIVITY_URL: null
+  #       DM_URL: https://gateway-${SERVICE_FQDN}/documents
+  #       DM_URL_REMOTE: https?://(gateway-${SERVICE_FQDN}:443|dm-store-aat.service.core-compute-aat.internal)/documents
+  #       NODE_TLS_REJECT_UNAUTHORIZED: 0
+  #       APPINSIGHTS_INSTRUMENTATIONKEY: ${APPINSIGHTS_INSTRUMENTATIONKEY}
+  #       APPINSIGHTS_ENABLED: false
+  #     ingressHost: case-management-web-${SERVICE_FQDN}
+  #     ingressIP: ${INGRESS_IP}
+  #   idam-pr:
+  #     enabled: true
 
-  ccd-api-gateway-web:
-    nodejs:
-      keyVaults: []
-      environment:
-        IDAM_SERVICE_KEY: ${API_GATEWAY_S2S_KEY}
-        IDAM_OAUTH2_CLIENT_SECRET: ${API_GATEWAY_IDAM_SECRET}
-        PROXY_DOCUMENT_MANAGEMENT: http://dm-store-aat.service.core-compute-aat.internal
-        ADDRESS_LOOKUP_TOKEN: ${ADDRESS_LOOKUP_TOKEN}
-      ingressHost: gateway-${SERVICE_FQDN}
-      ingressIP: ${INGRESS_IP}
+  # ccd-api-gateway-web:
+  #   nodejs:
+  #     keyVaults: []
+  #     environment:
+  #       IDAM_SERVICE_KEY: ${API_GATEWAY_S2S_KEY}
+  #       IDAM_OAUTH2_CLIENT_SECRET: ${API_GATEWAY_IDAM_SECRET}
+  #       PROXY_DOCUMENT_MANAGEMENT: http://dm-store-aat.service.core-compute-aat.internal
+  #       ADDRESS_LOOKUP_TOKEN: ${ADDRESS_LOOKUP_TOKEN}
+  #     ingressHost: gateway-${SERVICE_FQDN}
+  #     ingressIP: ${INGRESS_IP}
 
-  importer:
-    userprofile:
-      enabled: true
-      jurisdictions:
-        - DIVORCE
-      users:
-        - divorce_as_caseworker_beta@mailinator.com|DIVORCE|DIVORCE|Submitted
-        - divorce_as_caseworker_solicitor@mailinator.com|DIVORCE|DIVORCE|Submitted
-        - divorce_as_caseworker_bulk_scanner@mailinator.com|DIVORCE|DIVORCE|Submitted
-        - divorce_as_caseworker_superuser@mailinator.com|DIVORCE|DIVORCE|Submitted
-        - divorce_as_caseworker_la@mailinator.com|DIVORCE|DIVORCE|Submitted
-        - divorce_as_caseworker_admin@mailinator.com|DIVORCE|DIVORCE|Submitted
-        - divorce_respondent_solicitor@mailinator.com|DIVORCE|DIVORCE|Submitted
-      userProfileDatabaseHost: ${SERVICE_NAME}-ccd-postgres
-      userProfileDatabasePort: 5432
-      userProfileDatabaseUser: '{{ tpl .Values.global.postgresUsername $}}'
-      userProfileDatabasePassword: '{{ tpl .Values.global.postgresPassword $}}'
-      userProfileDatabaseName: user-profile
+  # importer:
+  #   userprofile:
+  #     enabled: true
+  #     jurisdictions:
+  #       - DIVORCE
+  #     users:
+  #       - divorce_as_caseworker_beta@mailinator.com|DIVORCE|DIVORCE|Submitted
+  #       - divorce_as_caseworker_solicitor@mailinator.com|DIVORCE|DIVORCE|Submitted
+  #       - divorce_as_caseworker_bulk_scanner@mailinator.com|DIVORCE|DIVORCE|Submitted
+  #       - divorce_as_caseworker_superuser@mailinator.com|DIVORCE|DIVORCE|Submitted
+  #       - divorce_as_caseworker_la@mailinator.com|DIVORCE|DIVORCE|Submitted
+  #       - divorce_as_caseworker_admin@mailinator.com|DIVORCE|DIVORCE|Submitted
+  #       - divorce_respondent_solicitor@mailinator.com|DIVORCE|DIVORCE|Submitted
+  #     userProfileDatabaseHost: ${SERVICE_NAME}-ccd-postgres
+  #     userProfileDatabasePort: 5432
+  #     userProfileDatabaseUser: '{{ tpl .Values.global.postgresUsername $}}'
+  #     userProfileDatabasePassword: '{{ tpl .Values.global.postgresPassword $}}'
+  #     userProfileDatabaseName: user-profile
 
   postgresql:
     persistence:
