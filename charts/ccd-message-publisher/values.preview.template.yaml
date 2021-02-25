@@ -42,8 +42,8 @@ ccd:
     ccdApiGatewayIngress: gateway-${SERVICE_FQDN}
     ccdCaseManagementWebIngress: case-management-web-${SERVICE_FQDN}
     dmStoreUrl: "http://{{ .Release.Name }}-dm-store"
-    postgresUsername: javapostgres
-    postgresPassword: javapassword
+    postgresUsername: "{{ .Values.postgresql.postgresqlUsername }}"
+    postgresPassword: "{{ .Values.postgresql.postgresqlUsername }}"
     s2sUrl: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
 
   ccd-data-store-api:
@@ -151,8 +151,8 @@ ccd:
         - divorce_respondent_solicitor@mailinator.com|DIVORCE|DIVORCE|Submitted
       userProfileDatabaseHost: ${SERVICE_NAME}-ccd-postgres
       userProfileDatabasePort: 5432
-      userProfileDatabaseUser: javapostgres
-      userProfileDatabasePassword: javapassword
+      userProfileDatabaseUser: '{{ tpl .Values.global.postgresUsername $}}'
+      userProfileDatabasePassword: '{{ tpl .Values.global.postgresPassword $}}'
       userProfileDatabaseName: user-profile
 
   postgresql:
