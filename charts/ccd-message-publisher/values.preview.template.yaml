@@ -177,3 +177,7 @@ importer:
     userProfileDatabaseUser: javapostgres
     userProfileDatabasePassword: javapassword
     userProfileDatabaseName: user-profile
+
+postgresql:
+  persistence:
+    enabled: false
