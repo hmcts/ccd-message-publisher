@@ -54,13 +54,13 @@ ccd:
     postgresPassword: hmcts
     s2sUrl: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
 
-#  ccd-user-profile-api:
-#    java:
-#      imagePullPolicy: Always
-#      enviroment:
-#        USER_PROFILE_DB_HOST: ${SERVICE_NAME}-postgresql
-#      keyVaults: []
-#      ingressHost: ccd-user-profile-api-${SERVICE_FQDN}
+  ccd-user-profile-api:
+    java:
+      imagePullPolicy: Always
+      enviroment:
+        USER_PROFILE_DB_HOST: ${SERVICE_NAME}-postgresql
+      keyVaults: []
+      ingressHost: ccd-user-profile-api-${SERVICE_FQDN}
 
   ccd-data-store-api:
     java:
