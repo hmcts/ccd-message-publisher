@@ -264,7 +264,7 @@ dependencies {
   implementation group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformLogging
   implementation group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.1.0'
 
-  implementation group: 'com.vladmihalcea', name: 'hibernate-types-52', version: '2.10.0'
+  implementation group: 'com.vladmihalcea', name: 'hibernate-types-52', version: '2.10.3'
 
   implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
   annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
