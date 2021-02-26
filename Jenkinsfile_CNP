@@ -2,12 +2,18 @@
 
 @Library("Infrastructure")
 
+import uk.gov.hmcts.contino.Kubectl
+import uk.gov.hmcts.pipeline.TeamConfig
+import groovy.sql.Sql
+import java.lang.Class
+
 def type = "java"
 def product = "ccd"
 def component = "message-publisher"
 
 // add random commit to force re build
 // Variables to switch pipeline logic and wiring per type of build
+def messagePublisherDevelopPr = "PR-XXX" // This doesn't change frequently, but when it does, only change this value.
 def definitionStoreDevelopPr = "PR-575" // This doesn't change frequently, but when it does, only change this value.
 def prsToUseAat             = "PR-1193,PR-1219,PR-1248,PR-1311" // Set this value to a PR number, or add it as a comma-separated value, if it's to follow CI/CD.
 
@@ -29,7 +35,12 @@ def secrets = [
     secret('ccd-importer-autotest-password', 'CCD_IMPORT_AUTOTEST_PASSWORD'),
     secret('ccd-api-gateway-oauth2-client-secret', 'OAUTH2_CLIENT_SECRET')
   ],
-  's2s-${env}': [
+  's2s-${env}' : [
+    secret('microservicekey-ccd-data', 'DATA_STORE_S2S_KEY'),
+    secret('microservicekey-ccd-definition', 'DEFINITION_STORE_S2S_KEY'),
+    secret('microservicekey-ccd-gw', 'API_GATEWAY_S2S_KEY'),
+    secret('microservicekey-ccd-ps', 'PRINT_S2S_KEY'),
+    secret('microservicekey-ccd-admin', 'ADMIN_S2S_KEY'),
     secret('microservicekey-ccd-gw', 'BEFTA_S2S_CLIENT_SECRET')
   ]
 ]
@@ -51,6 +62,33 @@ def vaultOverrides = [
 
 
 withPipeline(type, product, component) {
+  onMaster {
+    enableSlackNotifications('#ccd-master-builds')
+  }
+  if (env.BRANCH_NAME.equalsIgnoreCase(messagePublisherDevelopPr)) {
+    enableSlackNotifications('#ccd-develop-builds')
+  }
+  onDemo {
+    enableSlackNotifications('#ccd-demo-builds')
+  }
+  onPR {
+    enableSlackNotifications('#ccd-pr-builds')
+  }
+
+  before('smoketest:preview') {
+    withAksClient('nonprod', product) {
+      def subscription = env.SUBSCRIPTION_NAME
+      def serviceBusSecret = "servicebus-secret-namespace-ccd-message-publisher-${env.BRANCH_NAME.toLowerCase()}-servicebus"
+      def namespace = new TeamConfig(this).getNameSpace(product)
+      def kubectl = new Kubectl(this, subscription, namespace)
+      kubectl.login()
+      // Get queue connection string
+      env.CONNECTION_STRING = kubectl.getSecret(serviceBusSecret, namespace, "{.data.connectionString}")
+      env.PRIMARY_KEY = kubectl.getSecret(serviceBusSecret, namespace, "{.data.primaryKey}")
+
+    }
+  }
+
   if (env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'demo' || env.BRANCH_NAME == 'perftest' || env.BRANCH_NAME == 'ithc' || prsToUseAat.toLowerCase().contains(env.BRANCH_NAME.toLowerCase())) {
     environmentOfDependencies = env.BRANCH_NAME
     // use aat environment for dependencies of master and CI/CD builds.
