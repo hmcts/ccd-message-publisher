@@ -29,9 +29,23 @@
   <suppress>
     <cve>CVE-2021-21290</cve>
   </suppress>
+
+  <!--used in com.microsoft.azure:azure-servicebus-jms-spring-boot-starter:2.3.5, no newer stable version currently available-->
   <suppress>
-    <notes>used in com.microsoft.azure:azure-servicebus-jms-spring-boot-starter:2.3.5, no newer stable version currently available</notes>
-    <packageUrl regex="true">^pkg:maven/org\.nanohttpd/nanohttpd@*$</packageUrl>
+    <notes><![CDATA[
+   file name: nanohttpd-2.3.1.jar
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.nanohttpd/nanohttpd@.*$</packageUrl>
     <cve>CVE-2020-13697</cve>
   </suppress>
+
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-security-crypto-5.3.4.RELEASE.jar
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-crypto@.*$</packageUrl>
+    <cpe>cpe:/a:pivotal_software:spring_security</cpe>
+  </suppress>
+
+
 </suppressions>
