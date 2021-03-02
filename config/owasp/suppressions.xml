@@ -28,6 +28,10 @@
   </suppress>
   <suppress>
     <cve>CVE-2021-21290</cve>
+  </suppress>
+  <suppress>
+    <notes>used in com.microsoft.azure:azure-servicebus-jms-spring-boot-starter:2.3.5, no newer stable version currently available</notes>
+    <packageUrl regex="true">^pkg:maven/org\.nanohttpd/nanohttpd@*$</packageUrl>
     <cve>CVE-2020-13697</cve>
   </suppress>
 </suppressions>
