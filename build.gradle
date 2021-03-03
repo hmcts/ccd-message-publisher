@@ -256,7 +256,7 @@ dependencies {
 
   implementation (group: 'com.microsoft.azure', name: 'azure-servicebus-jms-spring-boot-starter', version: '2.3.5')
 
-  implementation (group: 'org.springframework.security', name:'spring-security-crypto', 'version':'5.4.5')
+  implementation (group: 'org.springframework.security', name:'spring-security-crypto', 'version':'5.4.5') //For CVE-2021-22112
   implementation group: 'io.netty', name:'netty-buffer', version:'4.1.59.Final' //For CVE-2021-21290
   implementation group: 'io.netty', name:'netty-codec', version:'4.1.59.Final' //For CVE-2021-21290
   implementation group: 'io.netty', name:'netty-codec-http', version:'4.1.59.Final' //For CVE-2021-21290
