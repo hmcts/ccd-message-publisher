@@ -112,7 +112,11 @@
     <packageUrl regex="true">^pkg:maven/org\.apache\.poi/poi\-ooxml\-schemas@.*$</packageUrl>
     <cve>CVE-2019-12415</cve>
   </suppress>
+
   <suppress>
     <cve>CVE-2021-21290</cve>
+    <cve>CVE-2021-22112</cve>
+    <cve>CVE-2020-13697</cve>
   </suppress>
+
 </suppressions>
