@@ -255,7 +255,7 @@ dependencies {
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-activemq'
 
   implementation group: 'com.microsoft.azure', name: 'azure-servicebus-jms-spring-boot-starter', {
-    exclude group: 'org.nanohttpd', module: 'nanohttpd'
+    exclude group: 'org.nanohttpd', module: 'nanohttpd' //CVE-2020-13697
   }
 
   implementation group: 'io.hawt', name: 'hawtio-springboot', version: '2.12.0'
