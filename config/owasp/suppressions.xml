@@ -17,15 +17,6 @@
     <cve>CVE-2020-29245</cve>
   </suppress>
 
-  <suppress>
-    <notes>
-      <![CDATA[
-        Required dependencies with no current fixes
-    ]]>
-    </notes>
-    <cve>CVE-2015-5182</cve>
-  </suppress>
-
   <!-- Sub dependency of com.microsoft.azure:azure-servicebus-jms-spring-boot-starter -->
   <suppress>
     <notes><![CDATA[
