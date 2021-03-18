@@ -256,6 +256,7 @@ dependencies {
 
   implementation (group: 'com.microsoft.azure', name: 'azure-servicebus-jms-spring-boot-starter', version: '2.3.5'){
     exclude group: 'org.simpleframework', module: 'simple-xml' //CVE-2017-1000190
+    exclude group: 'org.nanohttpd', module: 'nanohttpd' //CVE-2020-13697
   }
 
   implementation (group: 'org.springframework.security', name:'spring-security-crypto', 'version':'5.4.5') //For CVE-2021-22112
