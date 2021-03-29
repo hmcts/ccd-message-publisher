@@ -34,4 +34,7 @@
     <packageUrl regex="true">^pkg:maven/org\.nanohttpd/nanohttpd@.*$</packageUrl>
     <cve>CVE-2020-13697</cve>
   </suppress>
+  <suppress>
+    <cve>CVE-2021-21295</cve>
+  </suppress>
 </suppressions>
