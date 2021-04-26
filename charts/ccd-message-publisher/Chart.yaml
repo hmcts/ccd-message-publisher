@@ -7,7 +7,7 @@ maintainers:
   - name: HMCTS CCD Dev Team
 dependencies:
   - name: java
-    version: 3.4.6
+    version: 3.4.7
     repository: '@hmctspublic'
   - name: servicebus
     version: 0.3.0
