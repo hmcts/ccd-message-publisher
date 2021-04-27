@@ -36,6 +36,5 @@
   </suppress>
   <suppress>
     <cve>CVE-2021-21295</cve>
-    <cve>CVE-2021-21409</cve>
   </suppress>
 </suppressions>
