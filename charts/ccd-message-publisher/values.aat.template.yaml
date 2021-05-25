@@ -9,4 +9,5 @@ java:
       secrets:
         - data-store-api-POSTGRES-USER-V11
         - data-store-api-POSTGRES-PASS-V11
+        - ccd-servicebus-connection-string
         - AppInsightsInstrumentationKey
