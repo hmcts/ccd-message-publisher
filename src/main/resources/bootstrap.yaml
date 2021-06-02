@@ -7,3 +7,4 @@ spring:
         ccd-servicebus-connection-string: SERVICE_BUS_CONNECTION_STRING
         AppInsightsInstrumentationKey: azure.application-insights.instrumentation-key
         data-store-api-POSTGRES-PASS: DATA_STORE_DB_PASSWORD
+        data-store-api-POSTGRES-USER: DATA_STORE_DB_USERNAME
