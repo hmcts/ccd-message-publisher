@@ -285,7 +285,7 @@ dependencies {
   implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
   annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 
-  implementation group: 'org.hibernate', name: 'hibernate-core', version: '5.4.25.Final' // For CVE-2020-25638
+  implementation group: 'org.hibernate', name: 'hibernate-core', version: '5.5.0.Final' // For CVE-2020-25638
   implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13' // For CVE-2020-13956
   implementation group: 'org.apache.activemq', name: 'activemq-client', version: '5.16.1' // For CVE-2021-26117
   implementation group: 'org.apache.activemq', name: 'activemq-broker', version: '5.16.1' // For CVE-2021-26117
