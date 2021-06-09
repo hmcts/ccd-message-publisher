@@ -37,7 +37,11 @@ spring:
       connectionTimeout: ${MESSAGE_PUBLISHER_DB_CONNECTION_TIMEOUT:40000}
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.jms.activemq.ActiveMQAutoConfiguration
-
+  cloud:
+    discovery:
+      client:
+        composite-indicator:
+          enabled: false
 message-publisher:
   tasks[0]:
     message-type: ${CCD_CASE_EVENTS_MESSAGE_TYPE:CASE_EVENT}

@@ -40,9 +40,4 @@
     <cve>CVE-2021-29425</cve>
   </suppress>
 
-  <suppress>
-    <notes>Temporary suppression</notes>
-    <cve>CVE-2021-22118</cve>
-  </suppress>
-
 </suppressions>
