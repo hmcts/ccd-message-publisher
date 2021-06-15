@@ -1,5 +1,6 @@
 package uk.gov.hmcts.ccd.messagepublisher.befta;
 
+import uk.gov.hmcts.befta.BeftaMain;
 import uk.gov.hmcts.befta.BeftaTestDataLoader;
 import uk.gov.hmcts.befta.DefaultBeftaTestDataLoader;
 import uk.gov.hmcts.befta.DefaultTestAutomationAdapter;
@@ -8,7 +9,8 @@ import uk.gov.hmcts.befta.player.BackEndFunctionalTestScenarioContext;
 
 public class MessagePublisherTestAutomationAdapter extends DefaultTestAutomationAdapter {
 
-    private TestDataLoaderToDefinitionStore loader = new TestDataLoaderToDefinitionStore(this);
+    private TestDataLoaderToDefinitionStore loader = new TestDataLoaderToDefinitionStore(this,
+            "uk/gov/hmcts/ccd/test_definitions/valid", BeftaMain.getConfig().getDefinitionStoreUrl());
 
     @Override
     public Object calculateCustomValue(BackEndFunctionalTestScenarioContext scenarioContext, Object key) {
