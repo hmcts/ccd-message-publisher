@@ -14,6 +14,8 @@ management:
 spring:
   application:
     name: ccd-message-publisher
+  config:
+    import: "optional:configtree:/mnt/secrets/ccd/"
   main:
     allow-bean-definition-overriding: true
   jms:

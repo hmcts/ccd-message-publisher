@@ -7,14 +7,19 @@ java:
   keyVaults:
     ccd:
       secrets:
-        - data-store-api-POSTGRES-PASS
-        - data-store-api-POSTGRES-USER
-        - ccd-servicebus-connection-string
-        - AppInsightsInstrumentationKey
+        - name: ccd-servicebus-connection-string
+          alias: SERVICE_BUS_CONNECTION_STRING
+        - name: AppInsightsInstrumentationKey
+          alias: azure.application-insights.instrumentation-key
+        - name: data-store-api-POSTGRES-PASS
+          alias: DATA_STORE_DB_PASSWORD
+        - name: data-store-api-POSTGRES-USER
+          alias: DATA_STORE_DB_USERNAME
+
   environment:
     DATA_STORE_DB_PORT: 5432
     DATA_STORE_DB_NAME: ccd_data_store
-    DATA_STORE_DB_HOST: ccd-data-store-api-postgres-db-{{ .Values.global.environment }}.postgres.database.azure.com    
+    DATA_STORE_DB_HOST: ccd-data-store-api-postgres-db-{{ .Values.global.environment }}.postgres.database.azure.com
     DATA_STORE_DB_OPTIONS: "?stringtype=unspecified&sslmode=require&gssEncMode=disable"
     CCD_CASE_EVENTS_DESTINATION: ccd-case-events-{{ .Values.global.environment }}
 
