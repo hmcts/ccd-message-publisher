@@ -35,9 +35,4 @@
     <cve>CVE-2020-13697</cve>
   </suppress>
 
-  <suppress until="2021-07-25">
-    <notes>Temporary suppression</notes>
-    <cve>CVE-2021-29425</cve>
-  </suppress>
-
 </suppressions>
