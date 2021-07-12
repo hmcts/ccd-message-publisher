@@ -8,7 +8,7 @@
   </suppress>
 
   <suppress until="2021-07-25">
-    <notes>These CVE's are coming from Dhowden tag library and it impacts only MP3/MP4/OGG/FLAC metadata parsing
+   <notes>These CVE's are coming from Dhowden tag library and it impacts only MP3/MP4/OGG/FLAC metadata parsing
       library. Also it is declared as false positive in https://github.com/jeremylong/DependencyCheck/issues/3043
     </notes>
     <cve>CVE-2020-29242</cve>
@@ -26,18 +26,10 @@
     <cve>CVE-2015-5182</cve>
   </suppress>
 
-  <!-- Sub dependency of com.microsoft.azure:azure-servicebus-jms-spring-boot-starter -->
-  <suppress until="2021-07-25">
-    <notes><![CDATA[
-   file name: nanohttpd-2.3.1.jar
-   ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.nanohttpd/nanohttpd@.*$</packageUrl>
-    <cve>CVE-2020-13697</cve>
-  </suppress>
-
   <suppress until="2021-07-25">
     <notes>Temporary suppression</notes>
     <cve>CVE-2021-29425</cve>
+    <cve>CVE-2021-27568</cve>
   </suppress>
 
 </suppressions>
