@@ -29,7 +29,6 @@
   <suppress until="2021-07-25">
     <notes>Temporary suppression</notes>
     <cve>CVE-2021-29425</cve>
-    <cve>CVE-2021-27568</cve>
   </suppress>
 
 </suppressions>
