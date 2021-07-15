@@ -122,6 +122,12 @@ task integration(type: Test) {
   shouldRunAfter test
 }
 
+task fortifyScan(type: JavaExec)  {
+  main = "uk.gov.hmcts.fortifyclient.FortifyClientMainApp"
+  classpath += sourceSets.test.runtimeClasspath
+  jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
+}
+
 task smoke(type: Test) {
   description = 'Executes smoke tests against an the CCD Data Store API instance just deployed'
   dependsOn aatClasses
@@ -327,6 +333,7 @@ dependencies {
   integrationTestImplementation group: 'org.testcontainers', name: 'postgresql', version: versions.testcontainers
 
   smokeTestImplementation sourceSets.main.runtimeClasspath
+  testCompile 'com.github.hmcts:fortify-client:1.2.0:all'
 }
 
 mainClassName = 'uk.gov.hmcts.ccd.MessagePublisherApplication'
