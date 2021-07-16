@@ -11,7 +11,12 @@ def type = "java"
 def product = "ccd"
 def component = "message-publisher"
 
-withNightlyPipeline(type, product, component) {}
+withNightlyPipeline(type, product, component) {
+  enableFortifyScan()
+  after('fortify-scan') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
+  }
+}
 
 
 // env variables needed for BEFTA.
