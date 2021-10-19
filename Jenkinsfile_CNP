@@ -5,6 +5,7 @@
 def type = "java"
 def product = "ccd"
 def component = "message-publisher"
+def branchesToSync = ['demo', 'ithc', 'perftest']
 
 // Variables to switch pipeline logic and wiring per type of build
 def definitionStoreDevelopPr = "PR-575" // This doesn't change frequently, but when it does, only change this value.
@@ -59,6 +60,7 @@ withPipeline(type, product, component) {
     env.DEFINITION_STORE_HOST      = "http://ccd-definition-store-api-${environmentOfDependencies}.service.core-compute-${environmentOfDependencies}.internal"
   }
 
+  syncBranchesWithMaster(branchesToSync)
   overrideVaultEnvironments(vaultOverrides)
   loadVaultSecrets(secrets)
   enableAksStagingDeployment()
