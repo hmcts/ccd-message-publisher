@@ -46,4 +46,10 @@
     <cve>CVE-2021-42340</cve>
   </suppress>
 
+  <suppress until="2021-11-25">
+    <notes>Suppress CVEs affecting netty temporarily until they can be addresses</notes>
+    <cve>CVE-2021-37136</cve>
+    <cve>CVE-2021-37137</cve>
+  </suppress>
+
 </suppressions>
