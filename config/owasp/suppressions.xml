@@ -42,11 +42,6 @@
   </suppress>
 
   <suppress until="2021-11-25">
-    <notes>Suppress CVE affecting Tomcat temporarily until it can be addressed</notes>
-    <cve>CVE-2021-42340</cve>
-  </suppress>
-
-  <suppress until="2021-11-25">
     <notes>Suppress CVEs affecting netty temporarily until they can be addressed</notes>
     <cve>CVE-2021-37136</cve>
     <cve>CVE-2021-37137</cve>
