@@ -36,7 +36,7 @@
       <![CDATA[
         Required dependencies with no current fixes
         Last control version: 5.16.2
-    ]]>
+      ]]>
     </notes>
     <cve>CVE-2015-5182</cve>
   </suppress>
@@ -45,11 +45,6 @@
     <notes>Suppress CVEs affecting netty temporarily until they can be addressed</notes>
     <cve>CVE-2021-37136</cve>
     <cve>CVE-2021-37137</cve>
-  </suppress>
-
-  <suppress until="2021-11-25">
-    <notes>Temp suppression to unblock pipeline.</notes>
-    <cve>CVE-2021-22096</cve>
   </suppress>
 
 </suppressions>
