@@ -36,14 +36,9 @@
       <![CDATA[
         Required dependencies with no current fixes
         Last control version: 5.16.2
-    ]]>
+      ]]>
     </notes>
     <cve>CVE-2015-5182</cve>
-  </suppress>
-
-  <suppress until="2021-11-25">
-    <notes>Suppress CVE affecting Tomcat temporarily until it can be addressed</notes>
-    <cve>CVE-2021-42340</cve>
   </suppress>
 
   <suppress until="2021-11-25">
