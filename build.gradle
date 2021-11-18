@@ -275,16 +275,16 @@ dependencies {
 
   implementation (group: 'org.springframework.security', name:'spring-security-crypto', 'version':'5.4.5') //For CVE-2021-22112
 
-  implementation group: 'io.netty', name:'netty-buffer', version:'4.1.61.Final' //For CVE-2021-21295
-  implementation group: 'io.netty', name:'netty-codec', version:'4.1.61.Final' //For CVE-2021-21295
-  implementation group: 'io.netty', name:'netty-codec-http', version:'4.1.61.Final' //For CVE-2021-21295
-  implementation group: 'io.netty', name:'netty-common', version:'4.1.61.Final' //For CVE-2021-21295
-  implementation group: 'io.netty', name:'netty-handler', version:'4.1.61.Final' //For CVE-2021-21295
-  implementation group: 'io.netty', name:'netty-resolver', version:'4.1.61.Final' //For CVE-2021-21295
-  implementation group: 'io.netty', name:'netty-transport', version:'4.1.61.Final' //For CVE-2021-21295
-  implementation group: 'io.netty', name:'netty-transport-native-epoll', version:'4.1.61.Final' //For CVE-2021-21295
-  implementation group: 'io.netty', name:'netty-transport-native-kqueue', version:'4.1.61.Final' //For CVE-2021-21295
-  implementation group: 'io.netty', name:'netty-transport-native-unix-common', version:'4.1.61.Final' //For CVE-2021-21295
+  implementation group: 'io.netty', name:'netty-buffer', version:'4.1.68.Final' //For CVE-2021-37136 and CVE-2021-37137
+  implementation group: 'io.netty', name:'netty-codec', version:'4.1.68.Final' //For CVE-2021-37136 and CVE-2021-37137
+  implementation group: 'io.netty', name:'netty-codec-http', version:'4.1.68.Final' //For CVE-2021-37136 and CVE-2021-37137
+  implementation group: 'io.netty', name:'netty-common', version:'4.1.68.Final' //For CVE-2021-37136 and CVE-2021-37137
+  implementation group: 'io.netty', name:'netty-handler', version:'4.1.68.Final' //For CVE-2021-37136 and CVE-2021-37137
+  implementation group: 'io.netty', name:'netty-resolver', version:'4.1.68.Final' //For CVE-2021-37136 and CVE-2021-37137
+  implementation group: 'io.netty', name:'netty-transport', version:'4.1.68.Final' //For CVE-2021-37136 and CVE-2021-37137
+  implementation group: 'io.netty', name:'netty-transport-native-epoll', version:'4.1.68.Final' //For CVE-2021-37136 and CVE-2021-37137
+  implementation group: 'io.netty', name:'netty-transport-native-kqueue', version:'4.1.68.Final' //For CVE-2021-37136 and CVE-2021-37137
+  implementation group: 'io.netty', name:'netty-transport-native-unix-common', version:'4.1.68.Final' //For CVE-2021-37136 and CVE-2021-37137
 
   implementation group: 'org.glassfish', name: 'jakarta.el', version: '4.0.1' // CVE-2021-28170
 
