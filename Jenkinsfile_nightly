@@ -12,11 +12,10 @@ def product = "ccd"
 def component = "message-publisher"
 
 withNightlyPipeline(type, product, component) {
-  // Temporarily disable fortify scan stage until fortify access re-enabled
-  //enableFortifyScan()
-  //after('fortify-scan') {
-  //  steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
-  //}
+  enableFortifyScan()
+  after('fortify-scan') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
+  }
 }
 
 
