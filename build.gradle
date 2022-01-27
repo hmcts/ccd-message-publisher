@@ -240,7 +240,7 @@ repositories {
 def versions = [
   junit           : '5.7.0',
   junitPlatform   : '1.7.0',
-  reformLogging   : '5.1.5',
+  reformLogging   : '5.1.9',
   junitVintageVersion : '5.7.0',
   springBoot      : springBoot.class.package.implementationVersion,
   springfoxSwagger: '3.0.0',
@@ -292,9 +292,8 @@ dependencies {
 
   implementation group: 'io.springfox', name: 'springfox-swagger2', version: versions.springfoxSwagger
 
-  implementation group: 'uk.gov.hmcts.reform', name: 'logging', version: versions.reformLogging
-  implementation group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformLogging
-  implementation group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.1.0'
+  implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: versions.reformLogging
+  implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: versions.reformLogging
 
   implementation group: 'com.vladmihalcea', name: 'hibernate-types-52', version: '2.10.0'
 
@@ -314,7 +313,8 @@ dependencies {
   runtime group: 'org.postgresql', name: 'postgresql', version: '42.2.18'
   runtime group: 'com.zaxxer', name: 'HikariCP', version: '4.0.2'
 
-  aatImplementation group: 'com.github.hmcts', name: 'ccd-test-definitions', version: '7.0.0'
+  aatImplementation group: 'com.github.hmcts', name: 'ccd-test-definitions', version: '7.9.1'
+  aatImplementation group: 'com.github.hmcts', name: 'befta-fw', version: '8.7.1'
   aatImplementation group: 'org.apache.poi', name: 'poi-ooxml-schemas', version: '4.1.2' //For CVE-2019-12415
   aatImplementation libraries.junit5
 
