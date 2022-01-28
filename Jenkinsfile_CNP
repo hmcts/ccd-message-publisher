@@ -13,11 +13,12 @@ def prsToUseAat             = "PR-1193,PR-1219,PR-1248,PR-1311" // Set this valu
 
 // vars needed for functional tests
 // Assume a feature build branched off 'develop', with dependencies develop-to-develop.
-env.DEFINITION_STORE_HOST = "http://ccd-definition-store-api-${definitionStoreDevelopPr}.service.core-compute-preview.internal".toLowerCase()
+env.DEFINITION_STORE_URL_BASE = "http://ccd-definition-store-api-${definitionStoreDevelopPr}.service.core-compute-preview.internal".toLowerCase()
 
-// Other env variables needed for BEFTA.
-env.IDAM_URL = "https://idam-api.aat.platform.hmcts.net"
-env.S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
+// Env variables needed for BEFTA.
+env.CCD_API_GATEWAY_OAUTH2_CLIENT_ID = "ccd_gateway"
+env.IDAM_API_URL_BASE = "https://idam-api.aat.platform.hmcts.net"
+env.S2S_URL_BASE = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
 env.BEFTA_S2S_CLIENT_ID = "ccd_gw"
 env.BEFTA_RESPONSE_HEADER_CHECK_POLICY="JUST_WARN"
 env.OAUTH2_CLIENT_ID = "ccd_gateway"
@@ -56,8 +57,9 @@ withPipeline(type, product, component) {
     // use aat environment for dependencies of master and CI/CD builds.
     if (env.BRANCH_NAME.startsWith("PR") || env.BRANCH_NAME == 'master') {
       environmentOfDependencies = "aat"
+    } else{
+      env.DEFINITION_STORE_URL_BASE = "http://ccd-definition-store-api-${definitionStoreDevelopPr}.service.core-compute-preview.internal".toLowerCase()
     }
-    env.DEFINITION_STORE_HOST      = "http://ccd-definition-store-api-${environmentOfDependencies}.service.core-compute-${environmentOfDependencies}.internal"
   }
 
   syncBranchesWithMaster(branchesToSync)
