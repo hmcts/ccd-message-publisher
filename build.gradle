@@ -316,6 +316,7 @@ dependencies {
   aatImplementation group: 'com.github.hmcts', name: 'ccd-test-definitions', version: '7.9.1'
   aatImplementation group: 'com.github.hmcts', name: 'befta-fw', version: '8.7.1'
   aatImplementation group: 'org.apache.poi', name: 'poi-ooxml-schemas', version: '4.1.2' //For CVE-2019-12415
+  aatImplementation group: 'commons-lang', name: 'commons-lang', version: '2.6'
   aatImplementation libraries.junit5
 
   testImplementation libraries.junit5
