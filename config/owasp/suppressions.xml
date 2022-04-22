@@ -51,4 +51,22 @@
     <cve>CVE-2013-7315</cve>
   </suppress>
 
+  <suppress until="2022-05-25">
+   <notes><![CDATA[
+   file name: spring-plugin-core-2.0.0.RELEASE.jar
+   ]]></notes>
+   <packageUrl regex="true">^pkg:maven/org\.springframework\.plugin/spring\-plugin\-core@.*$</packageUrl>
+   <cve>CVE-2016-1000027</cve>
+   <cve>CVE-2022-22965</cve>
+</suppress>
+  
+  <suppress>
+   <notes><![CDATA[
+   file name: spring-plugin-metadata-2.0.0.RELEASE.jar
+   ]]></notes>
+   <packageUrl regex="true">^pkg:maven/org\.springframework\.plugin/spring\-plugin\-metadata@.*$</packageUrl>
+   <cve>CVE-2016-1000027</cve>
+   <cve>CVE-2022-22965</cve>
+</suppress>
+  
 </suppressions>
