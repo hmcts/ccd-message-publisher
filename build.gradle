@@ -320,7 +320,7 @@ dependencies {
   compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.58'
   compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '9.0.58'
 
-  runtime group: 'org.postgresql', name: 'postgresql', version: '42.2.18'
+  runtime group: 'org.postgresql', name: 'postgresql', version: '42.3.5'
   runtime group: 'com.zaxxer', name: 'HikariCP', version: '4.0.2'
 
   aatImplementation group: 'com.github.hmcts', name: 'ccd-test-definitions', version: '7.14.0'
