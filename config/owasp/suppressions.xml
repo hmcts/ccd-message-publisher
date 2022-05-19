@@ -101,8 +101,4 @@
     <cve>CVE-2022-22968</cve>
   </suppress>
 
-  <suppress until="2022-06-25">
-    <cve>CVE-2022-24823</cve>
-  </suppress>
-
 </suppressions>
