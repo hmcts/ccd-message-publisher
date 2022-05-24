@@ -81,6 +81,27 @@
 
   <suppress until="2022-06-25">
     <notes><![CDATA[
+      file name: spring-plugin-core-2.0.0.RELEASE.jar
+      ]]>
+      This CVE has been resolved partially by upgrading spring framework version to 5.3.19.
+      However awaiting for patch to address spring-plugin-core
+    </notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.plugin/spring\-plugin\-core@.*$</packageUrl>
+    <cve>CVE-2022-22968</cve>
+  </suppress>
+
+  <suppress until="2022-06-25">
+    <notes><![CDATA[
+      file name: spring-plugin-metadata-2.0.0.RELEASE.jar
+      ]]>
+      This CVE has been resolved partially by upgrading spring framework version to 5.3.19.
+      However awaiting for patch to address spring-plugin-metadata
+    </notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.plugin/spring\-plugin\-metadata@.*$</packageUrl>
+    <cve>CVE-2022-22968</cve>
+  </suppress>
+  <suppress until="2022-06-25">
+    <notes><![CDATA[
    file name: spring-core-5.3.18.jar
    ]]></notes>
     <cve>CVE-2016-1000027</cve>
