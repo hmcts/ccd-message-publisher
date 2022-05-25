@@ -10,7 +10,7 @@ plugins {
   id 'com.github.spacialcircumstances.gradle-cucumber-reporting' version '0.1.23'
 }
 
-ext['spring-framework.version'] = '5.3.19'
+ext['spring-framework.version'] = '5.3.20'
 ext['spring-security.version'] = '5.4.5'
 ext['log4j2.version'] = '2.17.1'
 ext['jackson.version'] = '2.13.2'
