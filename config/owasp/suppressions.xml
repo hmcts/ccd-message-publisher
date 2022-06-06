@@ -93,11 +93,4 @@
     <cve>CVE-2022-22970</cve>
   </suppress>
 
-  <suppress>
-    <notes><![CDATA[
-   file name: spring-security-rsa-1.0.9.RELEASE.jar
-   ]]></notes>
-    <cve>CVE-2022-22976</cve>
-  </suppress>
-
 </suppressions>
