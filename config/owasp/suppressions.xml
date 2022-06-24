@@ -116,4 +116,11 @@
     <cve>CVE-2022-22978</cve>
   </suppress>
 
+  <suppress>
+   <notes><![CDATA[
+   file name: spring-plugin-core-2.0.0.RELEASE.jar
+   ]]></notes>
+   <cve>CVE-2022-22950</cve>
+  </suppress>
+
 </suppressions>
