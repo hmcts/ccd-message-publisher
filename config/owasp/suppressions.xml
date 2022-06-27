@@ -128,5 +128,9 @@
    file name: spring-plugin-core-2.0.0.RELEASE.jar
    ]]></notes>
    <cve>CVE-2018-11039</cve>
+   <cve>CVE-2018-11040</cve>
+   <cve>CVE-2018-1257</cve>
+   <cve>CVE-2018-5421</cve>
   </suppress>
+  
 </suppressions>
