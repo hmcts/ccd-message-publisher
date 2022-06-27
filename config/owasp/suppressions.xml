@@ -130,7 +130,7 @@
    <cve>CVE-2018-11039</cve>
    <cve>CVE-2018-11040</cve>
    <cve>CVE-2018-1257</cve>
-   <cve>CVE-2018-5421</cve>
+   <cve>CVE-2020-5421</cve>
   </suppress>
-  
+
 </suppressions>
