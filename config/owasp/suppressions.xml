@@ -17,7 +17,7 @@
   </suppress>
   <!--End of false positives section -->
 
-  <!--Please add all the temporary suppression under the below section-->
+  <!--Please add all the temporary suppression under the below section -->
   <suppress>
     <notes>Temporary Suppression
       CVE-2013-4152   refer https://tools.hmcts.net/jira/browse/CCD-3101
