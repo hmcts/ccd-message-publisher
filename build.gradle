@@ -266,7 +266,7 @@ dependencies {
   compile "com.fasterxml.jackson.core:jackson-databind:2.13.2.2"
   compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.13.2'
   compile group: 'com.fasterxml.jackson.module', name: 'jackson-module-jaxb-annotations', version: '2.13.2'
-  //implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '3.0.1'
+  implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '3.0.1'
 
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
@@ -279,8 +279,9 @@ dependencies {
     exclude group: 'org.simpleframework', module: 'simple-xml' //CVE-2017-1000190
     exclude group: 'org.nanohttpd', module: 'nanohttpd' //CVE-2020-13697
   }
-  //CVE-2021-22119
+  //CVE-2022-22978
   implementation (group: 'org.springframework.security', name:'spring-security-crypto', 'version':'5.7.1')
+  implementation group: 'org.springframework.security', name: 'spring-security-rsa', version: '1.0.11.RELEASE'
   // CVE-2021-43797
   implementation group: 'io.netty', name:'netty-buffer', version: versions.netty
   implementation group: 'io.netty', name:'netty-codec', version: versions.netty

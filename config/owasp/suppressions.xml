@@ -37,9 +37,18 @@
     <cve>CVE-2022-22968</cve>
     <cve>CVE-2022-22970</cve>
     <cve>CVE-2022-22976</cve>
-    <cve>CVE-2022-22978</cve>
     <cve>CVE-2022-22950</cve>
   </suppress>
   <!--End of temporary suppression section -->
+
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-security-rsa-1.0.11.RELEASE.jar
+    The same CVE has been fixed for spring-security with version 5.7.1, but still pending for
+    the file stated here. We need detailed suppression to target the rsa file.
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-rsa@.*$</packageUrl>
+    <cve>CVE-2022-22978</cve>
+  </suppress>
 
 </suppressions>
