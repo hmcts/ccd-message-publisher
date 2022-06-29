@@ -8,8 +8,8 @@ maintainers:
 dependencies:
   - name: java
     version: 3.7.6
-    repository: '@hmctspublic'
+    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
   - name: servicebus
     version: 0.3.1
-    repository: '@hmctspublic'
+    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: servicebus.enabled
