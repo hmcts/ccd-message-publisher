@@ -7,7 +7,7 @@ public class TestDataLoaderMain {
     }
 
     public static void main(String[] args) {
-        new MessagePublisherTestAutomationAdapter().getDataLoader().loadTestDataIfNecessary();
+        new MessagePublisherTestAutomationAdapter().getDataLoader().loadDataIfNotLoadedVeryRecently();
     }
 
 }
