@@ -11,7 +11,7 @@ plugins {
 }
 
 ext['spring-framework.version'] = '5.3.20'
-ext['spring-security.version'] = '5.4.5'
+ext['spring-security.version'] = '5.7.1'
 ext['log4j2.version'] = '2.17.1'
 ext['jackson.version'] = '2.13.2'
 
@@ -279,8 +279,7 @@ dependencies {
     exclude group: 'org.simpleframework', module: 'simple-xml' //CVE-2017-1000190
     exclude group: 'org.nanohttpd', module: 'nanohttpd' //CVE-2020-13697
   }
-  //CVE-2021-22119
-  implementation (group: 'org.springframework.security', name:'spring-security-crypto', 'version':'5.4.7')
+  implementation (group: 'org.springframework.security', name:'spring-security-rsa', version: '1.0.11.RELEASE')
   // CVE-2021-43797
   implementation group: 'io.netty', name:'netty-buffer', version: versions.netty
   implementation group: 'io.netty', name:'netty-codec', version: versions.netty
