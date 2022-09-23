@@ -6,10 +6,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-        with:
-          token: ${{ steps.generate-token.outputs.token }}
-          ref: ${{ github.head_ref }}
       - name: Set up Cache
         uses: actions/cache@v1
         with:
