@@ -1,11 +1,12 @@
 name: Suppressions
 
-on: [pull_request, workflow_dispatch]
+on: [ pull_request, workflow_dispatch ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/setup-java@v1
       - name: Set up Cache
         uses: actions/cache@v1
         with:
@@ -21,6 +22,7 @@ jobs:
         continue-on-error: true
       - name: Suppressions
         run: ./gradlew suppressCves
+        continue-on-error: false
       - name: Clean suppressions
         run: ./gradlew cleanSuppressions
       - name: Commit
