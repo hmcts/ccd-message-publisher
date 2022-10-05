@@ -1,5 +1,7 @@
 #!groovy
 
+import uk.gov.hmcts.contino.GithubAPI
+
 @Library("Infrastructure")
 
 def type = "java"
@@ -52,6 +54,14 @@ def vaultOverrides = [
 
 
 withPipeline(type, product, component) {
+
+  onPR {
+    def githubApi = new GithubAPI(this)
+    if (!githubApi.getLabelsbyPattern(env.BRANCH_NAME, "keep-helm")) {
+      enableCleanupOfHelmReleaseOnSuccess()
+    }
+  }
+
   if (env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'demo' || env.BRANCH_NAME == 'perftest' || env.BRANCH_NAME == 'ithc' || prsToUseAat.toLowerCase().contains(env.BRANCH_NAME.toLowerCase())) {
     environmentOfDependencies = env.BRANCH_NAME
     // use aat environment for dependencies of master and CI/CD builds.
