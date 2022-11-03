@@ -346,7 +346,7 @@ dependencies {
   integrationTestImplementation group: 'org.testcontainers', name: 'postgresql', version: versions.testcontainers
 
   smokeTestImplementation sourceSets.main.runtimeClasspath
-  testCompile 'com.github.hmcts:fortify-client:1.2.0:all'
+  testCompile 'com.github.hmcts:fortify-client:1.3.0:all'
 }
 
 mainClassName = 'uk.gov.hmcts.ccd.MessagePublisherApplication'
