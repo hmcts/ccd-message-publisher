@@ -251,7 +251,7 @@ def versions = [
   testcontainers  : '1.15.1',
   netty           : '4.1.77.Final',
   jackson         : '2.14.0-rc1',
-  tomcatVersion   : '9.0.68!!'
+  tomcatVersion   : '9.0.68'
 ]
 
 ext.libraries = [
