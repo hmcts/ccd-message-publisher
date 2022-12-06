@@ -5,9 +5,11 @@
         CVE-2016-4432 refer https://tools.hmcts.net/jira/browse/CCD-4056
         CVE-2016-3094 refer https://tools.hmcts.net/jira/browse/CCD-4056
         CVE-2016-4432 refer [Ticket]
-        CVE-2016-3094 refer [Ticket]</notes>
+        CVE-2016-3094 refer [Ticket]
+        CVE-2021-37533 refer [Ticket]</notes>
     <cve>CVE-2022-41946</cve>
     <cve>CVE-2016-4432</cve>
     <cve>CVE-2016-3094</cve>
+    <cve>CVE-2021-37533</cve>
   </suppress>
 </suppressions>
