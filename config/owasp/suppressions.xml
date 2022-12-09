@@ -12,10 +12,8 @@
   <!--Please add all the temporary suppressions under the below section-->
   <suppress>
     <notes>Temporary Suppression
-      CVE-2022-41946 refer [Ticket]
-      CVE-2021-37533 refer [Ticket]
+      CVE-2021-37533 refer https://tools.hmcts.net/jira/browse/CCD-4086
     </notes>
-    <cve>CVE-2022-41946</cve>
     <cve>CVE-2021-37533</cve>
   </suppress>
   <!--End of temporary suppressions section -->
