@@ -8,7 +8,9 @@
   <suppress>
     <notes>Temporary Suppression
       CVE-2021-37533 refer https://tools.hmcts.net/jira/browse/CCD-4086
-    </notes>
+    
+        CVE-2022-41881 refer [Ticket]</notes>
     <cve>CVE-2021-37533</cve>
+    <cve>CVE-2022-41881</cve>
   </suppress>
 </suppressions>
