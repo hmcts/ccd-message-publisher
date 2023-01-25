@@ -7,7 +7,7 @@ maintainers:
   - name: HMCTS CCD Dev Team
 dependencies:
   - name: java
-    version: 4.0.9
+    version: 4.0.11
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
   - name: servicebus
     version: 0.4.0
