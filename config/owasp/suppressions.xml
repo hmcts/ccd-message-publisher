@@ -5,4 +5,9 @@
     </notes>
     <cve>CVE-2016-3094</cve>
   </suppress>
+  <suppress>
+    <notes>Temporary Suppression
+        CVE-2022-40152 refer [Ticket]</notes>
+    <cve>CVE-2022-40152</cve>
+  </suppress>
 </suppressions>
