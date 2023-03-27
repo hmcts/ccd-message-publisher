@@ -7,7 +7,7 @@
   </suppress>
   <suppress>
     <notes>Temporary Suppression
-        CVE-2022-45688 refer [Ticket]
+        CVE-2022-45688 refer https://tools.hmcts.net/jira/browse/CCD-4373
     </notes>
     <cve>CVE-2022-45688</cve>
   </suppress>

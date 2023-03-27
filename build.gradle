@@ -250,7 +250,7 @@ def versions = [
   springfoxSwagger: '3.0.0',
   testcontainers  : '1.15.1',
   netty           : '4.1.86.Final',
-  tomcatVersion   : '9.0.69'
+  tomcatVersion   : '9.0.73'
 ]
 
 ext.libraries = [
@@ -313,6 +313,7 @@ dependencies {
   implementation group: 'org.apache.activemq', name: 'activemq-broker', version: '5.16.1' // For CVE-2021-26117
   implementation group: 'net.minidev', name: 'json-smart', version: '2.4.7'
   implementation group: 'commons-io', name: 'commons-io', version: '2.8.0'
+  implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.5'
 
   compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: versions.tomcatVersion
   compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: versions.tomcatVersion
