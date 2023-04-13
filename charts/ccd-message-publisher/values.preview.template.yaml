@@ -20,5 +20,5 @@ servicebus:
   sbNamespace: ccd-sb-preview
   setup:
     topics:
-      - name: ccd-case-events
+      - name: ccd-events
         subscriptionNeeded: yes
