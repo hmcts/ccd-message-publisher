@@ -11,14 +11,13 @@ java:
     CCD_CASE_EVENTS_DESTINATION: ccd-case-events
   secrets:
     SERVICE_BUS_CONNECTION_STRING:
-      secretRef: servicebus-secret-topic-{{ .Release.Name }}-servicebus-ccd-case-events
+      secretRef: ccd-sb-preview
       key: connectionString
 
 servicebus:
   enabled: true
-  teamName: CCD
-  resourceGroup: ccd-aks
-  serviceplan: standard
+  resourceGroup: ccd-aso-preview-rg
+  sbNamespace: ccd-sb-preview
   setup:
     topics:
       - name: ccd-case-events
