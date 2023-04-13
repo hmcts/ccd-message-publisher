@@ -8,7 +8,7 @@ java:
     DATA_STORE_DB_USERNAME: "{{ .Values.postgresql.auth.username }}"
     DATA_STORE_DB_PASSWORD: "{{ .Values.postgresql.auth.password }}"
     DATA_STORE_DB_OPTIONS: "?stringtype=unspecified"
-    CCD_CASE_EVENTS_DESTINATION: ccd-case-events
+    CCD_CASE_EVENTS_DESTINATION: ccd-events
   secrets:
     SERVICE_BUS_CONNECTION_STRING:
       secretRef: ccd-sb-preview
