@@ -17,7 +17,7 @@ java:
 servicebus:
   enabled: true
   resourceGroup: ccd-aso-preview-rg
-  sbNamespace: ccd-sb-preview
+  sbNamespace: ccd
   setup:
     topics:
       - name: ccd-events
