@@ -8,18 +8,17 @@ java:
     DATA_STORE_DB_USERNAME: "{{ .Values.postgresql.auth.username }}"
     DATA_STORE_DB_PASSWORD: "{{ .Values.postgresql.auth.password }}"
     DATA_STORE_DB_OPTIONS: "?stringtype=unspecified"
-    CCD_CASE_EVENTS_DESTINATION: ccd-case-events
+    CCD_CASE_EVENTS_DESTINATION: ccd-events
   secrets:
     SERVICE_BUS_CONNECTION_STRING:
-      secretRef: servicebus-secret-topic-{{ .Release.Name }}-servicebus-ccd-case-events
+      secretRef: ccd-sb-preview
       key: connectionString
 
 servicebus:
   enabled: true
-  teamName: CCD
-  resourceGroup: ccd-aks
-  serviceplan: standard
+  resourceGroup: ccd-aso-preview-rg
+  sbNamespace: ccd # due to a bug https://github.com/kubernetes-sigs/kustomize/issues/5072 this value is set to ccd, when this bug is resolved, the sbNamespace should be changed to the actual name of the Service Bus Namespace (ccd-sb-preview)
   setup:
     topics:
-      - name: ccd-case-events
+      - name: ccd-events
         subscriptionNeeded: yes
