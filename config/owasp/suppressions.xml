@@ -9,6 +9,7 @@
         CVE-2023-34411 refer [Ticket]
         CVE-2023-35116 refer [Ticket]
         CVE-2023-2976 refer [Ticket]
+        CVE-2023-34462 refer [Ticket]
     </notes>
     <cve>CVE-2022-45688</cve>
     <cve>CVE-2022-1471</cve>
@@ -17,5 +18,6 @@
     <cve>CVE-2023-20883</cve>
     <cve>CVE-2023-35116</cve>
     <cve>CVE-2023-2976</cve>
+    <cve>CVE-2023-34462</cve>
   </suppress>
 </suppressions>
