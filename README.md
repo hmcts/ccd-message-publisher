@@ -10,7 +10,7 @@ Please note that this microservice is also available within [ccd-docker](https:/
 
 ### Prerequisites
 
-- [JDK 11](https://java.com)
+- [JDK 17](https://java.com)
 - [Docker](https://www.docker.com)
 
 ### Building and deploying the application
@@ -85,7 +85,7 @@ instance. This is possible due to both Azure Service Bus and ActiveMQ support fo
 
 **By default** the CCD Message Publisher is configured to start in "dev" mode with ActiveMQ enabled when run locally.
 
-ActiveMQ information, including details on published messages, can be accessed via the 
+ActiveMQ information, including details on published messages, can be accessed via the
 Hawtio Management Console UI at http://localhost:4456/hawtio.
 
 Note that the ActiveMQ menu option on Hawtio will only show up once the first message has been published, and
@@ -118,14 +118,14 @@ To run all integration tests execute the following command:
 ```
 
 ### Code quality checks
-We use [Checkstyle](http://checkstyle.sourceforge.net/). 
+We use [Checkstyle](http://checkstyle.sourceforge.net/).
 To run all local checks execute the following command:
 
 ```bash
   ./gradlew check
 ```
 
-Additionally, [SonarQube](https://sonarcloud.io/dashboard?id=uk.gov.hmcts.reform%3Accd-message-publisher) 
+Additionally, [SonarQube](https://sonarcloud.io/dashboard?id=uk.gov.hmcts.reform%3Accd-message-publisher)
 analyses are performed on all remote code.
 
 ## License
