@@ -23,23 +23,13 @@ configurations {
   cucumberRuntime.extendsFrom(functionalRuntime)
 }
 
+application {
+  mainClass.set('uk.gov.hmcts.ccd.MessagePublisherApplication')
+}
+
 java {
   toolchain {
     languageVersion = JavaLanguageVersion.of(17)
-  }
-}
-
-configurations.configureEach {
-  resolutionStrategy {
-    eachDependency { details ->
-      if (details.requested.group == 'org.projectlombok' && details.requested.name == 'lombok') {
-        details.useVersion '1.18.28'
-      }
-    }
-  }
-
-  tasks.withType(Copy).configureEach {
-    duplicatesStrategy 'exclude'
   }
 }
 
@@ -78,6 +68,10 @@ tasks.withType(JavaCompile) {
   options.compilerArgs << "-Xlint:unchecked" << "-Werror"
 }
 
+tasks.withType(Copy).configureEach {
+  duplicatesStrategy 'exclude'
+}
+
 tasks.withType(Test) {
   useJUnitPlatform()
 
@@ -94,10 +88,10 @@ test {
 task functional(type: Test) {
   description = 'Executes functional tests against an the CCD Message Publisher API instance just deployed'
   dependsOn aatClasses
-  new File("$buildDir/test-results/test").mkdirs()
+  new File("${layout.buildDirectory}/test-results/test").mkdirs()
   copy {
     from "src/aat/resources/DummyTest.xml"
-    into "$buildDir/test-results/test"
+    into "${layout.buildDirectory}/test-results/test"
   }
 
   doFirst {
@@ -112,14 +106,14 @@ task functional(type: Test) {
         '--glue', 'uk.gov.hmcts.befta.player',
         '--glue', 'uk.gov.hmcts.ccd.messagepublisher.befta', 'src/aat/resources/features'
       ]
-      jvmArgs = [ '--add-opens=java.base/java.lang.reflect=ALL-UNNAMED' ]
+      jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
     }
 
   }
 
   finalizedBy {
     generateCucumberReports {
-      doLast{
+      doLast {
         delete "${rootDir}/BEFTA Report for Functional Tests/"
         new File("${rootDir}/BEFTA Report for Functional Tests").mkdirs()
         file("${rootDir}/target/cucumber/cucumber-html-reports").renameTo(file("${rootDir}/BEFTA Report for Functional Tests"))
@@ -139,8 +133,8 @@ task integration(type: Test) {
   shouldRunAfter test
 }
 
-task fortifyScan(type: JavaExec)  {
-  main = "uk.gov.hmcts.fortifyclient.FortifyClientMainApp"
+task fortifyScan(type: JavaExec) {
+  mainClass = "uk.gov.hmcts.fortifyclient.FortifyClientMainApp"
   classpath += sourceSets.test.runtimeClasspath
   jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
   // The line below prevents the build from failing if the Fortify scan detects issues
@@ -151,10 +145,10 @@ task smoke(type: Test) {
   description = 'Executes smoke tests against an the CCD Data Store API instance just deployed'
   dependsOn aatClasses
 
-  new File("$buildDir/test-results/test").mkdirs()
+  new File("${layout.buildDirectory}/test-results/test").mkdirs()
   copy {
     from "src/aat/resources/DummyTest.xml"
-    into "$buildDir/test-results/test"
+    into "${layout.buildDirectory}/test-results/test"
   }
 
   doLast {
@@ -164,13 +158,13 @@ task smoke(type: Test) {
       classpath += configurations.cucumberRuntime + sourceSets.aat.runtimeClasspath
       args = ['--plugin', "json:${rootDir}/target/cucumber.json", '--tags', '@Smoke and not @Ignore', '--glue',
               'uk.gov.hmcts.befta.player', '--glue', "uk.gov.hmcts.ccd.messagepublisher.befta", 'src/aat/resources/features']
-      jvmArgs = [ '--add-opens=java.base/java.lang.reflect=ALL-UNNAMED' ]
+      jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
     }
   }
 
   finalizedBy {
     generateCucumberReports {
-      doLast{
+      doLast {
         delete "${rootDir}/BEFTA Report for Smoke Tests/"
         new File("${rootDir}/BEFTA Report for Smoke Tests").mkdirs()
         file("${rootDir}/target/cucumber/cucumber-html-reports").renameTo(file("${rootDir}/BEFTA Report for Smoke Tests"))
@@ -187,9 +181,9 @@ check.dependsOn integration
 jacocoTestReport {
   executionData(test, integration)
   reports {
-    xml.enabled = true
-    csv.enabled = false
-    xml.destination file("${buildDir}/reports/jacoco/test/jacocoTestReport.xml")
+    xml.required = true
+    csv.required = false
+    xml.outputLocation = file("${layout.buildDirectory}/reports/jacoco/test/jacocoTestReport.xml")
   }
 }
 
@@ -199,7 +193,7 @@ sonarqube {
   properties {
     property "sonar.projectName", "Reform :: ccd-message-publisher"
     property "sonar.projectKey", "uk.gov.hmcts.reform:ccd-message-publisher"
-    property "sonar.coverage.jacoco.xmlReportPaths", "${jacocoTestReport.reports.xml.destination.path}"
+    property "sonar.coverage.jacoco.xmlReportPaths", "${jacocoTestReport.reports.xml.outputLocation.get().asFile.path}"
   }
 }
 
@@ -249,15 +243,16 @@ repositories {
 }
 
 def versions = [
-  junit           : '5.7.0',
-  junitPlatform   : '1.7.0',
-  reformLogging   : '5.1.9',
-  junitVintageVersion : '5.7.0',
-  springBoot      : springBoot.class.package.implementationVersion,
-  springfoxSwagger: '3.0.0',
-  testcontainers  : '1.15.1',
-  netty           : '4.1.86.Final',
-  tomcatVersion   : '9.0.73'
+  junit              : '5.7.0',
+  junitPlatform      : '1.7.0',
+  reformLogging      : '6.0.1',
+  lombok             : '1.18.28',
+  junitVintageVersion: '5.7.0',
+  springBoot         : springBoot.class.package.implementationVersion,
+  springfoxSwagger   : '3.0.0',
+  testcontainers     : '1.18.3',
+  netty              : '4.1.86.Final',
+  tomcatVersion      : '9.0.73'
 ]
 
 ext.libraries = [
@@ -281,21 +276,21 @@ dependencies {
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-activemq'
 
-  implementation (group: 'com.microsoft.azure', name: 'azure-servicebus-jms-spring-boot-starter', version: '2.3.5'){
+  implementation(group: 'com.microsoft.azure', name: 'azure-servicebus-jms-spring-boot-starter', version: '2.3.5') {
     exclude group: 'org.simpleframework', module: 'simple-xml' //CVE-2017-1000190
     exclude group: 'org.nanohttpd', module: 'nanohttpd' //CVE-2020-13697
   }
 
-  implementation group: 'io.netty', name:'netty-buffer', version: versions.netty
-  implementation group: 'io.netty', name:'netty-codec', version: versions.netty
-  implementation group: 'io.netty', name:'netty-codec-http', version: versions.netty
-  implementation group: 'io.netty', name:'netty-common', version: versions.netty
-  implementation group: 'io.netty', name:'netty-handler', version: versions.netty
-  implementation group: 'io.netty', name:'netty-resolver', version: versions.netty
-  implementation group: 'io.netty', name:'netty-transport', version: versions.netty
-  implementation group: 'io.netty', name:'netty-transport-native-epoll', version: versions.netty
-  implementation group: 'io.netty', name:'netty-transport-native-kqueue', version: versions.netty
-  implementation group: 'io.netty', name:'netty-transport-native-unix-common', version: versions.netty
+  implementation group: 'io.netty', name: 'netty-buffer', version: versions.netty
+  implementation group: 'io.netty', name: 'netty-codec', version: versions.netty
+  implementation group: 'io.netty', name: 'netty-codec-http', version: versions.netty
+  implementation group: 'io.netty', name: 'netty-common', version: versions.netty
+  implementation group: 'io.netty', name: 'netty-handler', version: versions.netty
+  implementation group: 'io.netty', name: 'netty-resolver', version: versions.netty
+  implementation group: 'io.netty', name: 'netty-transport', version: versions.netty
+  implementation group: 'io.netty', name: 'netty-transport-native-epoll', version: versions.netty
+  implementation group: 'io.netty', name: 'netty-transport-native-kqueue', version: versions.netty
+  implementation group: 'io.netty', name: 'netty-transport-native-unix-common', version: versions.netty
 
   implementation group: 'org.glassfish', name: 'jakarta.el', version: '4.0.1' // CVE-2021-28170
   // CVE-2021-42550
@@ -307,7 +302,6 @@ dependencies {
   implementation group: 'io.springfox', name: 'springfox-swagger2', version: versions.springfoxSwagger
 
   implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: versions.reformLogging
-  implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: versions.reformLogging
 
   implementation group: 'com.vladmihalcea', name: 'hibernate-types-52', version: '2.10.0'
 
@@ -328,7 +322,7 @@ dependencies {
   runtimeOnly group: 'org.postgresql', name: 'postgresql', version: '42.5.1'
   runtimeOnly group: 'com.zaxxer', name: 'HikariCP', version: '4.0.2'
 
-  aatImplementation group: 'com.github.hmcts', name: 'ccd-test-definitions', version: '7.14.0'
+  aatImplementation group: 'com.github.hmcts', name: 'ccd-test-definitions', version: '7.19.12'
   aatImplementation group: 'com.github.hmcts', name: 'befta-fw', version: '8.7.11'
   aatImplementation group: 'org.apache.poi', name: 'poi-ooxml-schemas', version: '4.1.2' //For CVE-2019-12415
   aatImplementation group: 'commons-lang', name: 'commons-lang', version: '2.6'
@@ -352,8 +346,6 @@ dependencies {
   testImplementation 'com.github.hmcts:fortify-client:1.3.0:all'
 }
 
-mainClassName = 'uk.gov.hmcts.ccd.MessagePublisherApplication'
-
 run {
   args = ["--spring.profiles.active=dev"]
 }
@@ -369,5 +361,5 @@ bootJar {
 }
 
 wrapper {
-    distributionType = Wrapper.DistributionType.ALL
+  distributionType = Wrapper.DistributionType.ALL
 }
