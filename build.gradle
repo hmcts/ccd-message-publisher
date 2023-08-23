@@ -88,10 +88,9 @@ test {
 task functional(type: Test) {
   description = 'Executes functional tests against an the CCD Message Publisher API instance just deployed'
   dependsOn aatClasses
-  new File("${layout.buildDirectory}/test-results/test").mkdirs()
   copy {
     from "src/aat/resources/DummyTest.xml"
-    into "${layout.buildDirectory}/test-results/test"
+    into "${buildDir}/test-results/test"
   }
 
   doFirst {
@@ -145,10 +144,9 @@ task smoke(type: Test) {
   description = 'Executes smoke tests against an the CCD Data Store API instance just deployed'
   dependsOn aatClasses
 
-  new File("${layout.buildDirectory}/test-results/test").mkdirs()
   copy {
     from "src/aat/resources/DummyTest.xml"
-    into "${layout.buildDirectory}/test-results/test"
+    into "${buildDir}/test-results/test"
   }
 
   doLast {
@@ -183,7 +181,7 @@ jacocoTestReport {
   reports {
     xml.required = true
     csv.required = false
-    xml.outputLocation = file("${layout.buildDirectory}/reports/jacoco/test/jacocoTestReport.xml")
+    xml.outputLocation = file("${buildDir}/reports/jacoco/test/jacocoTestReport.xml")
   }
 }
 
@@ -352,7 +350,7 @@ run {
 
 bootJar {
   getArchiveFileName().set(provider {
-    'ccd-message-publisher.jar'
+    'ccd-message-publisher'
   })
 
   manifest {
