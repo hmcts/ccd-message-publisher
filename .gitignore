@@ -3,6 +3,8 @@
 !gradle/wrapper/gradle-wrapper.jar
 *.class
 bin/main/application.yaml
+lib/applicationinsights-agent-*.jar
+lib/applicationinsights.log
 
 ### STS ###
 .apt_generated
