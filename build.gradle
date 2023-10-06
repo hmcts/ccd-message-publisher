@@ -239,6 +239,7 @@ def versions = [
   junit              : '5.7.0',
   junitPlatform      : '1.7.0',
   reformLogging      : '6.0.1',
+  appInsightsVersion : '2.4.1',
   lombok             : '1.18.28',
   junitVintageVersion: '5.7.0',
   springBoot         : springBoot.class.package.implementationVersion,
@@ -295,6 +296,8 @@ dependencies {
   implementation group: 'io.springfox', name: 'springfox-swagger2', version: versions.springfoxSwagger
 
   implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: versions.reformLogging
+  implementation group: 'com.microsoft.azure', name: 'applicationinsights-logging-logback', version: versions.appInsightsVersion
+  implementation group: 'com.microsoft.azure', name: 'applicationinsights-spring-boot-starter', version: versions.appInsightsVersion
 
   implementation group: 'com.vladmihalcea', name: 'hibernate-types-52', version: '2.10.0'
 
