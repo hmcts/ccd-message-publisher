@@ -35,8 +35,8 @@ jobs:
         continue-on-error: true
       - name: Run suppressCves
         run: ./gradlew suppressCves
-      - name: Run cleanSuppressions
-        run: ./gradlew cleanSuppressions
+      #- name: Run cleanSuppressions
+      #  run: ./gradlew cleanSuppressions
       - name: Commit
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
