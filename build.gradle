@@ -213,7 +213,7 @@ dependencyManagement {
     mavenBom "org.springframework.cloud:spring-cloud-dependencies:2020.0.5"
   }
   dependencies {
-    dependency group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.67'
+    dependency group: 'org.bouncycastle', name: 'bcpkix-jdk15to18', version: '1.77'
     // CVE-2018-10237 - Unbounded memory allocation
     dependencySet(group: 'com.google.guava', version: '32.1.2-jre') {
       entry 'guava'
@@ -261,7 +261,44 @@ ext.libraries = [
 ]
 
 dependencies {
-  implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '3.1.0'
+
+  implementation('org.springframework.cloud:spring-cloud-starter-bootstrap'){
+    version {
+      strictly '3.1.7'
+    }
+  }
+
+  implementation('org.springframework.cloud:spring-cloud-starter'){
+    version {
+      strictly '3.1.7'
+    }
+  }
+
+  implementation('org.springframework.boot:spring-boot-starter'){
+    version {
+      strictly '2.6.15'
+    }
+  }
+
+  implementation('org.bouncycastle:bcpkix-jdk18on') {
+    version {
+      strictly '1.77'
+    }
+  }
+
+  implementation('org.springframework.security:spring-security-rsa'){
+    version {
+      strictly '1.1.0'
+    }
+  }
+
+  implementation('org.bouncycastle:bcprov-jdk18on') {
+    version {
+      strictly '1.77'
+    }
+  }
+
+  //implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '3.1.7'
 
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
