@@ -17,13 +17,15 @@
         CVE-2023-45648 refer [Ticket]
         CVE-2023-44487 refer [Ticket]
         CVE-2023-5072 refer [Ticket]
-        CVE-2023-45960 refer [Ticket]
         CVE-2023-46604 refer [Ticket]
         CVE-2023-36052 refer [Ticket]
         CVE-2023-6378 refer [Ticket]
         CVE-2023-46589 refer [Ticket]
         CVE-2023-34055 refer https://tools.hmcts.net/jira/browse/CCD-5135
         CVE-2022-41678 refer [Ticket]
+        CVE-2023-34055 refer [Ticket]
+        CVE-2023-46589 refer [Ticket]
+        CVE-2023-6378 refer [Ticket]
     </notes>
     <cve>CVE-2022-45688</cve>
     <cve>CVE-2023-20873</cve>
