@@ -1,6 +1,6 @@
 java:
   image: ${IMAGE_NAME}
-  ingressHost: ${SERVICE_NAME}.preview.platform.hmcts.net
+  ingressHost: ${SERVICE_FQDN}
   keyVaults:
   environment:
     DATA_STORE_DB_HOST: ccd-data-store-api-pr-1260-postgresql

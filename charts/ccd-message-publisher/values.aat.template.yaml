@@ -1,6 +1,6 @@
 java:
   image: ${IMAGE_NAME}
-  ingressHost: ${SERVICE_NAME}.aat.platform.hmcts.net
+  ingressHost: ${SERVICE_FQDN}
   environment:
     DATA_STORE_DB_HOST: ccd-data-store-api-postgres-db-v15-aat.postgres.database.azure.com
   keyVaults:
