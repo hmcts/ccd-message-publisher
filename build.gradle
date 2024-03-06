@@ -246,7 +246,7 @@ def versions = [
   springfoxSwagger   : '3.0.0',
   testcontainers     : '1.18.3',
   netty              : '4.1.86.Final',
-  tomcatVersion      : '9.0.75'
+  tomcatVersion      : '9.0.82'
 ]
 
 ext.libraries = [
