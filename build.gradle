@@ -221,6 +221,18 @@ dependencyManagement {
   }
 }
 
+//configurations {
+//  compileClasspath {
+//    resolutionStrategy.force 'io.netty:netty-transport-classes-epoll:4.1.107.Final', 'io.netty:netty-transport-classes-kqueue:4.1.107.Final'
+//  }
+//}
+
+//configurations.all {
+//  resolutionStrategy {
+//    forcedModules = ['io.netty:netty-transport-classes-epoll:4.1.107.Final', 'io.netty:netty-transport-classes-kqueue:4.1.107.Final']
+//  }
+//}
+
 cucumberReports {
   outputDir = file("${projectDir}/target/cucumber")
   reports = files("${projectDir}/target/cucumber.json")
@@ -245,7 +257,7 @@ def versions = [
   springBoot         : springBoot.class.package.implementationVersion,
   springfoxSwagger   : '3.0.0',
   testcontainers     : '1.18.3',
-  netty              : '4.1.86.Final',
+  netty              : '4.1.107.Final',
   tomcatVersion      : '9.0.75'
 ]
 
@@ -307,9 +319,38 @@ dependencies {
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-activemq'
 
-  implementation(group: 'com.microsoft.azure', name: 'azure-servicebus-jms-spring-boot-starter', version: '2.3.5') {
-    exclude group: 'org.simpleframework', module: 'simple-xml' //CVE-2017-1000190
-    exclude group: 'org.nanohttpd', module: 'nanohttpd' //CVE-2020-13697
+  implementation(group: 'io.netty', name: 'netty-transport-native-epoll', version: versions.netty){
+    constraints {
+      implementation('io.netty:netty-transport-classes-epoll'){
+        version {
+          require '4.1.107.Final'
+        }
+      }
+    }
+  }
+
+  implementation('com.microsoft.azure:azure-servicebus-jms-spring-boot-starter:2.3.5') {
+    constraints {
+      implementation('org.apache.qpid:qpid-jms-client:0.61.0') {}
+      implementation('io.netty:netty-transport-classes-epoll') {
+        version {
+          require '4.1.107.Final'
+        }
+      }
+      implementation('io.netty:netty-transport-native-epoll') {
+        version {
+          require '4.1.107.Final'
+        }
+      }
+      implementation('io.netty:netty-transport-native-kqueue') {
+        version {
+          require '4.1.107.Final'
+        }
+      }
+
+      exclude group: 'org.simpleframework', module: 'simple-xml' //CVE-2017-1000190
+      exclude group: 'org.nanohttpd', module: 'nanohttpd' //CVE-2020-13697
+    }
   }
 
   implementation group: 'io.netty', name: 'netty-buffer', version: versions.netty
@@ -319,6 +360,7 @@ dependencies {
   implementation group: 'io.netty', name: 'netty-handler', version: versions.netty
   implementation group: 'io.netty', name: 'netty-resolver', version: versions.netty
   implementation group: 'io.netty', name: 'netty-transport', version: versions.netty
+
   implementation group: 'io.netty', name: 'netty-transport-native-epoll', version: versions.netty
   implementation group: 'io.netty', name: 'netty-transport-native-kqueue', version: versions.netty
   implementation group: 'io.netty', name: 'netty-transport-native-unix-common', version: versions.netty
