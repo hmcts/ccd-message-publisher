@@ -190,6 +190,11 @@ sonarqube {
   }
 }
 
+configurations.all {
+  exclude group:"io.netty", module: "netty-transport-classes-epoll"
+  exclude group:"io.netty", module:"netty-transport-classes-kqueue"
+}
+
 // before committing a change, make sure task still works
 dependencyUpdates {
   def isNonStable = { String version ->
@@ -245,7 +250,7 @@ def versions = [
   springBoot         : springBoot.class.package.implementationVersion,
   springfoxSwagger   : '3.0.0',
   testcontainers     : '1.18.3',
-  netty              : '4.1.86.Final',
+  netty              : '4.1.107.Final',
   tomcatVersion      : '9.0.75'
 ]
 
