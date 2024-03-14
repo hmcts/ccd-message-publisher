@@ -323,7 +323,7 @@ dependencies {
     constraints {
       implementation('io.netty:netty-transport-classes-epoll'){
         version {
-          require '4.1.107.Final'
+          strictly '4.1.107.Final'
         }
       }
     }
