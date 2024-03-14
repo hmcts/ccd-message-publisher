@@ -346,6 +346,11 @@ dependencies {
         version {
           require '4.1.107.Final'
         }
+        implementation('io.netty:netty-transport-classes-kqueue') {
+          version {
+            require '4.1.107.Final'
+          }
+        }
       }
 
       exclude group: 'org.simpleframework', module: 'simple-xml' //CVE-2017-1000190
