@@ -233,6 +233,11 @@ dependencyManagement {
 //  }
 //}
 
+configurations.all {
+  exclude group:"io.netty", module: "netty-transport-classes-epoll"
+  exclude group:"io.netty", module:"netty-transport-classes-kqueue"
+}
+
 cucumberReports {
   outputDir = file("${projectDir}/target/cucumber")
   reports = files("${projectDir}/target/cucumber.json")
@@ -330,6 +335,8 @@ dependencies {
   }
 
   implementation('com.microsoft.azure:azure-servicebus-jms-spring-boot-starter:2.3.5') {
+    exclude group: 'io.netty', module: 'netty-transport-classes-kqueue'
+    exclude group: 'io.netty', module: 'netty-transport-classes-epoll'
     constraints {
       implementation('org.apache.qpid:qpid-jms-client:0.61.0') {}
       implementation('io.netty:netty-transport-classes-epoll') {
@@ -344,13 +351,13 @@ dependencies {
       }
       implementation('io.netty:netty-transport-native-kqueue') {
         version {
-          require '4.1.107.Final'
+          strictly '4.1.107.Final'
         }
-        implementation('io.netty:netty-transport-classes-kqueue') {
-          version {
-            strictly '4.1.107.Final'
-          }
-        }
+//        implementation('io.netty:netty-transport-classes-kqueue') {
+//          version {
+//            strictly '4.1.107.Final'
+//          }
+//        }
       }
 
       exclude group: 'org.simpleframework', module: 'simple-xml' //CVE-2017-1000190
