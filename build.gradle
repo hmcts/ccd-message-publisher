@@ -221,11 +221,11 @@ dependencyManagement {
   }
 }
 
-//configurations {
-//  compileClasspath {
-//    resolutionStrategy.force 'io.netty:netty-transport-classes-epoll:4.1.107.Final', 'io.netty:netty-transport-classes-kqueue:4.1.107.Final'
-//  }
-//}
+configurations {
+  compileClasspath {
+    resolutionStrategy.force 'io.netty:netty-transport-classes-epoll:4.1.107.Final', 'io.netty:netty-transport-classes-kqueue:4.1.107.Final'
+  }
+}
 
 //configurations.all {
 //  resolutionStrategy {
