@@ -227,11 +227,11 @@ dependencyManagement {
 //  }
 //}
 
-configurations.all {
-  resolutionStrategy {
-    forcedModules = ['io.netty:netty-transport-classes-epoll:4.1.107.Final', 'io.netty:netty-transport-classes-kqueue:4.1.107.Final']
-  }
-}
+//configurations.all {
+//  resolutionStrategy {
+//    forcedModules = ['io.netty:netty-transport-classes-epoll:4.1.107.Final', 'io.netty:netty-transport-classes-kqueue:4.1.107.Final']
+//  }
+//}
 
 cucumberReports {
   outputDir = file("${projectDir}/target/cucumber")
@@ -348,7 +348,7 @@ dependencies {
         }
         implementation('io.netty:netty-transport-classes-kqueue') {
           version {
-            require '4.1.107.Final'
+            strictly '4.1.107.Final'
           }
         }
       }
