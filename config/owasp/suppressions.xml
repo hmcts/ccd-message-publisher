@@ -16,7 +16,6 @@
         CVE-2023-45648 refer [Ticket]
         CVE-2023-44487 refer [Ticket]
         CVE-2023-5072 refer [Ticket]
-        CVE-2023-46604 refer [Ticket]
         CVE-2023-36052 refer [Ticket]
         CVE-2023-6378 refer [Ticket]
         CVE-2023-46589 refer [Ticket]
@@ -40,7 +39,6 @@
     <cve>CVE-2023-45648</cve>
     <cve>CVE-2023-44487</cve>
     <cve>CVE-2023-5072</cve>
-    <cve>CVE-2023-46604</cve>
     <cve>CVE-2023-36052</cve>
     <cve>CVE-2023-45960</cve>
     <cve>CVE-2022-41678</cve>
