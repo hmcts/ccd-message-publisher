@@ -14,7 +14,6 @@ import uk.gov.hmcts.ccd.data.MessageQueueCandidateRepository;
 import uk.gov.hmcts.ccd.config.PublishMessageTask;
 
 import javax.jms.BytesMessage;
-import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import java.time.LocalDateTime;
@@ -58,8 +57,6 @@ class MessagePublisherRunnableIT extends BaseTest {
     private MessageQueueCandidateRepository messageQueueCandidateRepository;
     @Autowired
     private JmsTemplate jmsTemplate;
-    @Autowired
-    private ConnectionFactory connectionFactory;
 
     @BeforeEach
     void setUp() {
@@ -73,7 +70,7 @@ class MessagePublisherRunnableIT extends BaseTest {
             .publishedRetentionDays(RETENTION_DAYS).build();
 
         messagePublisher = new MessagePublisherRunnable(messageQueueCandidateRepository, jmsTemplate,
-            publishMessageTask, connectionFactory);
+            publishMessageTask);
     }
 
     @Test

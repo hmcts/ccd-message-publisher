@@ -12,7 +12,6 @@ import uk.gov.hmcts.ccd.data.MessageQueueCandidateRepository;
 import uk.gov.hmcts.ccd.service.MessagePublisherRunnable;
 
 import java.util.List;
-import javax.jms.ConnectionFactory;
 
 @Slf4j
 @EnableScheduling
@@ -22,15 +21,13 @@ public class SchedulingConfiguration implements SchedulingConfigurer {
     private MessagePublisherParams messagePublisherParams;
     private MessageQueueCandidateRepository messageQueueCandidateRepository;
     private JmsTemplate jmsTemplate;
-    private ConnectionFactory connectionFactory;
 
     public SchedulingConfiguration(MessageQueueCandidateRepository messageQueueCandidateRepository,
                                    MessagePublisherParams messagePublisherParams,
-                                   JmsTemplate jmsTemplate, ConnectionFactory connectionFactory) {
+                                   JmsTemplate jmsTemplate) {
         this.messageQueueCandidateRepository = messageQueueCandidateRepository;
         this.messagePublisherParams = messagePublisherParams;
         this.jmsTemplate = jmsTemplate;
-        this.connectionFactory = connectionFactory;
     }
 
     @Override
@@ -47,7 +44,7 @@ public class SchedulingConfiguration implements SchedulingConfigurer {
 
     private void scheduleCronTask(PublishMessageTask task, ScheduledTaskRegistrar taskRegistrar) {
         Runnable runnableTask =
-            new MessagePublisherRunnable(messageQueueCandidateRepository, jmsTemplate, task, connectionFactory);
+            new MessagePublisherRunnable(messageQueueCandidateRepository, jmsTemplate, task);
         CronTask cronTask = new CronTask(runnableTask, task.getSchedule());
         taskRegistrar.scheduleCronTask(cronTask);
         log.info(String.format("Task scheduled: %s", task));
