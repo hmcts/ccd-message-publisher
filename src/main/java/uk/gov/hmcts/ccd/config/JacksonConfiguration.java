@@ -51,7 +51,7 @@ public class JacksonConfiguration {
     }
 
     @Bean
-    public ConnectionFactory jmsConnectionFactory(AzureServiceBusJMSProperties busJMSProperties){
+    public ConnectionFactory jmsConnectionFactory(AzureServiceBusJMSProperties busJMSProperties) {
         final String connectionString = busJMSProperties.getConnectionString();
         final String clientId = busJMSProperties.getTopicClientId();
         final int idleTimeout = busJMSProperties.getIdleTimeout();
