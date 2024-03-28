@@ -18,6 +18,8 @@ import uk.gov.hmcts.ccd.config.PublishMessageTask;
 
 import java.util.List;
 
+import javax.jms.ConnectionFactory;
+
 import static com.google.common.collect.Lists.newArrayList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -46,6 +48,8 @@ class MessagePublisherRunnableTest {
     private MessageQueueCandidateRepository messageQueueCandidateRepository;
     @Mock
     private JmsTemplate jmsTemplate;
+    @Mock
+    private ConnectionFactory connectionFactory;
     @Captor
     private ArgumentCaptor<JsonNode> messageCaptor;
     @Captor
@@ -81,7 +85,7 @@ class MessagePublisherRunnableTest {
         messageQueueCandidate3.setMessageInformation(message3);
 
         messagePublisher = new MessagePublisherRunnable(messageQueueCandidateRepository, jmsTemplate,
-            publishMessageTask);
+            publishMessageTask, connectionFactory);
     }
 
     @Test

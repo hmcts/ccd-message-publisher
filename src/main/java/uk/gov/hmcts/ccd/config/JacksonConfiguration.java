@@ -7,8 +7,13 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
+import com.microsoft.azure.spring.autoconfigure.jms.AzureServiceBusJMSProperties;
+import com.microsoft.azure.spring.autoconfigure.jms.ConnectionStringResolver;
+import com.microsoft.azure.spring.autoconfigure.jms.ServiceBusKey;
+import org.apache.qpid.jms.JmsConnectionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jms.connection.CachingConnectionFactory;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
 import org.springframework.jms.support.converter.MessageConverter;
@@ -43,5 +48,32 @@ public class JacksonConfiguration {
         converter.setTargetType(MessageType.BYTES);
         converter.setTypeIdPropertyName("_type");
         return converter;
+    }
+
+    @Bean
+    public ConnectionFactory jmsConnectionFactory(AzureServiceBusJMSProperties busJMSProperties){
+        final String connectionString = busJMSProperties.getConnectionString();
+        final String clientId = busJMSProperties.getTopicClientId();
+        final int idleTimeout = busJMSProperties.getIdleTimeout();
+
+        final ServiceBusKey serviceBusKey = ConnectionStringResolver.getServiceBusKey(connectionString);
+
+        final String remoteUri = String.format("amqps://%s?amqp.idleTimeout=%d&amqp.traceFrames=true",
+            serviceBusKey.getHost(), idleTimeout);
+
+        final JmsConnectionFactory jmsConnectionFactory =
+            new JmsConnectionFactory(
+                serviceBusKey.getSharedAccessKeyName(),
+                serviceBusKey.getSharedAccessKey(),
+                remoteUri
+            );
+        jmsConnectionFactory.setClientID(clientId);
+
+        CachingConnectionFactory cachingConnectionFactory =
+            new CachingConnectionFactory(jmsConnectionFactory);
+        // set cache producers to FALSE here
+        cachingConnectionFactory.setCacheProducers(false);
+
+        return cachingConnectionFactory;
     }
 }

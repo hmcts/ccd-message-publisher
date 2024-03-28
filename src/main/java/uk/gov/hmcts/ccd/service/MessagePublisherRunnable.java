@@ -10,6 +10,7 @@ import uk.gov.hmcts.ccd.config.PublishMessageTask;
 import uk.gov.hmcts.ccd.data.MessageQueueCandidateEntity;
 import uk.gov.hmcts.ccd.data.MessageQueueCandidateRepository;
 
+import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import java.time.LocalDateTime;
@@ -22,16 +23,20 @@ public class MessagePublisherRunnable implements Runnable {
 
     private MessageQueueCandidateRepository messageQueueCandidateRepository;
     private JmsTemplate jmsTemplate;
+
+    private ConnectionFactory connectionFactory;
     private PublishMessageTask publishMessageTask;
     private String logPrefix;
 
     public MessagePublisherRunnable(MessageQueueCandidateRepository messageQueueCandidateRepository,
                                     JmsTemplate jmsTemplate,
-                                    PublishMessageTask publishMessageTask) {
+                                    PublishMessageTask publishMessageTask,
+                                    ConnectionFactory connectionFactory) {
         this.messageQueueCandidateRepository = messageQueueCandidateRepository;
         this.jmsTemplate = jmsTemplate;
         this.publishMessageTask = publishMessageTask;
         this.logPrefix = String.format("[Message Type - %s]", publishMessageTask.getMessageType());
+        this.connectionFactory = connectionFactory;
     }
 
     @Override
