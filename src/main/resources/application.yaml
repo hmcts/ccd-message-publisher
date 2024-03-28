@@ -22,6 +22,9 @@ spring:
     servicebus:
       connection-string: ${SERVICE_BUS_CONNECTION_STRING}
       idle-timeout: ${SERVICE_BUS_IDLE_TIMEOUT:1800000}
+      pool:
+        enabled: true
+        max-connections: ${POOL_CONNECTIONS:5}
   jpa:
     database: postgresql
   datasource:
