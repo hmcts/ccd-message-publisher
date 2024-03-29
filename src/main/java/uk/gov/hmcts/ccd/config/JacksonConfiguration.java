@@ -31,8 +31,8 @@ public class JacksonConfiguration {
     public JmsTemplate jmsTemplate(CachingConnectionFactory jmsConnectionFactory) {
         final JmsTemplate jmsTemplate = new JmsTemplate();
         jmsTemplate.setMessageConverter(jacksonJmsMessageConverter());
+        jmsConnectionFactory.setCacheProducers(false);
         jmsTemplate.setConnectionFactory(jmsConnectionFactory);
-
         return jmsTemplate;
     }
 
