@@ -20,6 +20,7 @@ public enum MessageProperties {
         return propertyId;
     }
 
+    //force a build
     public String getPropertySourceId() {
         return propertySourceId;
     }
