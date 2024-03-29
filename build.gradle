@@ -80,6 +80,7 @@ test {
   failFast = true
 }
 
+
 task functional(type: Test) {
   description = 'Executes functional tests against an the CCD Message Publisher API instance just deployed'
   dependsOn aatClasses
