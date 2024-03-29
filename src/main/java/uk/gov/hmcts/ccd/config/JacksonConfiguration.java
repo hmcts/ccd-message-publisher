@@ -15,6 +15,8 @@ import org.springframework.jms.support.converter.MappingJackson2MessageConverter
 import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.jms.support.converter.MessageType;
 
+import javax.jms.ConnectionFactory;
+
 @Configuration
 public class JacksonConfiguration {
 
@@ -28,11 +30,13 @@ public class JacksonConfiguration {
     }
 
     @Bean
-    public JmsTemplate jmsTemplate(CachingConnectionFactory jmsConnectionFactory) {
+    public JmsTemplate jmsTemplate(ConnectionFactory jmsConnectionFactory) {
         final JmsTemplate jmsTemplate = new JmsTemplate();
         jmsTemplate.setMessageConverter(jacksonJmsMessageConverter());
-        jmsConnectionFactory.setCacheProducers(false);
-        jmsTemplate.setConnectionFactory(jmsConnectionFactory);
+        CachingConnectionFactory cachingConnectionFactory =
+            new CachingConnectionFactory(jmsConnectionFactory);
+        cachingConnectionFactory.setCacheProducers(false);
+        jmsTemplate.setConnectionFactory(cachingConnectionFactory);
         return jmsTemplate;
     }
 
