@@ -81,7 +81,7 @@ class MessagePublisherRunnableTest {
         messageQueueCandidate3.setMessageInformation(message3);
 
         messagePublisher = new MessagePublisherRunnable(messageQueueCandidateRepository, jmsTemplate,
-            publishMessageTask, connectionFactory);
+            publishMessageTask);
     }
 
     @Test
