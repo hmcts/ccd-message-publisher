@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.jms.connection.CachingConnectionFactory;
 import org.springframework.jms.core.JmsTemplate;
 import uk.gov.hmcts.ccd.config.PublishMessageTask;
 import uk.gov.hmcts.ccd.data.MessageQueueCandidateEntity;
@@ -54,7 +53,7 @@ public class MessagePublisherRunnable implements Runnable {
             publishMessages(unpublishedMessagesPaginated, processedEntities);
         } catch (Exception e) {
             log.error(String.format("%s Error encountered during processing of "
-                                        + "unpublished messages", logPrefix), e);
+                + "unpublished messages", logPrefix), e);
             hasError = true;
         }
 
