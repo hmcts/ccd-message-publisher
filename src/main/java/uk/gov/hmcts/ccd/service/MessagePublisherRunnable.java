@@ -95,14 +95,12 @@ public class MessagePublisherRunnable implements Runnable {
                 );
             } catch (IllegalStateException exception) {
                 // Workaround for https://github.com/microsoft/azure-spring-boot/issues/817
-                if (exception.getMessage().contains("MessageProducer was closed")) {
-                    ((CachingConnectionFactory) jmsTemplate.getConnectionFactory()).resetConnection();
-                    jmsTemplate.convertAndSend(
-                        publishMessageTask.getDestination(),
-                        entity.getMessageInformation(),
-                        message -> setProperties(message, entity.getMessageInformation())
-                    );
-                }
+                ((CachingConnectionFactory) jmsTemplate.getConnectionFactory()).resetConnection();
+                jmsTemplate.convertAndSend(
+                    publishMessageTask.getDestination(),
+                    entity.getMessageInformation(),
+                    message -> setProperties(message, entity.getMessageInformation())
+                );
             }
             entity.setPublished(LocalDateTime.now());
             processedEntities.add(entity);
