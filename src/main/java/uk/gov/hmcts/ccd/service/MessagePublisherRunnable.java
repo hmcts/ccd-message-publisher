@@ -88,20 +88,10 @@ public class MessagePublisherRunnable implements Runnable {
     private void publishMessages(Slice<MessageQueueCandidateEntity> messagesToPublish,
                                  List<MessageQueueCandidateEntity> processedEntities) {
         messagesToPublish.get().forEach(entity -> {
-            try {
-                jmsTemplate.convertAndSend(
-                    publishMessageTask.getDestination(),
-                    entity.getMessageInformation(), message -> setProperties(message, entity.getMessageInformation())
-                );
-            } catch (IllegalStateException exception) {
-                // Workaround for https://github.com/microsoft/azure-spring-boot/issues/817
-                ((CachingConnectionFactory) jmsTemplate.getConnectionFactory()).resetConnection();
-                jmsTemplate.convertAndSend(
-                    publishMessageTask.getDestination(),
-                    entity.getMessageInformation(),
-                    message -> setProperties(message, entity.getMessageInformation())
-                );
-            }
+            jmsTemplate.convertAndSend(
+                publishMessageTask.getDestination(),
+                entity.getMessageInformation(), message -> setProperties(message, entity.getMessageInformation())
+            );
             entity.setPublished(LocalDateTime.now());
             processedEntities.add(entity);
         });
