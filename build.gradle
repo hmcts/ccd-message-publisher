@@ -305,8 +305,10 @@ dependencies {
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-activemq'
 
-  implementation group: 'com.azure.spring', name: 'spring-cloud-azure-starter-servicebus-jms', version: '5.11.0'
-  implementation group: 'jakarta.jms', name: 'jakarta.jms-api', version: '3.1.0'
+  implementation(group: 'com.microsoft.azure', name: 'azure-servicebus-jms-spring-boot-starter', version: '2.3.5') {
+    exclude group: 'org.simpleframework', module: 'simple-xml' //CVE-2017-1000190
+    exclude group: 'org.nanohttpd', module: 'nanohttpd' //CVE-2020-13697
+  }
 
   implementation group: 'io.netty', name: 'netty-buffer', version: versions.netty
   implementation group: 'io.netty', name: 'netty-codec', version: versions.netty

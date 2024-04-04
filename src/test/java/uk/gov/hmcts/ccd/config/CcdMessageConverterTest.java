@@ -59,7 +59,7 @@ class CcdMessageConverterTest {
     @Test
     void shouldMapToBytesMessageForQpidMessage() throws IOException, JMSException {
         JmsBytesMessageFacade facade = new AmqpJmsBytesMessageFacade();
-        message = (BytesMessage) new JmsBytesMessage(facade);
+        message = new JmsBytesMessage(facade);
         Mockito.when(session.createBytesMessage()).thenReturn(message);
 
         BytesMessage result = messageConverter.mapToBytesMessage(input, session, objectMapper.writer());
