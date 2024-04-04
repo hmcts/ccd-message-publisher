@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.jms.connection.CachingConnectionFactory;
 import org.springframework.jms.core.JmsTemplate;
 import uk.gov.hmcts.ccd.config.PublishMessageTask;
 import uk.gov.hmcts.ccd.data.MessageQueueCandidateEntity;
@@ -53,7 +54,7 @@ public class MessagePublisherRunnable implements Runnable {
             publishMessages(unpublishedMessagesPaginated, processedEntities);
         } catch (Exception e) {
             log.error(String.format("%s Error encountered during processing of "
-                + "unpublished messages", logPrefix), e);
+                                        + "unpublished messages", logPrefix), e);
             hasError = true;
         }
 
@@ -87,10 +88,22 @@ public class MessagePublisherRunnable implements Runnable {
     private void publishMessages(Slice<MessageQueueCandidateEntity> messagesToPublish,
                                  List<MessageQueueCandidateEntity> processedEntities) {
         messagesToPublish.get().forEach(entity -> {
-            jmsTemplate.convertAndSend(
-                publishMessageTask.getDestination(),
-                entity.getMessageInformation(), message -> setProperties(message, entity.getMessageInformation())
-            );
+            try {
+                jmsTemplate.convertAndSend(
+                    publishMessageTask.getDestination(),
+                    entity.getMessageInformation(), message -> setProperties(message, entity.getMessageInformation())
+                );
+            } catch (IllegalStateException exception) {
+                // Workaround for https://github.com/microsoft/azure-spring-boot/issues/817
+                if (exception.getMessage().contains("MessageProducer was closed")) {
+                    ((CachingConnectionFactory) jmsTemplate.getConnectionFactory()).resetConnection();
+                    jmsTemplate.convertAndSend(
+                        publishMessageTask.getDestination(),
+                        entity.getMessageInformation(),
+                        message -> setProperties(message, entity.getMessageInformation())
+                    );
+                }
+            }
             entity.setPublished(LocalDateTime.now());
             processedEntities.add(entity);
         });
