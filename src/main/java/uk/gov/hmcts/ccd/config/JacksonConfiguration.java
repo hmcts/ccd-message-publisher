@@ -9,6 +9,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jms.connection.CachingConnectionFactory;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
 import org.springframework.jms.support.converter.MessageConverter;
@@ -32,7 +33,10 @@ public class JacksonConfiguration {
     public JmsTemplate jmsTemplate(ConnectionFactory jmsConnectionFactory) {
         final JmsTemplate jmsTemplate = new JmsTemplate();
         jmsTemplate.setMessageConverter(jacksonJmsMessageConverter());
-        jmsTemplate.setConnectionFactory(jmsConnectionFactory);
+        CachingConnectionFactory cachingConnectionFactory =
+            new CachingConnectionFactory(jmsConnectionFactory);
+        cachingConnectionFactory.setCacheProducers(false);
+        jmsTemplate.setConnectionFactory(cachingConnectionFactory);
         return jmsTemplate;
     }
 
