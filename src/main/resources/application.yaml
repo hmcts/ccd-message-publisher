@@ -21,6 +21,7 @@ spring:
   jms:
     servicebus:
       connection-string: ${SERVICE_BUS_CONNECTION_STRING}
+      pricing-tier: ${SERVICE_BUS_SKU:Standard}
       idle-timeout: ${SERVICE_BUS_IDLE_TIMEOUT:1800000}
   jpa:
     database: postgresql
