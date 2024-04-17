@@ -16,6 +16,7 @@ public enum MessageProperties {
         this.propertySourceId = propertySourceId;
     }
 
+    //force new build
     public String getPropertyId() {
         return propertyId;
     }
