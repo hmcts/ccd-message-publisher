@@ -22,6 +22,14 @@ configurations {
   aatCompile.extendsFrom(testCompile)
   aatRuntime.extendsFrom(testRuntime)
   cucumberRuntime.extendsFrom(functionalRuntime)
+
+  all{
+    resolutionStrategy {
+      dependencySubstitution {
+        substitute(module("io.netty:netty-transport-classes-kqueue:4.1.92.Final")).using(module("io.netty:netty-transport-classes-kqueue:4.1.109.Final"))
+      }
+    }
+  }
 }
 
 mainClassName = 'uk.gov.hmcts.ccd.MessagePublisherApplication'
@@ -245,7 +253,7 @@ def versions = [
   springBoot         : springBoot.class.package.implementationVersion,
   springfoxSwagger   : '3.0.0',
   testcontainers     : '1.18.3',
-  netty              : '4.1.86.Final',
+  netty              : '4.1.109.Final',
   tomcatVersion      : '9.0.75'
 ]
 
@@ -310,6 +318,22 @@ dependencies {
   implementation(group: 'com.microsoft.azure', name: 'azure-servicebus-jms-spring-boot-starter', version: '2.3.5') {
     exclude group: 'org.simpleframework', module: 'simple-xml' //CVE-2017-1000190
     exclude group: 'org.nanohttpd', module: 'nanohttpd' //CVE-2020-13697
+
+    constraints {
+      implementation('io.netty:netty-transport-classes-kqueue') {
+        version {
+          strictly '4.1.109.Final'
+        }
+        because 'Moved to latest minor version as previous version affected by CVE-2023-44487'
+      }
+
+      implementation('io.netty:netty-transport-classes-epoll') {
+        version {
+          strictly '4.1.109.Final'
+        }
+        because 'Moved to latest minor version as previous version affected by CVE-2023-44487'
+      }
+    }
   }
 
   implementation group: 'io.netty', name: 'netty-buffer', version: versions.netty
