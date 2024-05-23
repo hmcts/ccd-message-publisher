@@ -3,6 +3,8 @@ java:
   image: 'hmctspublic.azurecr.io/ccd/message-publisher:latest'
   ingressHost: ccd-message-publisher-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
   aadIdentityName: ccd
+  autoscaling:
+    enabled: false
   replicas: 1 # Must always be 1
   keyVaults:
     ccd:
