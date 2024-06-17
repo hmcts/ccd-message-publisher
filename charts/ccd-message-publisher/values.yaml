@@ -13,15 +13,15 @@ java:
           alias: SERVICE_BUS_CONNECTION_STRING
         - name: app-insights-connection-string
           alias: app-insights-connection-string
-        - name: data-store-api-POSTGRES-PASS
+        - name: data-store-api-POSTGRES-PASS-V15
           alias: DATA_STORE_DB_PASSWORD
-        - name: data-store-api-POSTGRES-USER
+        - name: data-store-api-POSTGRES-USER-V15
           alias: DATA_STORE_DB_USERNAME
 
   environment:
     DATA_STORE_DB_PORT: 5432
     DATA_STORE_DB_NAME: ccd_data_store
-    DATA_STORE_DB_HOST: ccd-data-store-api-postgres-db-{{ .Values.global.environment }}.postgres.database.azure.com
+    DATA_STORE_DB_HOST: ccd-data-store-api-postgres-db-v15-{{ .Values.global.environment }}.postgres.database.azure.com
     DATA_STORE_DB_OPTIONS: "?stringtype=unspecified&sslmode=require&gssEncMode=disable"
     CCD_CASE_EVENTS_DESTINATION: ccd-case-events-{{ .Values.global.environment }}
 
