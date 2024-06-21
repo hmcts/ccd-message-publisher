@@ -358,7 +358,7 @@ dependencies {
   implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: versions.tomcatVersion
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.16.0'
 
-  runtimeOnly group: 'org.postgresql', name: 'postgresql', version: '42.5.1'
+  runtimeOnly group: 'org.postgresql', name: 'postgresql', version: '42.5.5'
   runtimeOnly group: 'com.zaxxer', name: 'HikariCP', version: '4.0.2'
 
   aatImplementation group: 'com.github.hmcts', name: 'ccd-test-definitions', version: '7.19.12', {
