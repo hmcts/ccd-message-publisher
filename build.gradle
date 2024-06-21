@@ -24,7 +24,9 @@ configurations {
   cucumberRuntime.extendsFrom(functionalRuntime)
 }
 
-mainClassName = 'uk.gov.hmcts.ccd.MessagePublisherApplication'
+application {
+  mainClass = 'uk.gov.hmcts.ccd.MessagePublisherApplication'
+}
 
 java {
   toolchain {
@@ -351,7 +353,7 @@ dependencies {
   implementation group: 'org.apache.activemq', name: 'activemq-client', version: '5.16.6' // For CVE-2021-26117
   implementation group: 'org.apache.activemq', name: 'activemq-broker', version: '5.16.6' // For CVE-2021-26117
   implementation group: 'net.minidev', name: 'json-smart', version: '2.4.7'
-  implementation group: 'commons-io', name: 'commons-io', version: '2.8.0'
+  implementation group: 'commons-io', name: 'commons-io', version: '2.14.0'
   implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.5'
 
   implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: versions.tomcatVersion
@@ -361,10 +363,10 @@ dependencies {
   runtimeOnly group: 'org.postgresql', name: 'postgresql', version: '42.5.1'
   runtimeOnly group: 'com.zaxxer', name: 'HikariCP', version: '4.0.2'
 
-  aatImplementation group: 'com.github.hmcts', name: 'ccd-test-definitions', version: '7.19.12', {
+  aatImplementation group: 'com.github.hmcts', name: 'ccd-test-definitions', version: '7.22.2', {
     exclude group: 'com.sun.xml.bind', module: 'jaxb-osgi'
   }
-  aatImplementation group: 'com.github.hmcts', name: 'befta-fw', version: '8.7.11', {
+  aatImplementation group: 'com.github.hmcts', name: 'befta-fw', version: '9.0.2', {
     exclude group: 'com.sun.xml.bind', module: 'jaxb-osgi'
   }
   aatImplementation group: 'org.apache.poi', name: 'poi-ooxml-schemas', version: '4.1.2' //For CVE-2019-12415
@@ -386,7 +388,7 @@ dependencies {
   integrationTestImplementation group: 'org.testcontainers', name: 'postgresql', version: versions.testcontainers
 
   smokeTestImplementation sourceSets.main.runtimeClasspath
-  testImplementation 'com.github.hmcts:fortify-client:1.3.0:all'
+  testImplementation group: 'com.github.hmcts', name: 'fortify-client', version: '1.4.2'
 }
 
 bootJar {
