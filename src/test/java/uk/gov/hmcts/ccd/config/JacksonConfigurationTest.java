@@ -1,7 +1,6 @@
 package uk.gov.hmcts.ccd.config;
 
 import static org.junit.Assert.assertNotNull;
-import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.support.converter.MessageConverter;
@@ -9,21 +8,20 @@ import org.springframework.jms.support.converter.MessageConverter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.jms.ConnectionFactory;
-import jakarta.jms.JMSException;
 
 public class JacksonConfigurationTest {
 
     public static JacksonConfiguration jacksonConfiguration = new JacksonConfiguration();
 
     @Test
-    void objectMapperCreates() throws IOException, JMSException {
+    void objectMapperCreates() {
         
         ObjectMapper objectMapper = jacksonConfiguration.defaultObjectMapper();
         assertNotNull(objectMapper);
     }
 
     @Test
-    void connectionFactoryCreates() throws IOException, JMSException {
+    void connectionFactoryCreates() {
         
         ConnectionFactory factory = jacksonConfiguration.connectionFactory("vm://localhost?broker.persistent=false");
 
@@ -31,7 +29,7 @@ public class JacksonConfigurationTest {
     }
 
     @Test
-    void shouldMapToBytesMessageForActiveMQMessage() throws IOException, JMSException {
+    void shouldMapToBytesMessageForActiveMQMessage() {
         
         ConnectionFactory factory = jacksonConfiguration.connectionFactory("vm://localhost?broker.persistent=false");
         JmsTemplate jmsTemplate = jacksonConfiguration.jmsTemplate(factory);
@@ -40,7 +38,7 @@ public class JacksonConfigurationTest {
     }
 
     @Test
-    void jacksonJmsMessageConverterCreates() throws IOException, JMSException {
+    void jacksonJmsMessageConverterCreates() {
         
         MessageConverter messageConverter = jacksonConfiguration.jacksonJmsMessageConverter();
 
