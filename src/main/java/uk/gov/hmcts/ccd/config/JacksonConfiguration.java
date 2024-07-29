@@ -37,8 +37,7 @@ public class JacksonConfiguration {
     @ConditionalOnProperty(name = "spring.jms.servicebus.enabled")
     public ConnectionFactory connectionFactory(
             @Value("${spring.jms.servicebus.connection-string}") String connectionString) {
-        ServiceBusJmsConnectionFactory factory = new ServiceBusJmsConnectionFactory(connectionString);
-        return factory;
+        return new ServiceBusJmsConnectionFactory(connectionString);
     }
 
     @Bean
