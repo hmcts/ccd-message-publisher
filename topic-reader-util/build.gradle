@@ -2,9 +2,10 @@ plugins {
   id 'application'
 }
 
-allprojects {
-  sourceCompatibility = '11'
-  targetCompatibility = '11'
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(17)
+  }
 }
 
 tasks.withType(JavaCompile) {

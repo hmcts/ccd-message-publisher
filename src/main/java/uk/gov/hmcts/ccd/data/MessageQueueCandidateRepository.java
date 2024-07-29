@@ -23,4 +23,9 @@ public interface MessageQueueCandidateRepository extends PagingAndSortingReposit
         + "and m.published < :olderThanDate")
     int deletePublishedMessages(@Param("olderThanDate") LocalDateTime olderThanDate,
                                 @Param("messageType") String messageType);
+
+    Iterable<MessageQueueCandidateEntity> findAll();
+
+    <S extends MessageQueueCandidateEntity> Iterable<S> saveAll(Iterable<MessageQueueCandidateEntity> entities);
+
 }
