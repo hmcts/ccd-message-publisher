@@ -13,9 +13,9 @@ import uk.gov.hmcts.ccd.data.MessageQueueCandidateEntity;
 import uk.gov.hmcts.ccd.data.MessageQueueCandidateRepository;
 import uk.gov.hmcts.ccd.config.PublishMessageTask;
 
-import javax.jms.BytesMessage;
-import javax.jms.JMSException;
-import javax.jms.Message;
+import jakarta.jms.BytesMessage;
+import jakarta.jms.JMSException;
+import jakarta.jms.Message;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Comparator;
@@ -60,7 +60,7 @@ class MessagePublisherRunnableIT extends BaseTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         PublishMessageTask publishMessageTask = PublishMessageTask.builder()
             .schedule(SCHEDULE)
