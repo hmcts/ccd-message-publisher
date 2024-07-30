@@ -317,7 +317,7 @@ dependencies {
 
   implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: versions.tomcatVersion
   implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: versions.tomcatVersion
-  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.16.0'
+  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind'
 
   runtimeOnly group: 'org.postgresql', name: 'postgresql', version: '42.5.6'
   runtimeOnly group: 'com.zaxxer', name: 'HikariCP', version: '4.0.2'
@@ -328,8 +328,6 @@ dependencies {
   aatImplementation group: 'com.github.hmcts', name: 'befta-fw', version: '9.0.2', {
     exclude group: 'com.sun.xml.bind', module: 'jaxb-osgi'
   }
-  // aatImplementation group: 'io.cucumber', name: 'query', version: '12.2.0'
-  // aatImplementation group: 'io.cucumber', name: 'messages', version: '24.1.0'
   aatImplementation group: 'org.apache.poi', name: 'poi-ooxml-schemas', version: '4.1.2' //For CVE-2019-12415
   aatImplementation group: 'commons-lang', name: 'commons-lang', version: '2.6'
   aatImplementation libraries.junit5
@@ -349,7 +347,7 @@ dependencies {
   integrationTestImplementation group: 'org.testcontainers', name: 'postgresql', version: versions.testcontainers
 
   smokeTestImplementation sourceSets.main.runtimeClasspath
-  testImplementation group: 'com.github.hmcts', name: 'fortify-client', version: '1.4.2'
+  testImplementation group: 'com.github.hmcts', name: 'fortify-client', version: '1.4.5'
 }
 
 bootJar {
