@@ -14,7 +14,9 @@
         CVE-2023-41080 refer [Ticket]
         CVE-2023-42794 refer [Ticket]
         CVE-2023-42795 refer [Ticket]
-        CVE-2023-45648 refer [Ticket]</notes>
+        CVE-2023-45648 refer [Ticket]
+        CVE-2024-35255 refer https://tools.hmcts.net/jira/browse/CCD-5632
+    </notes>
     <cve>CVE-2023-46604</cve>
     <cve>CVE-2023-36052</cve>
     <cve>CVE-2023-36414</cve>
@@ -29,5 +31,6 @@
     <cve>CVE-2023-42794</cve>
     <cve>CVE-2023-42795</cve>
     <cve>CVE-2023-45648</cve>
+    <cve>CVE-2024-35255</cve>
   </suppress>
 </suppressions>
