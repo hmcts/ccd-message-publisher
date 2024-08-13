@@ -62,7 +62,7 @@ class MessagePublisherRunnableTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         publishMessageTask = PublishMessageTask.builder()
             .schedule(SCHEDULE)
@@ -156,7 +156,7 @@ class MessagePublisherRunnableTest {
             .thenReturn(new SliceImpl<MessageQueueCandidateEntity>(list));
 
         // Throw exception on processing of second message
-        doNothing().doThrow(new IllegalStateException(new javax.jms.IllegalStateException("Error")))
+        doNothing().doThrow(new IllegalStateException(new jakarta.jms.IllegalStateException("Error")))
             .when(jmsTemplate).convertAndSend(eq(DESTINATION), any(JsonNode.class), any());
 
         messagePublisher.run();
