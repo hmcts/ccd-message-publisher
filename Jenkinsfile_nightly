@@ -12,13 +12,15 @@ def type = "java"
 def product = "ccd"
 def component = "message-publisher"
 
+// Prevent Docker hub rate limit errors by ensuring that testcontainers uses images from hmctspublic ACR
+env.TESTCONTAINERS_HUB_IMAGE_NAME_PREFIX = "hmctspublic.azurecr.io/imported/"
+
 withNightlyPipeline(type, product, component) {
   enableFortifyScan()
   afterAlways('fortify-scan') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
   }
 }
-
 
 // env variables needed for BEFTA.
 env.IDAM_URL = "https://idam-api.aat.platform.hmcts.net"
