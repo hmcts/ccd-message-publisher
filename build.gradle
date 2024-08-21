@@ -386,7 +386,7 @@ dependencies {
   integrationTestImplementation group: 'org.testcontainers', name: 'postgresql', version: versions.testcontainers
 
   smokeTestImplementation sourceSets.main.runtimeClasspath
-  testImplementation group: 'com.github.hmcts', name: 'fortify-client', version: '1.4.2'
+  testImplementation 'com.github.hmcts:fortify-client:1.4.3:all'
 }
 
 bootJar {
