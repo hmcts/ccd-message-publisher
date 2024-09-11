@@ -332,8 +332,8 @@ dependencies {
 
   implementation group: 'org.glassfish', name: 'jakarta.el', version: '4.0.1' // CVE-2021-28170
   // CVE-2021-42550
-  implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.10'
-  implementation group: 'ch.qos.logback', name: 'logback-core', version: '1.2.10'
+  implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.13'
+  implementation group: 'ch.qos.logback', name: 'logback-core', version: '1.2.13'
 
   implementation group: 'io.hawt', name: 'hawtio-springboot', version: '2.12.0'
 
