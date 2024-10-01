@@ -306,7 +306,6 @@ dependencies {
   }
 
   //implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '3.1.7'
-
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
@@ -350,9 +349,11 @@ dependencies {
 
   implementation group: 'org.hibernate', name: 'hibernate-core', version: '5.4.25.Final' // For CVE-2020-25638
   implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13' // For CVE-2020-13956
+
   implementation group: 'org.apache.activemq', name: 'activemq-client', version: '5.16.7' // For CVE-2021-26117
   implementation group: 'org.apache.activemq', name: 'activemq-broker', version: '5.16.7' // For CVE-2021-26117
-  implementation group: 'net.minidev', name: 'json-smart', version: '2.4.7'
+  implementation group: 'net.minidev', name: 'json-smart', version: '2.4.9'
+  implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '9.37.2'
   implementation group: 'commons-io', name: 'commons-io', version: '2.14.0'
   implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.5'
 
