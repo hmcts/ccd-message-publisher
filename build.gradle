@@ -320,7 +320,10 @@ dependencies {
     exclude group: 'com.microsoft.azure', module: 'msal4j-persistence-extension'
   }
 
-  implementation group: 'com.azure', name: 'azure-identity', version: '1.14.0-beta.2'
+  implementation(group: 'com.azure', name: 'azure-identity', version: '1.14.0-beta.2') {
+    exclude group: 'com.microsoft.azure', module: 'msal4j-persistence-extension'
+    exclude group: 'com.microsoft.azure', module: 'msal4j'
+  }
 
   implementation group: 'io.netty', name: 'netty-buffer', version: versions.netty
   implementation group: 'io.netty', name: 'netty-codec', version: versions.netty
