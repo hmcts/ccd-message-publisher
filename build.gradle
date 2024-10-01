@@ -318,7 +318,8 @@ dependencies {
     exclude group: 'org.nanohttpd', module: 'nanohttpd' //CVE-2020-13697
     exclude group: 'com.azure', module: 'azure-identity'
   }
-  implementation group: 'com.azure', name: 'azure-identity', version: '1.13.3'
+
+  implementation group: 'com.azure', name: 'azure-identity', version: '1.12.2'
 
   implementation group: 'io.netty', name: 'netty-buffer', version: versions.netty
   implementation group: 'io.netty', name: 'netty-codec', version: versions.netty
