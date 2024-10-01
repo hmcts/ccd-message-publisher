@@ -317,6 +317,7 @@ dependencies {
     exclude group: 'org.simpleframework', module: 'simple-xml' //CVE-2017-1000190
     exclude group: 'org.nanohttpd', module: 'nanohttpd' //CVE-2020-13697
     exclude group: 'com.azure', module: 'azure-identity'
+    exclude group: 'com.microsoft.azure', module: 'msal4j-persistence-extension'
   }
 
   implementation group: 'com.azure', name: 'azure-identity', version: '1.14.0-beta.2'
