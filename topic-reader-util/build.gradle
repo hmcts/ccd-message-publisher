@@ -3,8 +3,8 @@ plugins {
 }
 
 allprojects {
-  sourceCompatibility = '11'
-  targetCompatibility = '11'
+  sourceCompatibility = '21'
+  targetCompatibility = '21'
 }
 
 tasks.withType(JavaCompile) {
