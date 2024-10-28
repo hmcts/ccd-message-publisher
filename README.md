@@ -10,7 +10,7 @@ Please note that this microservice is also available within [ccd-docker](https:/
 
 ### Prerequisites
 
-- [JDK 17](https://java.com)
+- [JDK 21](https://java.com)
 - [Docker](https://www.docker.com)
 
 ### Building and deploying the application
