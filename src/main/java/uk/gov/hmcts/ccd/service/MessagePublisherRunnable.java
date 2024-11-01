@@ -13,9 +13,8 @@ import uk.gov.hmcts.ccd.data.MessageQueueCandidateRepository;
 import jakarta.jms.JMSException;
 import jakarta.jms.Message;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-
-import static com.google.common.collect.Lists.newArrayList;
 
 @Slf4j
 public class MessagePublisherRunnable implements Runnable {
@@ -37,7 +36,9 @@ public class MessagePublisherRunnable implements Runnable {
     @Override
     public void run() {
         log.debug(String.format("%s Starting publish message task", logPrefix));
-        processUnpublishedMessages(PageRequest.of(0, publishMessageTask.getBatchSize()), newArrayList());
+        processUnpublishedMessages(
+            PageRequest.of(0, publishMessageTask.getBatchSize()), new ArrayList<>()
+        );
         deletePublishedMessages();
         log.debug(String.format("%s Completed publish message task", logPrefix));
     }
