@@ -1,13 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?><suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
-  <suppress>
-    <notes>Temporary Suppression
-        CVE-2023-36052 refer [Ticket]
-        CVE-2023-36415 refer [Ticket]
-        CVE-2024-35255 refer [Ticket]
-        CVE-2023-36414 refer [Ticket]</notes>
-    <cve>CVE-2023-36052</cve>
-    <cve>CVE-2023-36415</cve>
-    <cve>CVE-2024-35255</cve>
-    <cve>CVE-2023-36414</cve>
-  </suppress>
+<?xml version="1.0" encoding="UTF-8"?>
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
 </suppressions>

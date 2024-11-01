@@ -34,7 +34,7 @@ application {
 
 java {
   toolchain {
-    languageVersion = JavaLanguageVersion.of(17)
+    languageVersion = JavaLanguageVersion.of(21)
   }
 }
 
@@ -242,9 +242,9 @@ def versions = [
   junitPlatform      : '1.7.0',
   reformLogging      : '6.0.1',
   appInsightsVersion : '2.4.1',
-  lombok             : '1.18.28',
+  lombok             : '1.18.34',
   junitVintageVersion: '5.7.0',
-  testcontainers     : '1.20.0',
+  testcontainers     : '1.20.2',
   netty              : '4.1.107.Final',
   tomcatVersion      : '10.1.26'
 ]
@@ -310,6 +310,7 @@ dependencies {
   implementation group: 'org.apache.activemq', name: 'activemq-client', version: '6.1.2'
   implementation group: 'org.apache.activemq', name: 'activemq-broker', version: '6.1.2'
   implementation group: 'net.minidev', name: 'json-smart', version: '2.4.9'
+
   implementation group: 'commons-io', name: 'commons-io', version: '2.14.0'
   implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.5'
 
@@ -346,6 +347,7 @@ dependencies {
 
   smokeTestImplementation sourceSets.main.runtimeClasspath
   testImplementation group: 'com.github.hmcts', name: 'fortify-client', version: '1.4.3'
+
 }
 
 bootJar {
