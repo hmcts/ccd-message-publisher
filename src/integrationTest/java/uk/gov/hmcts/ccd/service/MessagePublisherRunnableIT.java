@@ -8,14 +8,16 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
+import org.testcontainers.shaded.com.google.common.collect.Streams;
+
 import uk.gov.hmcts.ccd.BaseTest;
 import uk.gov.hmcts.ccd.data.MessageQueueCandidateEntity;
 import uk.gov.hmcts.ccd.data.MessageQueueCandidateRepository;
 import uk.gov.hmcts.ccd.config.PublishMessageTask;
 
-import javax.jms.BytesMessage;
-import javax.jms.JMSException;
-import javax.jms.Message;
+import jakarta.jms.BytesMessage;
+import jakarta.jms.JMSException;
+import jakarta.jms.Message;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Comparator;
@@ -23,7 +25,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -60,7 +61,7 @@ class MessagePublisherRunnableIT extends BaseTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         PublishMessageTask publishMessageTask = PublishMessageTask.builder()
             .schedule(SCHEDULE)
@@ -85,14 +86,15 @@ class MessagePublisherRunnableIT extends BaseTest {
         assertAll(
             () -> assertThat(enqueuedMessages.size(), is(5)),
             () -> assertEnqueuedMessages(enqueuedMessages),
-            () -> assertAllPublishedValues(newArrayList(allMessageQueueCandidates))
+            () -> assertAllPublishedValues(Streams.stream(allMessageQueueCandidates).toList())
         );
     }
 
     @Test
     @Sql(INSERT_DATA_SCRIPT)
     void shouldDeletePublishedMessagesPastRetentionPeriod() {
-        List<MessageQueueCandidateEntity> entitiesBefore = newArrayList(messageQueueCandidateRepository.findAll());
+        Iterable<MessageQueueCandidateEntity> allMessageQueueCandidates = messageQueueCandidateRepository.findAll();
+        List<MessageQueueCandidateEntity> entitiesBefore = Streams.stream(allMessageQueueCandidates).toList();
         assertThat(entitiesBefore.size(), is(11));
         List<Long> expectedEntityIdsToBeDeleted = entitiesBefore.stream()
             .filter(entity -> entity.getMessageType().equals(MESSAGE_TYPE))
@@ -103,9 +105,11 @@ class MessagePublisherRunnableIT extends BaseTest {
 
         messagePublisher.run();
 
-        List<MessageQueueCandidateEntity> entitiesAfter = newArrayList(messageQueueCandidateRepository.findAll());
+
+        Iterable<MessageQueueCandidateEntity> allMQCAfter = messageQueueCandidateRepository.findAll();
+        List<MessageQueueCandidateEntity> entitiesAfter = Streams.stream(allMQCAfter).toList();
         assertAll(
-            () -> assertThat(newArrayList(entitiesAfter).size(), is(9)),
+            () -> assertThat(entitiesAfter.size(), is(9)),
             () -> assertEntitiesNotPresent(entitiesAfter, expectedEntityIdsToBeDeleted)
         );
     }

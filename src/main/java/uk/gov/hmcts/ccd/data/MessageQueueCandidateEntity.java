@@ -1,25 +1,21 @@
 package uk.gov.hmcts.ccd.data;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
-import org.hibernate.annotations.TypeDef;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.time.LocalDateTime;
+
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 
 @Table(name = "message_queue_candidates")
 @Entity
-@TypeDef(
-    typeClass = JsonBinaryType.class,
-    defaultForType = JsonNode.class
-)
 @Data
 public class MessageQueueCandidateEntity {
 
@@ -29,6 +25,6 @@ public class MessageQueueCandidateEntity {
     private String messageType;
     private LocalDateTime timeStamp;
     private LocalDateTime published;
-    @Column(columnDefinition = "jsonb")
+    @JdbcTypeCode(SqlTypes.JSON)
     private JsonNode messageInformation;
 }
