@@ -27,7 +27,7 @@ ext {
   junitVintageVersion = '5.11.3'
   testcontainers      = '1.20.3'
   netty               = '4.1.114.Final'
-  tomcatVersion       = '11.0.0'
+  tomcatVersion       = '10.1.31'
 }
 
 configurations {
