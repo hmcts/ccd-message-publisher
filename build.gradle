@@ -319,7 +319,7 @@ dependencies {
     exclude group: 'com.azure', module: 'azure-identity'
   }
 
-  implementation group: 'com.azure', name: 'azure-identity', version: '1.14.2'
+  implementation group: 'com.azure', name: 'azure-identity', version: '1.14.0'
 
   implementation group: 'io.netty', name: 'netty-buffer', version: versions.netty
   implementation group: 'io.netty', name: 'netty-codec', version: versions.netty
