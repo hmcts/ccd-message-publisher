@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -28,7 +27,7 @@ class MessagePublisherParamsTest {
         task1 = PublishMessageTask.builder().enabled(true).build();
         task2 = PublishMessageTask.builder().enabled(false).build();
         task3 = PublishMessageTask.builder().enabled(true).build();
-        messagePublisherParams.setTasks(newArrayList(task1, task2, task3));
+        messagePublisherParams.setTasks(List.of(task1, task2, task3));
 
         List<PublishMessageTask> result = messagePublisherParams.getEnabledTasks();
 

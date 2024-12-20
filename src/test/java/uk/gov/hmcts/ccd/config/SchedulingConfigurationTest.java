@@ -17,7 +17,6 @@ import uk.gov.hmcts.ccd.service.MessagePublisherRunnable;
 
 import java.util.List;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
@@ -48,12 +47,12 @@ class SchedulingConfigurationTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
     void shouldConfigureTasks() {
-        List<PublishMessageTask> tasks = newArrayList(
+        List<PublishMessageTask> tasks = List.of(
             PublishMessageTask.builder().schedule(SCHEDULE_1).build(),
             PublishMessageTask.builder().schedule(SCHEDULE_2).build(),
             PublishMessageTask.builder().schedule(SCHEDULE_3).build()
