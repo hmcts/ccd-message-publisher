@@ -3,10 +3,8 @@
   <suppress>
     <notes>False Positives
         CVE-2023-36414 refer [https://nvd.nist.gov/vuln/detail/CVE-2023-36414]
-        CVE-2023-36415 refer [https://nvd.nist.gov/vuln/detail/CVE-2023-36415]
     </notes>
     <cve>CVE-2023-36414</cve>
-    <cve>CVE-2023-36415</cve>
   </suppress>
   <suppress>
     <notes>Temporary Suppression
