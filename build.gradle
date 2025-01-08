@@ -320,7 +320,7 @@ dependencies {
     exclude group: 'com.microsoft.azure', module: 'msal4j-persistence-extension'
   }
 
-  implementation(group: 'com.azure', name: 'azure-identity', version: '1.14.0-beta.2') {
+  implementation(group: 'com.azure', name: 'azure-identity', version: '1.14.2') {
     exclude group: 'com.microsoft.azure', module: 'msal4j-persistence-extension'
     exclude group: 'com.microsoft.azure', module: 'msal4j'
   }
