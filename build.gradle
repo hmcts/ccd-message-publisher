@@ -13,7 +13,7 @@ plugins {
 
 
 ext['spring-framework.version'] = '5.3.27'
-ext['spring-security.version'] = '5.8.10'
+ext['spring-security.version'] = '5.8.15'
 ext['log4j2.version'] = '2.17.1'
 ext['jackson.version'] = '2.16.0'
 ext['snakeyaml.version'] = '2.0'
@@ -32,7 +32,7 @@ application {
 
 java {
   toolchain {
-    languageVersion = JavaLanguageVersion.of(17)
+    languageVersion = JavaLanguageVersion.of(21)
   }
 }
 
@@ -247,13 +247,13 @@ def versions = [
   junitPlatform      : '1.7.0',
   reformLogging      : '6.0.1',
   appInsightsVersion : '2.4.1',
-  lombok             : '1.18.28',
+  lombok             : '1.18.34',
   junitVintageVersion: '5.7.0',
   springBoot         : springBoot.class.package.implementationVersion,
   springfoxSwagger   : '3.0.0',
-  testcontainers     : '1.18.3',
+  testcontainers     : '1.20.2',
   netty              : '4.1.107.Final',
-  tomcatVersion      : '9.0.82'
+  tomcatVersion      : '9.0.91'
 ]
 
 ext.libraries = [
@@ -338,8 +338,8 @@ dependencies {
 
   implementation group: 'org.glassfish', name: 'jakarta.el', version: '4.0.1' // CVE-2021-28170
   // CVE-2021-42550
-  implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.10'
-  implementation group: 'ch.qos.logback', name: 'logback-core', version: '1.2.10'
+  implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.13'
+  implementation group: 'ch.qos.logback', name: 'logback-core', version: '1.2.13'
 
   implementation group: 'io.hawt', name: 'hawtio-springboot', version: '2.12.0'
 
