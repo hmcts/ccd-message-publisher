@@ -364,10 +364,10 @@ dependencies {
   runtimeOnly group: 'org.postgresql', name: 'postgresql', version: '42.5.5'
   runtimeOnly group: 'com.zaxxer', name: 'HikariCP', version: '4.0.2'
 
-  aatImplementation group: 'com.github.hmcts', name: 'ccd-test-definitions', version: '7.22.2', {
+  aatImplementation group: 'com.github.hmcts', name: 'ccd-test-definitions', version: '7.24.2', {
     exclude group: 'com.sun.xml.bind', module: 'jaxb-osgi'
   }
-  aatImplementation group: 'com.github.hmcts', name: 'befta-fw', version: '9.0.2', {
+  aatImplementation group: 'com.github.hmcts', name: 'befta-fw', version: '9.2.0', {
     exclude group: 'com.sun.xml.bind', module: 'jaxb-osgi'
   }
   aatImplementation group: 'org.apache.poi', name: 'poi-ooxml-schemas', version: '4.1.2' //For CVE-2019-12415
