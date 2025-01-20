@@ -14,7 +14,7 @@ plugins {
 
 
 ext['spring-framework.version'] = '5.3.27'
-ext['spring-security.version'] = '5.8.10'
+ext['spring-security.version'] = '5.8.15'
 ext['log4j2.version'] = '2.17.1'
 ext['jackson.version'] = '2.16.0'
 ext['snakeyaml.version'] = '2.0'
@@ -337,8 +337,8 @@ dependencies {
 
   implementation group: 'org.glassfish', name: 'jakarta.el', version: '4.0.1' // CVE-2021-28170
   // CVE-2021-42550
-  implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.10'
-  implementation group: 'ch.qos.logback', name: 'logback-core', version: '1.2.10'
+  implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.13'
+  implementation group: 'ch.qos.logback', name: 'logback-core', version: '1.2.13'
 
   implementation(group: 'io.hawt', name: 'hawtio-springboot', version: '2.12.0') {
     exclude(group: 'org.json', module: 'json')
