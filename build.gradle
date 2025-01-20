@@ -8,6 +8,7 @@ plugins {
   id 'org.sonarqube' version '4.3.0.3225'
   id 'uk.gov.hmcts.java' version '0.12.43'
   id 'com.github.spacialcircumstances.gradle-cucumber-reporting' version '0.1.23'
+  id 'org.owasp.dependencycheck' version '10.0.3'
 }
 
 
@@ -304,6 +305,11 @@ dependencies {
       strictly '1.77'
     }
   }
+  implementation('org.json:json') {
+    version {
+      strictly '20240303'
+    }
+  }
 
   //implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '3.1.7'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
@@ -334,7 +340,9 @@ dependencies {
   implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.13'
   implementation group: 'ch.qos.logback', name: 'logback-core', version: '1.2.13'
 
-  implementation group: 'io.hawt', name: 'hawtio-springboot', version: '2.12.0'
+  implementation(group: 'io.hawt', name: 'hawtio-springboot', version: '2.12.0') {
+    exclude(group: 'org.json', module: 'json')
+  }
 
   implementation group: 'io.springfox', name: 'springfox-swagger2', version: versions.springfoxSwagger
 
