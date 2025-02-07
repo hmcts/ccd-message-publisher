@@ -45,7 +45,10 @@
           }
         },
         "ssl": {
-          "status": "UP"
+          "status": "UP",
+          "details": {
+            "valid": true
+          }
         },
         "jms": {
           "status": "UP",
