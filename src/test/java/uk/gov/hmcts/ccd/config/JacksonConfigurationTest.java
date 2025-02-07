@@ -1,13 +1,12 @@
 package uk.gov.hmcts.ccd.config;
 
-import static org.junit.Assert.assertNotNull;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.jms.ConnectionFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.support.converter.MessageConverter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import jakarta.jms.ConnectionFactory;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class JacksonConfigurationTest {
 
