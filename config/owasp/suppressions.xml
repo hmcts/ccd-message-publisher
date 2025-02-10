@@ -13,10 +13,8 @@
   <suppress>
     <notes>Temporary Suppression
         CVE-2023-36052 refer [Ticket]
-        CVE-2024-43591 refer [Ticket]
         CVE-2024-38820 refer [Ticket]</notes>
     <cve>CVE-2023-36052</cve>
-    <cve>CVE-2024-43591</cve>
     <cve>CVE-2024-38820</cve>
   </suppress>
 </suppressions>
