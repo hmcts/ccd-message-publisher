@@ -322,6 +322,8 @@ dependencies {
   implementation(group: 'com.microsoft.azure', name: 'azure-servicebus-jms-spring-boot-starter', version: '2.3.5') {
     exclude group: 'org.simpleframework', module: 'simple-xml' //CVE-2017-1000190
     exclude group: 'org.nanohttpd', module: 'nanohttpd' //CVE-2020-13697
+    exclude group: 'com.microsoft.azure', module: 'azure-cli' //CVE-2024-43591
+    exclude group: 'com.microsoft.azure', module: 'azure_service_connector' //CVE-2024-43591
   }
 
   implementation group: 'io.netty', name: 'netty-buffer', version: versions.netty
