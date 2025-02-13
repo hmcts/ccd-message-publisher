@@ -8,7 +8,8 @@ plugins {
   id 'org.sonarqube' version '4.3.0.3225'
   id 'uk.gov.hmcts.java' version '0.12.43'
   id 'com.github.spacialcircumstances.gradle-cucumber-reporting' version '0.1.23'
-  id 'org.owasp.dependencycheck' version '10.0.3'
+  //id 'org.owasp.dependencycheck' version '10.0.3'
+  id 'org.owasp.dependencycheck' version '12.0.2'
 }
 
 
@@ -319,17 +320,15 @@ dependencies {
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-activemq'
 
-  implementation (group: 'com.azure.spring', name: 'azure-spring-boot-starter-servicebus-jms', version: '4.0.0') {
+  //implementation(group: 'com.microsoft.azure', name: 'azure-servicebus-jms-spring-boot-starter', version: '2.3.5') {
+  //  exclude group: 'org.simpleframework', module: 'simple-xml' //CVE-2017-1000190
+  //  exclude group: 'org.nanohttpd', module: 'nanohttpd' //CVE-2020-13697
+  //}
+
+  implementation(group: 'com.microsoft.azure', name: 'azure-servicebus-jms-spring-boot-starter', version: '3.0.0-beta.1') {
     exclude group: 'org.simpleframework', module: 'simple-xml' //CVE-2017-1000190
     exclude group: 'org.nanohttpd', module: 'nanohttpd' //CVE-2020-13697
   }
-
-  //implementation(group: 'com.microsoft.azure', name: 'azure-servicebus-jms-spring-boot-starter', version: '4.0.0') {
-  //  exclude group: 'org.simpleframework', module: 'simple-xml' //CVE-2017-1000190
-  //  exclude group: 'org.nanohttpd', module: 'nanohttpd' //CVE-2020-13697
-  //  exclude group: 'com.microsoft.azure', module: 'azure-cli' //CVE-2024-43591
-  //  exclude group: 'com.microsoft.azure', module: 'azure_service_connector' //CVE-2024-43591
-  //}
 
   implementation group: 'io.netty', name: 'netty-buffer', version: versions.netty
   implementation group: 'io.netty', name: 'netty-codec', version: versions.netty
