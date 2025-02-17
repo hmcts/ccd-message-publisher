@@ -2,13 +2,9 @@
   <!--Please add all the false positives under the below section-->
   <suppress>
     <notes>False Positives
-        CVE-2023-36414 refer [https://nvd.nist.gov/vuln/detail/CVE-2023-36414]
         CVE-2023-36415 refer [https://nvd.nist.gov/vuln/detail/CVE-2023-36415]
-        CVE-2024-35255 refer [https://nvd.nist.gov/vuln/detail/CVE-2024-35255]
     </notes>
-    <cve>CVE-2023-36414</cve>
     <cve>CVE-2023-36415</cve>
-    <cve>CVE-2024-35255</cve>
   </suppress>
   <suppress>
     <notes>Temporary Suppression
