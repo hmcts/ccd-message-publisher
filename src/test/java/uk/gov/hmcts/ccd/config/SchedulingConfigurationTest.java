@@ -12,12 +12,12 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.config.CronTask;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
+
 import uk.gov.hmcts.ccd.data.MessageQueueCandidateRepository;
 import uk.gov.hmcts.ccd.service.MessagePublisherRunnable;
 
 import java.util.List;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import org.springframework.test.util.ReflectionTestUtils;
 
 class SchedulingConfigurationTest {
 
@@ -48,12 +49,12 @@ class SchedulingConfigurationTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
     void shouldConfigureTasks() {
-        List<PublishMessageTask> tasks = newArrayList(
+        List<PublishMessageTask> tasks = List.of(
             PublishMessageTask.builder().schedule(SCHEDULE_1).build(),
             PublishMessageTask.builder().schedule(SCHEDULE_2).build(),
             PublishMessageTask.builder().schedule(SCHEDULE_3).build()
@@ -62,18 +63,18 @@ class SchedulingConfigurationTest {
 
         schedulingConfiguration.configureTasks(scheduledTaskRegistrar);
 
+        assertThat(((ThreadPoolTaskScheduler)scheduledTaskRegistrar.getScheduler()).getPoolSize(), is(3));
+        verify(scheduledTaskRegistrar, times(3)).scheduleCronTask(cronTaskCaptor.capture());
+
+        cronTaskCaptor.getAllValues().forEach(cronTask -> {
+            Object runnable = ReflectionTestUtils.getField(cronTask.getRunnable(), "runnable");
+            assertThat(runnable, instanceOf(MessagePublisherRunnable.class));
+        });
+
         assertAll(
-            () -> assertThat(((ThreadPoolTaskScheduler)scheduledTaskRegistrar.getScheduler()).getPoolSize(), is(3)),
-            () -> verify(scheduledTaskRegistrar, times(3)).scheduleCronTask(cronTaskCaptor.capture()),
             () -> assertThat(cronTaskCaptor.getAllValues().get(0).getExpression(), is(SCHEDULE_1)),
-            () -> assertThat(cronTaskCaptor.getAllValues().get(0).getRunnable(),
-                instanceOf(MessagePublisherRunnable.class)),
             () -> assertThat(cronTaskCaptor.getAllValues().get(1).getExpression(), is(SCHEDULE_2)),
-            () -> assertThat(cronTaskCaptor.getAllValues().get(1).getRunnable(),
-                instanceOf(MessagePublisherRunnable.class)),
-            () -> assertThat(cronTaskCaptor.getAllValues().get(2).getExpression(), is(SCHEDULE_3)),
-            () -> assertThat(cronTaskCaptor.getAllValues().get(2).getRunnable(),
-                instanceOf(MessagePublisherRunnable.class))
+            () -> assertThat(cronTaskCaptor.getAllValues().get(2).getExpression(), is(SCHEDULE_3))
         );
     }
 }

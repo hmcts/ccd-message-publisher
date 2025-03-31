@@ -14,9 +14,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import javax.jms.BytesMessage;
-import javax.jms.JMSException;
-import javax.jms.Session;
+import jakarta.jms.BytesMessage;
+import jakarta.jms.JMSException;
+import jakarta.jms.Session;
 import java.io.IOException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -40,7 +40,7 @@ class CcdMessageConverterTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         messageConverter = new CcdMessageConverter();
     }
 

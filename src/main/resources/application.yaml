@@ -2,6 +2,9 @@ server:
   port: 4456
 
 management:
+  health:
+    ssl:
+      enabled: false
   endpoint:
     health:
       show-details: "always"
@@ -21,6 +24,7 @@ spring:
   jms:
     servicebus:
       connection-string: ${SERVICE_BUS_CONNECTION_STRING}
+      pricing-tier: ${SERVICE_BUS_PRICING_TIER:standard}
       idle-timeout: ${SERVICE_BUS_IDLE_TIMEOUT:1800000}
   jpa:
     database: postgresql

@@ -6,9 +6,9 @@ import org.apache.qpid.jms.provider.amqp.message.AmqpJmsMessageFacade;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
 
-import javax.jms.BytesMessage;
-import javax.jms.JMSException;
-import javax.jms.Session;
+import jakarta.jms.BytesMessage;
+import jakarta.jms.JMSException;
+import jakarta.jms.Session;
 import java.io.IOException;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;

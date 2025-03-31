@@ -18,7 +18,6 @@ import uk.gov.hmcts.ccd.config.PublishMessageTask;
 
 import java.util.List;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -62,7 +61,7 @@ class MessagePublisherRunnableTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         publishMessageTask = PublishMessageTask.builder()
             .schedule(SCHEDULE)
@@ -87,7 +86,7 @@ class MessagePublisherRunnableTest {
     @Test
     void shouldProcessUnpublishedMessagesInSinglePage() {
         List<MessageQueueCandidateEntity> list =
-            newArrayList(messageQueueCandidate1, messageQueueCandidate2, messageQueueCandidate3);
+            List.of(messageQueueCandidate1, messageQueueCandidate2, messageQueueCandidate3);
         when(messageQueueCandidateRepository.findUnpublishedMessages(eq(MESSAGE_TYPE), any()))
             .thenReturn(new SliceImpl<MessageQueueCandidateEntity>(list));
 
@@ -111,8 +110,8 @@ class MessagePublisherRunnableTest {
 
     @Test
     void shouldProcessUnpublishedMessagesOverMultiplePages() {
-        List<MessageQueueCandidateEntity> page1List = newArrayList(messageQueueCandidate1, messageQueueCandidate2);
-        List<MessageQueueCandidateEntity> page2List = newArrayList(messageQueueCandidate3);
+        List<MessageQueueCandidateEntity> page1List = List.of(messageQueueCandidate1, messageQueueCandidate2);
+        List<MessageQueueCandidateEntity> page2List = List.of(messageQueueCandidate3);
         when(messageQueueCandidateRepository.findUnpublishedMessages(eq(MESSAGE_TYPE), any()))
             .thenReturn(new SliceImpl<MessageQueueCandidateEntity>(page1List, PageRequest.of(0, BATCH_SIZE), true))
             .thenReturn(new SliceImpl<MessageQueueCandidateEntity>(page2List, PageRequest.of(1, BATCH_SIZE), false));
@@ -138,7 +137,7 @@ class MessagePublisherRunnableTest {
     @Test
     void shouldDoNothingWhenNoResultsFound() {
         when(messageQueueCandidateRepository.findUnpublishedMessages(eq(MESSAGE_TYPE), any()))
-            .thenReturn(new SliceImpl<MessageQueueCandidateEntity>(newArrayList()));
+            .thenReturn(new SliceImpl<MessageQueueCandidateEntity>(List.of()));
 
         messagePublisher.run();
 
@@ -151,12 +150,12 @@ class MessagePublisherRunnableTest {
     @Test
     void shouldHaltProcessingOnError() {
         List<MessageQueueCandidateEntity> list =
-            newArrayList(messageQueueCandidate1, messageQueueCandidate2, messageQueueCandidate3);
+            List.of(messageQueueCandidate1, messageQueueCandidate2, messageQueueCandidate3);
         when(messageQueueCandidateRepository.findUnpublishedMessages(eq(MESSAGE_TYPE), any()))
             .thenReturn(new SliceImpl<MessageQueueCandidateEntity>(list));
 
         // Throw exception on processing of second message
-        doNothing().doThrow(new IllegalStateException(new javax.jms.IllegalStateException("Error")))
+        doNothing().doThrow(new IllegalStateException(new jakarta.jms.IllegalStateException("Error")))
             .when(jmsTemplate).convertAndSend(eq(DESTINATION), any(JsonNode.class), any());
 
         messagePublisher.run();
