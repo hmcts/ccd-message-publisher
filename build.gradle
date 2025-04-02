@@ -10,7 +10,7 @@ plugins {
   id 'org.springframework.boot' version '3.4.1'
   id 'uk.gov.hmcts.java' version '0.12.63'
 }
-
+ 
 ext {
   set('springCloudVersion', '2024.0.0')
   set('spring-framework.version', '6.2.1')
