@@ -21,7 +21,7 @@ ext {
   appInsightsVersion  = '2.6.4'
   junit               = '5.11.4'
   junitPlatform       = '1.11.4'
-  lombok              = '1.18.36'
+  lombok              = '1.18.38'
   netty               = '4.1.114.Final'
   reformLogging       = '6.1.9'
   testcontainers      = '1.20.4'
