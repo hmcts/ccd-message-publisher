@@ -261,8 +261,8 @@ dependencies {
 
   // start::CVE Vulnerability dependency overrides                                                        // MAIN PARENT DEPENDEDNCY
 
-  implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.5.16'                      // applicationinsights-logging-logback
-  implementation group: 'ch.qos.logback', name: 'logback-core', version: '1.5.16'                         // applicationinsights-logging-logback
+  implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.5.18'                      // applicationinsights-logging-logback
+  implementation group: 'ch.qos.logback', name: 'logback-core', version: '1.5.18'                         // applicationinsights-logging-logback
   implementation group: 'jakarta.jms', name: 'jakarta.jms-api', version: '3.1.0'                          // spring-cloud-azure-starter-servicebus-jms
   implementation group: 'commons-io', name: 'commons-io', version: '2.18.0'                               // hawtio-springboot
   implementation group: 'commons-lang', name: 'commons-lang', version: '2.6'                              // springdoc-openapi-starter-webmvc-ui
