@@ -309,8 +309,8 @@ dependencies {
   implementation group: 'io.netty', name: 'netty-transport-native-unix-common', version: netty
 
 
-  implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.5'
-  implementation group: 'com.azure.spring', name: 'spring-cloud-azure-starter-servicebus-jms', version: '5.19.0'
+  implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.6.0'
+  implementation group: 'com.azure.spring', name: 'spring-cloud-azure-starter-servicebus-jms', version: '5.22.0'
   implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: reformLogging
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-logging-logback', version: appInsightsVersion
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-spring-boot-starter', version: appInsightsVersion
