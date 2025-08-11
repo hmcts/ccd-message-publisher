@@ -2,7 +2,7 @@ plugins {
   id 'application'
   id 'java'
   id 'jacoco'
-  id 'com.github.ben-manes.versions' version '0.51.0'
+  id 'com.github.ben-manes.versions' version '0.52.0'
   id 'com.github.spacialcircumstances.gradle-cucumber-reporting' version '0.1.25'
   id 'io.spring.dependency-management' version '1.1.7'
   id 'org.owasp.dependencycheck' version '11.1.1'
