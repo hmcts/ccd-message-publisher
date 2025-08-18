@@ -17,7 +17,7 @@ java:
 servicebus:
   enabled: true
   resourceGroup: ccd-aso-preview-rg
-  sbNamespace: ccd # due to a bug https://github.com/kubernetes-sigs/kustomize/issues/5072 this value is set to ccd, when this bug is resolved, the sbNamespace should be changed to the actual name of the Service Bus Namespace (ccd-sb-preview)
+  sbNamespace: ccd-servicebus-preview
   setup:
     topics:
       - name: ccd-events
