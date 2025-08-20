@@ -22,7 +22,7 @@ ext {
   junit               = '5.13.4'
   junitPlatform       = '1.13.4'
   lombok              = '1.18.38'
-  netty               = '4.2.3.Final'
+  netty               = '4.2.4.Final'
   reformLogging       = '6.1.9'
   testcontainers      = '1.21.3'
   tomcatVersion       = '10.1.44'
@@ -305,7 +305,7 @@ dependencies {
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-logging-logback', version: appInsightsVersion
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-spring-boot-starter', version: appInsightsVersion
   implementation group: 'com.vladmihalcea', name: 'hibernate-types-60', version: '2.21.1'
-  implementation group: 'io.hawt', name: 'hawtio-springboot', version: '4.4.1'
+  implementation group: 'io.hawt', name: 'hawtio-springboot', version: '4.5.0'
   implementation group: 'jakarta.el', name: 'jakarta.el-api', version: '6.0.1'
   implementation group: 'org.apache.activemq', name: 'activemq-client', version: '6.1.7'
   implementation group: 'org.apache.activemq', name: 'activemq-broker', version: '6.1.7'
