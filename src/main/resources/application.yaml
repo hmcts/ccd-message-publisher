@@ -26,6 +26,12 @@ spring:
       connection-string: ${SERVICE_BUS_CONNECTION_STRING}
       pricing-tier: ${SERVICE_BUS_PRICING_TIER:standard}
       idle-timeout: ${SERVICE_BUS_IDLE_TIMEOUT:240000} # 4 minutes
+      pool:
+        enabled: true
+        max-connections: 1
+        max-sessions-per-connection: 5
+        connection-idle-timeout: PT3M
+        time-between-expiration-check: PT1M
   jpa:
     database: postgresql
   datasource:
