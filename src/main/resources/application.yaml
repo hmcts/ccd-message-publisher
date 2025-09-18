@@ -2,17 +2,34 @@ server:
   port: 4456
 
 management:
-  health:
-    ssl:
-      enabled: false
   endpoint:
     health:
+      messageCheckEnvEnabled: ${MESSAGE_HEALTH_CHECK_ENV:prod,aat}
+      environment: ${ENVIRONMENT:local}
+      allowedStalePeriod: ${ALLOWED_STALE_PERIOD:5}
       show-details: "always"
+      show-components: always
+      probes:
+        enabled: true
+      group:
+        liveness:
+          include: livenessState, messagePublisherLiveness
+        readiness:
+          include: readinessState
+  health:
+    livenessState:
+      enabled: true
+    readinessState:
+      enabled: true
   endpoints:
     web:
       base-path: /
       exposure:
         include: health, info, prometheus
+
+springdoc:
+  packagesToScan: uk.gov.hmcts.ccd.controller
+  writer-with-order-by-keys: true
 
 spring:
   application:
