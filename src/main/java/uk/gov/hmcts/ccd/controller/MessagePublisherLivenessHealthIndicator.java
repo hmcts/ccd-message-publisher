@@ -42,8 +42,6 @@ public class MessagePublisherLivenessHealthIndicator extends LivenessStateHealth
 
     protected static final String STAGING_TEXT = "staging";
 
-    private final ZoneId UK_TIME_ZONE = ZoneId.of("Europe/London");
-
     private final MessageQueueCandidateRepository repository;
 
     private final Clock clock;
@@ -66,7 +64,7 @@ public class MessagePublisherLivenessHealthIndicator extends LivenessStateHealth
         }
 
         ZonedDateTime currentTime = getCurrentTime();
-        ZonedDateTime ukZonedDateTime = currentTime.withZoneSameInstant(UK_TIME_ZONE);
+        ZonedDateTime ukZonedDateTime = currentTime.withZoneSameInstant(ZoneId.of("Europe/London"));
         LocalDateTime ukLocalDateTime = ukZonedDateTime.toLocalDateTime();
         LocalDateTime utcTimeMinusOneHour = currentTime.minusHours(1).toLocalDateTime();
 

@@ -53,6 +53,9 @@
         "livenessState": {
           "status": "UP"
         },
+        "messagePublisherLiveness" : {
+          "status" : "UP"
+        },
         "ping": {
           "status": "UP"
         },
@@ -61,6 +64,13 @@
         },
         "refreshScope": {
           "status": "UP"
+        },
+        "ssl" : {
+          "status" : "UP",
+          "details" : {
+            "validChains" : [ ],
+            "invalidChains" : [ ]
+          }
         }
       },
       "groups": [

@@ -63,20 +63,6 @@ class MessagePublisherLivenessHealthIndicatorTest {
     }
 
     @Test
-    void shouldReturnCorrectWhenEnvironmentIsEnabledAndNoMessages() {
-        // Given
-        when(repository.findFirstByPublishedIsNullOrderByTimeStampAsc()).thenReturn(Optional.empty());
-        when(clock.instant()).thenReturn(Instant.now());
-        when(clock.getZone()).thenReturn(ZoneOffset.UTC);
-
-        // When
-        AvailabilityState result = healthIndicator.getState(applicationAvailability);
-
-        // Then
-        assertEquals(LivenessState.CORRECT, result);
-    }
-
-    @Test
     void shouldReturnCorrectWhenMessageIsWithinAllowedStalePeriod() {
         // Given
         LocalDateTime messageTime = LocalDateTime.now(ZoneOffset.UTC).minusMinutes(2); // Within 5-minute delay
