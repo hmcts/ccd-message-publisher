@@ -79,7 +79,8 @@ public class MessagePublisherLivenessHealthIndicator extends LivenessStateHealth
 
     /**
      * Checks if there are stale unpublished messages that exceed the time delay threshold.
-     * Returns true if there are no unpublished messages OR if the oldest unpublished message
+     * Returns false if there are no unpublished messages
+     * Returns true if the oldest unpublished message
      * is older than the configured time delay, indicating a potential processing issue.
      */
     private boolean hasStaleUnpublishedMessages() {

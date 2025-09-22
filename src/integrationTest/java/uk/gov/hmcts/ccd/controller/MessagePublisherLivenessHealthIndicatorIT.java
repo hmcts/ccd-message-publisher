@@ -144,7 +144,7 @@ class MessagePublisherLivenessHealthIndicatorIT extends BaseTest {
         // When
         AvailabilityState result = healthIndicator.getState(applicationAvailability);
 
-        // Then - should return BROKEN because there are no unpublished messages
+        // Then - should return CORRECT because there are no unpublished messages
         assertEquals(LivenessState.CORRECT, result);
     }
 
