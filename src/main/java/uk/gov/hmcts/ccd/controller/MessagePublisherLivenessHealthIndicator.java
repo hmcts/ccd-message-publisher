@@ -56,14 +56,14 @@ public class MessagePublisherLivenessHealthIndicator extends LivenessStateHealth
     protected AvailabilityState getState(ApplicationAvailability applicationAvailability) {
         log.debug("CCD MessagePublisher Liveness check configured for environments {} ", messageCheckEnvEnabled);
         if (isNotEnabledForEnvironment(environment)) {
-            log.warn("Liveness check is not enabled for the environment {}", environment);
+            log.debug("Liveness check is not enabled for the environment {}", environment);
             return LivenessState.CORRECT;
         }
 
         LocalDateTime currentTime = LocalDateTime.now(clock);
         LocalDateTime utcTimeMinusOneHour = currentTime.minusHours(1);
 
-        log.info("UTC date and time {}, UTC date time minus 1 hour {}, UK local date and time {}",
+        log.debug("UTC date and time {}, UTC date time minus 1 hour {}, UK local date and time {}",
                  currentTime, utcTimeMinusOneHour, currentTime);
 
         if (hasStaleUnpublishedMessages()) {
@@ -85,7 +85,7 @@ public class MessagePublisherLivenessHealthIndicator extends LivenessStateHealth
             LocalDateTime currentTime = LocalDateTime.now(clock);
             LocalDateTime messageTime = messageEntity.get().getTimeStamp();
             long diffMinutes = Duration.between(messageTime, currentTime).toMinutes();
-            log.info("Message time: {}, Current time: {}, Diff minutes: {}, Time delay: {}",
+            log.debug("Message time: {}, Current time: {}, Diff minutes: {}, Time delay: {}",
                      messageTime, currentTime, diffMinutes, allowedStalePeriod
             );
             return diffMinutes > allowedStalePeriod;
@@ -97,7 +97,7 @@ public class MessagePublisherLivenessHealthIndicator extends LivenessStateHealth
         log.debug("CCD Message Publisher Liveness check Invoked for environment {} ", env);
         if (ENV_AAT.equals(env)) {
             URI currentUri = ServletUriComponentsBuilder.fromCurrentRequestUri().build().toUri();
-            log.info("Invoked API URI: {}", currentUri);
+            log.debug("Invoked API URI: {}", currentUri);
             if (currentUri.toString().contains(STAGING_TEXT)) {
                 return true;
             }
