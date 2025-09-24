@@ -41,12 +41,6 @@ public class MessagePublisherLivenessHealthIndicator extends LivenessStateHealth
 
     @Override
     protected AvailabilityState getState(ApplicationAvailability applicationAvailability) {
-        LocalDateTime currentTime = LocalDateTime.now(clock);
-        LocalDateTime utcTimeMinusOneHour = currentTime.minusHours(1);
-
-        log.debug("UTC date and time {}, UTC date time minus 1 hour {}, UK local date and time {}",
-                 currentTime, utcTimeMinusOneHour, currentTime);
-
         if (hasStaleUnpublishedMessages()) {
             return LivenessState.BROKEN;
         }
