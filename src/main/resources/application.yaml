@@ -17,6 +17,8 @@ management:
         readiness:
           include: readinessState
   health:
+    ssl:
+      enabled: false
     livenessState:
       enabled: true
     readinessState:
