@@ -4,8 +4,6 @@ server:
 management:
   endpoint:
     health:
-      messageCheckEnvEnabled: ${MESSAGE_HEALTH_CHECK_ENV:prod,aat}
-      environment: ${ENVIRONMENT:local}
       allowedStalePeriod: ${ALLOWED_STALE_PERIOD:5}
       show-details: "always"
       show-components: always

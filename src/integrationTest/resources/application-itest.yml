@@ -26,8 +26,6 @@ management:
       enabled: false
   endpoint:
     health:
-      messageCheckEnvEnabled: ${MESSAGE_HEALTH_CHECK_ENV:test}
-      environment: ${ENVIRONMENT:test}
       allowedStalePeriod: ${ALLOWED_STALE_PERIOD:5}
       show-details: "always"
       show-components: always

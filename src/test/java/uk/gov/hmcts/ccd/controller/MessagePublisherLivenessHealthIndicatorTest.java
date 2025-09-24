@@ -21,8 +21,6 @@ import java.time.ZoneOffset;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -46,20 +44,6 @@ class MessagePublisherLivenessHealthIndicatorTest {
         healthIndicator = new MessagePublisherLivenessHealthIndicator(
             applicationAvailability, repository, clock);
         ReflectionTestUtils.setField(healthIndicator, "allowedStalePeriod", TIME_DELAY);
-        ReflectionTestUtils.setField(healthIndicator, "messageCheckEnvEnabled", "prod,aat");
-        ReflectionTestUtils.setField(healthIndicator, "environment", "prod");
-    }
-
-    @Test
-    void shouldReturnCorrectWhenEnvironmentIsDisabled() {
-        // Given
-        ReflectionTestUtils.setField(healthIndicator, "environment", "dev"); // Not in enabled list
-
-        // When
-        AvailabilityState result = healthIndicator.getState(applicationAvailability);
-
-        // Then
-        assertEquals(LivenessState.CORRECT, result);
     }
 
     @Test
@@ -112,24 +96,9 @@ class MessagePublisherLivenessHealthIndicatorTest {
     @Test
     void shouldReturnCorrectWhenEnvironmentIsInEnabledList() {
         // Given
-        ReflectionTestUtils.setField(healthIndicator, "environment", "prod");
-        ReflectionTestUtils.setField(healthIndicator, "messageCheckEnvEnabled", "prod,aat,test");
         when(repository.findFirstByPublishedIsNullOrderByTimeStampAsc()).thenReturn(Optional.empty());
         when(clock.instant()).thenReturn(Instant.now());
         when(clock.getZone()).thenReturn(ZoneOffset.UTC);
-
-        // When
-        AvailabilityState result = healthIndicator.getState(applicationAvailability);
-
-        // Then
-        assertEquals(LivenessState.CORRECT, result);
-    }
-
-    @Test
-    void shouldReturnCorrectWhenEnvironmentIsNotInEnabledList() {
-        // Given
-        ReflectionTestUtils.setField(healthIndicator, "environment", "dev");
-        ReflectionTestUtils.setField(healthIndicator, "messageCheckEnvEnabled", "prod,aat,test");
 
         // When
         AvailabilityState result = healthIndicator.getState(applicationAvailability);
@@ -152,38 +121,6 @@ class MessagePublisherLivenessHealthIndicatorTest {
 
         // Then
         assertEquals(LivenessState.CORRECT, result);
-    }
-
-    // Note: AAT environment test with staging URI check is skipped in unit tests
-    // because it requires ServletUriComponentsBuilder which needs a request context.
-    // This functionality is tested in integration tests where the full web context is available.
-
-    @Test
-    void isNotEnabledForEnvironmentShouldReturnFalseForEnabledEnvironment() {
-        // Given
-        String prodEnv = "prod";
-        ReflectionTestUtils.setField(healthIndicator, "environment", prodEnv);
-        ReflectionTestUtils.setField(healthIndicator, "messageCheckEnvEnabled", "prod,aat");
-
-        // When
-        boolean result = healthIndicator.isNotEnabledForEnvironment(prodEnv);
-
-        // Then
-        assertFalse(result);
-    }
-
-    @Test
-    void isNotEnabledForEnvironmentShouldReturnTrueForDisabledEnvironment() {
-        // Given
-        String devEnv = "dev";
-        ReflectionTestUtils.setField(healthIndicator, "environment", devEnv);
-        ReflectionTestUtils.setField(healthIndicator, "messageCheckEnvEnabled", "prod,aat");
-
-        // When
-        boolean result = healthIndicator.isNotEnabledForEnvironment(devEnv);
-
-        // Then
-        assertTrue(result);
     }
 
     private MessageQueueCandidateEntity createMessageEntity(LocalDateTime timestamp) {

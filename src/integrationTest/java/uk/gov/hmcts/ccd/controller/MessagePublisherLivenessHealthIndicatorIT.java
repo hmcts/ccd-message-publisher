@@ -47,8 +47,6 @@ class MessagePublisherLivenessHealthIndicatorIT extends BaseTest {
 
     @BeforeEach
     void setUp() {
-        ReflectionTestUtils.setField(healthIndicator, "messageCheckEnvEnabled", "test");
-        ReflectionTestUtils.setField(healthIndicator, "environment", "test");
         ReflectionTestUtils.setField(healthIndicator, "allowedStalePeriod", 5);
     }
 
