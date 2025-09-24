@@ -64,13 +64,6 @@
         },
         "refreshScope": {
           "status": "UP"
-        },
-        "ssl" : {
-          "status" : "UP",
-          "details" : {
-            "validChains" : [ ],
-            "invalidChains" : [ ]
-          }
         }
       },
       "groups": [

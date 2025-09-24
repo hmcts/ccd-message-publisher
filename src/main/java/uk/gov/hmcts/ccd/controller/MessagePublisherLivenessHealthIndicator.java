@@ -16,9 +16,6 @@ import java.net.URI;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
@@ -63,13 +60,11 @@ public class MessagePublisherLivenessHealthIndicator extends LivenessStateHealth
             return LivenessState.CORRECT;
         }
 
-        ZonedDateTime currentTime = getCurrentTime();
-        ZonedDateTime ukZonedDateTime = currentTime.withZoneSameInstant(ZoneId.of("Europe/London"));
-        LocalDateTime ukLocalDateTime = ukZonedDateTime.toLocalDateTime();
-        LocalDateTime utcTimeMinusOneHour = currentTime.minusHours(1).toLocalDateTime();
+        LocalDateTime currentTime = LocalDateTime.now(clock);
+        LocalDateTime utcTimeMinusOneHour = currentTime.minusHours(1);
 
         log.info("UTC date and time {}, UTC date time minus 1 hour {}, UK local date and time {}",
-                 currentTime, utcTimeMinusOneHour, ukLocalDateTime);
+                 currentTime, utcTimeMinusOneHour, currentTime);
 
         if (hasStaleUnpublishedMessages()) {
             return LivenessState.BROKEN;
@@ -87,8 +82,8 @@ public class MessagePublisherLivenessHealthIndicator extends LivenessStateHealth
         Optional<MessageQueueCandidateEntity> messageEntity =
             repository.findFirstByPublishedIsNullOrderByTimeStampAsc();
         if (messageEntity.isPresent()) {
-            ZonedDateTime currentTime = getCurrentTime();
-            ZonedDateTime messageTime = messageEntity.get().getTimeStamp().atZone(ZoneOffset.UTC);
+            LocalDateTime currentTime = LocalDateTime.now(clock);
+            LocalDateTime messageTime = messageEntity.get().getTimeStamp();
             long diffMinutes = Duration.between(messageTime, currentTime).toMinutes();
             log.info("Message time: {}, Current time: {}, Diff minutes: {}, Time delay: {}",
                      messageTime, currentTime, diffMinutes, allowedStalePeriod
@@ -110,9 +105,5 @@ public class MessagePublisherLivenessHealthIndicator extends LivenessStateHealth
         Set<String> envsToEnable = Arrays.stream(messageCheckEnvEnabled.split(","))
             .map(String::trim).collect(Collectors.toSet());
         return !envsToEnable.contains(env);
-    }
-
-    private ZonedDateTime getCurrentTime() {
-        return LocalDateTime.now(clock).atZone(ZoneOffset.UTC);
     }
 }

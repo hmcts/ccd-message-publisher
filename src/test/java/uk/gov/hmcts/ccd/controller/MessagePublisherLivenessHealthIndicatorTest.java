@@ -65,7 +65,7 @@ class MessagePublisherLivenessHealthIndicatorTest {
     @Test
     void shouldReturnCorrectWhenMessageIsWithinAllowedStalePeriod() {
         // Given
-        LocalDateTime messageTime = LocalDateTime.now(ZoneOffset.UTC).minusMinutes(2); // Within 5-minute delay
+        LocalDateTime messageTime = LocalDateTime.now(Clock.systemUTC()).minusMinutes(2); // Within 5-minute delay
         when(repository.findFirstByPublishedIsNullOrderByTimeStampAsc())
             .thenReturn(Optional.of(createMessageEntity(messageTime)));
         when(clock.instant()).thenReturn(Instant.now());
@@ -82,7 +82,7 @@ class MessagePublisherLivenessHealthIndicatorTest {
     void shouldReturnBrokenWhenMessageIsBeyondAllowedStalePeriod() {
         // Given
         // Beyond 5-minute delay
-        LocalDateTime messageTime = LocalDateTime.now(ZoneOffset.UTC).minusMinutes(TIME_DELAY + 1);
+        LocalDateTime messageTime = LocalDateTime.now(Clock.systemUTC()).minusMinutes(TIME_DELAY + 1);
         when(repository.findFirstByPublishedIsNullOrderByTimeStampAsc())
             .thenReturn(Optional.of(createMessageEntity(messageTime)));
         when(clock.instant()).thenReturn(Instant.now());
@@ -141,7 +141,7 @@ class MessagePublisherLivenessHealthIndicatorTest {
     @Test
     void shouldReturnCorrectWhenMessageIsExactlyAtAllowedStalePeriod() {
         // Given
-        LocalDateTime messageTime = LocalDateTime.now(ZoneOffset.UTC).minusMinutes(TIME_DELAY);
+        LocalDateTime messageTime = LocalDateTime.now(Clock.systemUTC()).minusMinutes(TIME_DELAY);
         when(repository.findFirstByPublishedIsNullOrderByTimeStampAsc())
             .thenReturn(Optional.of(createMessageEntity(messageTime)));
         when(clock.instant()).thenReturn(Instant.now());
