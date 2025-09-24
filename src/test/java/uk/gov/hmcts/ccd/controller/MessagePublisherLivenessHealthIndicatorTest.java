@@ -83,8 +83,6 @@ class MessagePublisherLivenessHealthIndicatorTest {
     void shouldReturnCorrectWhenNoMessagesExist() {
         // Given
         when(repository.findFirstByPublishedIsNullOrderByTimeStampAsc()).thenReturn(Optional.empty());
-        when(clock.instant()).thenReturn(Instant.now());
-        when(clock.getZone()).thenReturn(ZoneOffset.UTC);
 
         // When
         AvailabilityState result = healthIndicator.getState(applicationAvailability);
@@ -97,8 +95,6 @@ class MessagePublisherLivenessHealthIndicatorTest {
     void shouldReturnCorrectWhenEnvironmentIsInEnabledList() {
         // Given
         when(repository.findFirstByPublishedIsNullOrderByTimeStampAsc()).thenReturn(Optional.empty());
-        when(clock.instant()).thenReturn(Instant.now());
-        when(clock.getZone()).thenReturn(ZoneOffset.UTC);
 
         // When
         AvailabilityState result = healthIndicator.getState(applicationAvailability);
