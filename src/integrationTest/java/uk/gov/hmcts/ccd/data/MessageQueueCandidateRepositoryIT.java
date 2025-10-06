@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.ccd.BaseTest;
@@ -20,16 +21,20 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Transactional
+@DirtiesContext
 class MessageQueueCandidateRepositoryIT extends BaseTest {
 
     private static final String INSERT_DATA_SCRIPT = "classpath:sql/insert-message-queue-candidates.sql";
+    private static final String CLEANUP_SCRIPT = "classpath:sql/cleanup-message-queue-candidates.sql";
     private static final String MESSAGE_TYPE = "FIRST_MESSAGE_TYPE";
 
     @Autowired
     private MessageQueueCandidateRepository repository;
 
+
     @Test
-    @Sql(INSERT_DATA_SCRIPT)
+    @Sql(scripts = {CLEANUP_SCRIPT, INSERT_DATA_SCRIPT}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DirtiesContext
     void shouldFindAllUnpublishedMessagesForMessageType() {
         Slice<MessageQueueCandidateEntity> result = repository
             .findUnpublishedMessages(MESSAGE_TYPE, Pageable.unpaged());
@@ -42,7 +47,8 @@ class MessageQueueCandidateRepositoryIT extends BaseTest {
     }
 
     @Test
-    @Sql(INSERT_DATA_SCRIPT)
+    @Sql(scripts = {CLEANUP_SCRIPT, INSERT_DATA_SCRIPT}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DirtiesContext
     void shouldFindPaginatedUnpublishedMessages() {
         Slice<MessageQueueCandidateEntity> result = repository
             .findUnpublishedMessages(MESSAGE_TYPE, PageRequest.of(1, 2));
@@ -59,7 +65,8 @@ class MessageQueueCandidateRepositoryIT extends BaseTest {
     }
 
     @Test
-    @Sql(INSERT_DATA_SCRIPT)
+    @Sql(scripts = {CLEANUP_SCRIPT, INSERT_DATA_SCRIPT}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DirtiesContext
     void shouldReturnAllDataInEntity() {
         Slice<MessageQueueCandidateEntity> result = repository
             .findUnpublishedMessages(MESSAGE_TYPE, PageRequest.of(0, 1));
@@ -76,7 +83,8 @@ class MessageQueueCandidateRepositoryIT extends BaseTest {
     }
 
     @Test
-    @Sql(INSERT_DATA_SCRIPT)
+    @Sql(scripts = {CLEANUP_SCRIPT, INSERT_DATA_SCRIPT}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DirtiesContext
     void shouldDeleteMessagesWithRetentionPeriod() {
         int result = repository.deletePublishedMessages(LocalDateTime.now().minusDays(30), MESSAGE_TYPE);
 

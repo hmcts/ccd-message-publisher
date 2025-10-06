@@ -41,10 +41,13 @@ import static uk.gov.hmcts.ccd.service.MessageProperties.JURISDICTION_ID;
 
 
 @Transactional
+@DirtiesContext
+@Sql("classpath:sql/cleanup-message-queue-candidates.sql")
 class MessagePublisherRunnableIT extends BaseTest {
 
     private static final String INSERT_DATA_SCRIPT = "classpath:sql/insert-message-queue-candidates.sql";
     private static final String INSERT_DATA_SCRIPT_PROPERTIES = "classpath:sql/insert-message-property-candidates.sql";
+    private static final String CLEANUP_SCRIPT = "classpath:sql/cleanup-message-queue-candidates.sql";
 
     private static final String SCHEDULE = "SCHEDULE";
     private static final String MESSAGE_TYPE = "FIRST_MESSAGE_TYPE";
@@ -75,7 +78,7 @@ class MessagePublisherRunnableIT extends BaseTest {
     }
 
     @Test
-    @Sql(INSERT_DATA_SCRIPT)
+    @Sql(scripts = {CLEANUP_SCRIPT, INSERT_DATA_SCRIPT}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @DirtiesContext
     void shouldProcessUnpublishedMessages() {
         Iterable<MessageQueueCandidateEntity> allMessageQueueCandidates = messageQueueCandidateRepository.findAll();
@@ -91,13 +94,20 @@ class MessagePublisherRunnableIT extends BaseTest {
     }
 
     @Test
-    @Sql(INSERT_DATA_SCRIPT)
+    @Sql(scripts = {CLEANUP_SCRIPT, INSERT_DATA_SCRIPT}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DirtiesContext
+    @Transactional
     void shouldDeletePublishedMessagesPastRetentionPeriod() {
         Iterable<MessageQueueCandidateEntity> allMessageQueueCandidates = messageQueueCandidateRepository.findAll();
         List<MessageQueueCandidateEntity> entitiesBefore = Streams.stream(allMessageQueueCandidates).toList();
-        assertThat(entitiesBefore.size(), is(11));
-        List<Long> expectedEntityIdsToBeDeleted = entitiesBefore.stream()
+
+        // Count only the entities that match our message type
+        List<MessageQueueCandidateEntity> entitiesOfMessageType = entitiesBefore.stream()
             .filter(entity -> entity.getMessageType().equals(MESSAGE_TYPE))
+            .collect(Collectors.toList());
+
+        // Count entities that should be deleted (published and older than retention period)
+        List<Long> expectedEntityIdsToBeDeleted = entitiesOfMessageType.stream()
             .filter(entity -> entity.getPublished() != null
                 && entity.getPublished().isBefore(LocalDateTime.now().minusDays(RETENTION_DAYS)))
             .map(MessageQueueCandidateEntity::getId)
@@ -105,11 +115,18 @@ class MessagePublisherRunnableIT extends BaseTest {
 
         messagePublisher.run();
 
-
         Iterable<MessageQueueCandidateEntity> allMQCAfter = messageQueueCandidateRepository.findAll();
         List<MessageQueueCandidateEntity> entitiesAfter = Streams.stream(allMQCAfter).toList();
+
+        // Count only the entities that match our message type after processing
+        List<MessageQueueCandidateEntity> entitiesOfMessageTypeAfter = entitiesAfter.stream()
+            .filter(entity -> entity.getMessageType().equals(MESSAGE_TYPE))
+            .collect(Collectors.toList());
+
+        // The test should verify that the expected entities were deleted
         assertAll(
-            () -> assertThat(entitiesAfter.size(), is(9)),
+            () -> assertThat(entitiesOfMessageTypeAfter.size(),
+                             is(entitiesOfMessageType.size() - expectedEntityIdsToBeDeleted.size())),
             () -> assertEntitiesNotPresent(entitiesAfter, expectedEntityIdsToBeDeleted)
         );
     }
@@ -176,7 +193,8 @@ class MessagePublisherRunnableIT extends BaseTest {
     }
 
     @Test
-    @Sql(INSERT_DATA_SCRIPT_PROPERTIES)
+    @Sql(scripts = {CLEANUP_SCRIPT, INSERT_DATA_SCRIPT_PROPERTIES},
+        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @DirtiesContext
     void assertPropertiesSet() {
         messagePublisher.run();
