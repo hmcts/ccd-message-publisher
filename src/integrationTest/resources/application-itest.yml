@@ -13,3 +13,29 @@ spring:
 
 message-publisher:
   tasks:
+
+management:
+  health:
+    probes:
+      enabled: true
+    livenessState:
+      enabled: true
+    readinessState:
+      enabled: true
+    ssl:
+      enabled: false
+  endpoint:
+    health:
+      allowedStalePeriod: ${ALLOWED_STALE_PERIOD:5}
+      show-details: "always"
+      show-components: always
+      group:
+        liveness:
+          include: livenessState, messagePublisherLiveness
+        readiness:
+          include: readinessState
+  endpoints:
+    web:
+      base-path: /
+      exposure:
+        include: health, info, prometheus

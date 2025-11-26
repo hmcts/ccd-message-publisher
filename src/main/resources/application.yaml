@@ -2,17 +2,34 @@ server:
   port: 4456
 
 management:
+  endpoint:
+    health:
+      allowedStalePeriod: ${ALLOWED_STALE_PERIOD:5}
+      show-details: "always"
+      show-components: always
+      probes:
+        enabled: true
+      group:
+        liveness:
+          include: livenessState, messagePublisherLiveness
+        readiness:
+          include: readinessState
   health:
     ssl:
       enabled: false
-  endpoint:
-    health:
-      show-details: "always"
+    livenessState:
+      enabled: true
+    readinessState:
+      enabled: true
   endpoints:
     web:
       base-path: /
       exposure:
         include: health, info, prometheus
+
+springdoc:
+  packagesToScan: uk.gov.hmcts.ccd.controller
+  writer-with-order-by-keys: true
 
 spring:
   application:
@@ -26,6 +43,12 @@ spring:
       connection-string: ${SERVICE_BUS_CONNECTION_STRING}
       pricing-tier: ${SERVICE_BUS_PRICING_TIER:standard}
       idle-timeout: ${SERVICE_BUS_IDLE_TIMEOUT:240000} # 4 minutes
+      pool:
+        enabled: true
+        max-connections: 1
+        max-sessions-per-connection: 5
+        connection-idle-timeout: PT3M
+        time-between-expiration-check: PT1M
   jpa:
     database: postgresql
   datasource:
