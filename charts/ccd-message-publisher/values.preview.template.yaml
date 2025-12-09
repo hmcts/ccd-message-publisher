@@ -22,3 +22,77 @@ servicebus:
     topics:
       - name: ccd-events
         subscriptionNeeded: yes
+ccd:
+  enabled: true
+  ccd:
+    s2s:
+      enabled: false
+    dataStore:
+      enabled: true
+    adminWeb:
+      enabled: false
+    definitionImporter:
+      enabled: false
+    userProfileImporter:
+      enabled: false
+    apiGatewayWeb:
+      enabled: false
+    ras:
+      enabled: false
+    elastic:
+      enabled: false
+    postgresql:
+      enabled: false
+      
+ccd-data-store-api:
+    java:
+      ingressHost: ccd-data-store-api-${SERVICE_FQDN}
+      imagePullPolicy: Always
+      devmemoryRequests: '1524Mi'
+      devmemoryLimits: '2048Mi'
+      devcpuRequests: '500m'
+      secrets:
+        DATA_STORE_DB_PASSWORD:
+          secretRef: "{{ .Values.global.postgresSecret }}"
+          key: PASSWORD
+          disabled: true
+      environment:
+        DATA_STORE_IDAM_KEY: ${CCD_DATA_S2S_SECRET}
+        DATA_STORE_DB_HOST: '{{ .Release.Name }}-postgresql'
+        DATA_STORE_DB_USERNAME: "{{ .Values.postgresql.auth.username}}"
+        DATA_STORE_DB_PASSWORD: "{{ .Values.postgresql.auth.password}}"
+        DATA_STORE_DB_OPTIONS: "?stringtype=unspecified&sslmode=disable"
+        DEFINITION_STORE_HOST: http://${SERVICE_NAME}-ccd-definition-store
+        USER_PROFILE_HOST: http://${SERVICE_NAME}-ccd-user-profile-api
+        ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
+        DATA_STORE_IDAM_KEY: ${CCD_DATA_STORE_S2S_SECRET}
+        IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET: ${IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET}
+        IDAM_DATA_STORE_SYSTEM_USER_USERNAME: ${IDAM_DATA_STORE_SYSTEM_USER_USERNAME}
+        IDAM_DATA_STORE_SYSTEM_USER_PASSWORD: ${IDAM_DATA_STORE_SYSTEM_USER_PASSWORD}
+        IDAM_API_BASE_URL: https://idam-api.aat.platform.hmcts.net
+        IDAM_OIDC_URL: https://idam-web-public.aat.platform.hmcts.net
+        DATA_STORE_CROSS_JURISDICTIONAL_ROLES: caseworker-caa,caseworker-approver
+        ELASTIC_SEARCH_ENABLED: true
+        ELASTIC_SEARCH_HOSTS: ${SERVICE_NAME}-es-master:9200
+        ELASTIC_SEARCH_DATA_NODES_HOSTS: http://${SERVICE_NAME}-es-master:9200
+        HTTP_CLIENT_READ_TIMEOUT: '120000'
+        HTTP_CLIENT_MAX_TOTAL: '300'
+        HTTP_CLIENT_MAX_CLIENT_PER_ROUTE: '30'
+        DATA_STORE_DB_MAX_POOL_SIZE: 80
+        CCD_DOCUMENT_URL_PATTERN: ^https?://(((?:dm-store-aat\.service\.core-compute-aat\.internal(?::\d+)?)\/documents\/[A-Za-z0-9-]+(?:\/binary)?))
+        CASE_DOCUMENT_AM_URL: ${CASE_DOCUMENT_AM_URL}
+        UPLOAD_TIMESTAMP_FEATURED_CASE_TYPES: CARE_SUPERVISION_EPO
+        DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_data,ccd_gw,ccd_ps,sscs,bulk_scan_orchestrator,ccpay_bubble,ctsc_work_allocation,em_ccd_orchestrator,xui_webapp,aac_manage_case_assignment,wa_task_configuration_api,wa_task_monitor,ccd_case_document_am_api,hmc_cft_hearing_service,wa_task_management_api
+      postgresql:
+        enabled: true
+        primary:
+          persistence:
+            enabled: false
+          initdb:
+            scripts:
+              init.sql: |
+                CREATE DATABASE "data-store" WITH OWNER = javapostgres ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+        auth:
+          username: "javapostgres"
+          password: "javapassword"
+        postgresHostname: ${SERVICE_NAME}-postgresql
