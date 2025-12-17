@@ -138,7 +138,7 @@ task integration(type: Test) {
   testClassesDirs = sourceSets.integrationTest.output.classesDirs
   classpath = sourceSets.integrationTest.runtimeClasspath
   failFast = true
-  shouldRunAfter test
+  // shouldRunAfter test
 }
 
 task fortifyScan(type: JavaExec) {
