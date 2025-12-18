@@ -1,13 +1,17 @@
 #!groovy
 
-import uk.gov.hmcts.contino.GithubAPI
-
 @Library("Infrastructure")
+
+import uk.gov.hmcts.contino.GradleBuilder
+import uk.gov.hmcts.contino.AppPipelineDsl
+import uk.gov.hmcts.contino.GithubAPI
 
 def type = "java"
 def product = "ccd"
 def component = "message-publisher"
 def branchesToSync = ['demo', 'ithc', 'perftest']
+
+GradleBuilder builder = new GradleBuilder(this, product)
 
 // Variables to switch pipeline logic and wiring per type of build
 def definitionStoreDevelopPr = "PR-575" // This doesn't change frequently, but when it does, only change this value.
