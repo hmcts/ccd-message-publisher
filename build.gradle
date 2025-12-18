@@ -102,7 +102,9 @@ task functional(type: Test) {
     into "${buildDir}/test-results/test"
   }
 
-  doFirst {
+  generateCucumberReports.enabled = false
+
+  doLast {
     generateCucumberReports.enabled = true
     javaexec {
       main = "uk.gov.hmcts.ccd.messagepublisher.befta.MessagePublisherBeftaMain"
@@ -138,7 +140,7 @@ task integration(type: Test) {
   testClassesDirs = sourceSets.integrationTest.output.classesDirs
   classpath = sourceSets.integrationTest.runtimeClasspath
   failFast = true
-  shouldRunAfter test
+  // shouldRunAfter test
 }
 
 task fortifyScan(type: JavaExec) {
@@ -155,6 +157,8 @@ task smoke(type: Test) {
     from "src/aat/resources/DummyTest.xml"
     into "${buildDir}/test-results/test"
   }
+
+  generateCucumberReports.enabled = false
 
   doLast {
     generateCucumberReports.enabled = true
