@@ -278,7 +278,7 @@ dependencies {
   implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: tomcatVersion // spring-boot-starter-tomcat
   implementation group: 'org.hibernate', name: 'hibernate-core', version: '6.6.19.Final'                   // spring-boot-starter-data-jpa
 
-  runtimeOnly group: 'com.zaxxer', name: 'HikariCP', version: '6.3.2'                                     // spring-boot-starter-data-jpa
+  runtimeOnly group: 'com.zaxxer', name: 'HikariCP', version: '7.0.2'                                     // spring-boot-starter-data-jpa
 
   // end::CVE Vulnerability dependency overrides                                                          // MAIN PARENT DEPENDEDNCY
 
