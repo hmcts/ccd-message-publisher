@@ -276,7 +276,7 @@ dependencies {
   implementation group: 'net.minidev', name: 'json-smart', version: '2.6.0'                               // spring-cloud-azure-starter-servicebus-jms
   implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: tomcatVersion      // spring-boot-starter-tomcat
   implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: tomcatVersion // spring-boot-starter-tomcat
-  implementation group: 'org.hibernate', name: 'hibernate-core', version: '6.6.19.Final'                   // spring-boot-starter-data-jpa
+  implementation group: 'org.hibernate', name: 'hibernate-core', version: '6.6.42.Final'                   // spring-boot-starter-data-jpa
 
   runtimeOnly group: 'com.zaxxer', name: 'HikariCP', version: '6.3.2'                                     // spring-boot-starter-data-jpa
 
