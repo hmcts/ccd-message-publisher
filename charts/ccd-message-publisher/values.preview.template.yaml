@@ -153,3 +153,4 @@ ccd:
           secretRef: "{{ .Values.global.postgresSecret }}"
           key: PASSWORD
           disabled: true
+
