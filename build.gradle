@@ -307,7 +307,7 @@ dependencies {
   implementation group: 'io.hawt', name: 'hawtio-springboot', version: '4.6.2'
   implementation group: 'jakarta.el', name: 'jakarta.el-api', version: '6.0.1'
   implementation group: 'org.apache.activemq', name: 'activemq-client', version: '6.2.1'
-  implementation group: 'org.apache.activemq', name: 'activemq-broker', version: '6.2.0'
+  implementation group: 'org.apache.activemq', name: 'activemq-broker', version: '6.2.1'
   implementation group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.5.1'
   implementation group: 'org.projectlombok', name: 'lombok', version: lombok
 
