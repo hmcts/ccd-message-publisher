@@ -22,7 +22,7 @@ ext {
   junit               = '5.14.3'
   junitPlatform       = '1.14.3'
   lombok              = '1.18.42'
-  netty               = '4.2.7.Final'
+  netty               = '4.2.10.Final'
   reformLogging       = '6.1.9'
   testcontainers      = '1.21.3'
 }
