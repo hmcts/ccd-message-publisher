@@ -53,6 +53,9 @@
         "livenessState": {
           "status": "UP"
         },
+        "messagePublisherLiveness" : {
+          "status" : "UP"
+        },
         "ping": {
           "status": "UP"
         },

@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Transactional
 public interface MessageQueueCandidateRepository extends PagingAndSortingRepository<MessageQueueCandidateEntity, Long> {
@@ -28,4 +29,5 @@ public interface MessageQueueCandidateRepository extends PagingAndSortingReposit
 
     <S extends MessageQueueCandidateEntity> Iterable<S> saveAll(Iterable<MessageQueueCandidateEntity> entities);
 
+    Optional<MessageQueueCandidateEntity> findFirstByPublishedIsNullOrderByTimeStampAsc();
 }

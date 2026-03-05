@@ -27,3 +27,6 @@ java:
 
 servicebus:
   enabled: false
+
+ccd:
+  enabled: false

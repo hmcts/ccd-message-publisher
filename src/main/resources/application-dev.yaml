@@ -1,12 +1,28 @@
 management:
+  endpoint:
+    health:
+      allowedStalePeriod: ${ALLOWED_STALE_PERIOD:5}
+      show-details: "always"
+      show-components: always
+      probes:
+        enabled: true
+      group:
+        liveness:
+          include: livenessState, messagePublisherLiveness
+        readiness:
+          include: readinessState
+  health:
+    livenessState:
+      enabled: true
+    readinessState:
+      enabled: true
   endpoints:
     web:
+      base-path: /
       exposure:
-        include: health, info, prometheus, hawtio, jolokia
-
-endpoints:
-  jolokia:
-    sensitive: false
+        include: health, info, prometheus
+    jolokia:
+      sensitive: false
 
 hawtio:
   authenticationEnabled: false
