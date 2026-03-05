@@ -221,6 +221,8 @@ dependencyUpdates {
 // https://jeremylong.github.io/DependencyCheck/dependency-check-gradle/configuration.html
 apply from: './gradle/suppress.gradle'
 dependencyCheck {
+  // suppress.gradle parses dependency-check-report.xml
+  formats = ['HTML', 'XML']
   suppressionFile = 'config/owasp/suppressions.xml'
 }
 
