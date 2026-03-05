@@ -221,13 +221,14 @@ dependencyUpdates {
 
 // https://jeremylong.github.io/DependencyCheck/dependency-check-gradle/configuration.html
 apply from: './gradle/suppress.gradle'
+def dependencyCheckSuppressionFilePath = 'config/owasp/suppressions.xml'
 dependencyCheck {
-  suppressionFile = 'config/owasp/suppressions.xml'
+  suppressionFile = dependencyCheckSuppressionFilePath
 }
 
 tasks.register("printSuppressionFile") {
   doLast {
-    println "SUPPRESSION_FILE=${dependencyCheck.suppressionFile}"
+    println "SUPPRESSION_FILE=${dependencyCheckSuppressionFilePath}"
   }
 }
 
