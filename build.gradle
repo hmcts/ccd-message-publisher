@@ -225,8 +225,15 @@ dependencyCheck {
   suppressionFile = dependencyCheckSuppressionFilePath
 }
 
-tasks.register("printSuppressionFile") {
-  doLast {
+def printSuppressionFileTask = tasks.findByName("printSuppressionFile")
+if (printSuppressionFileTask == null) {
+  tasks.register("printSuppressionFile") {
+    doLast {
+      println "SUPPRESSION_FILE=${dependencyCheckSuppressionFilePath}"
+    }
+  }
+} else {
+  printSuppressionFileTask.doLast {
     println "SUPPRESSION_FILE=${dependencyCheckSuppressionFilePath}"
   }
 }
