@@ -228,7 +228,13 @@ dependencyCheck {
 
 tasks.register("printSuppressionFile") {
   doLast {
-    println "SUPPRESSION_FILE=${dependencyCheck.getSuppressionFile()}"
+    def suppressionFile = dependencyCheck.getSuppressionFile()
+    if (suppressionFile?.metaClass?.respondsTo(suppressionFile, "getOrNull")) {
+      suppressionFile = suppressionFile.getOrNull()
+    } else if (suppressionFile?.metaClass?.respondsTo(suppressionFile, "get")) {
+      suppressionFile = suppressionFile.get()
+    }
+    println "SUPPRESSION_FILE=${suppressionFile}"
   }
 }
 
