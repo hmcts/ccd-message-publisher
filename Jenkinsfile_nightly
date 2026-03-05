@@ -34,10 +34,20 @@ withNightlyPipeline(type, product, component) {
 
       def suppressionFile = ''
       script {
-        suppressionFile = sh(
+        def suppressionOutput = sh(
           script: './gradlew printSuppressionFile -q',
           returnStdout: true
-        ).trim().split("=")[1]
+        ).trim()
+
+        suppressionFile = suppressionOutput
+          .readLines()
+          .find { it.startsWith('SUPPRESSION_FILE=') }
+          ?.split('=', 2)[1]
+          ?.trim()
+
+        if (!suppressionFile) {
+          error "Failed to resolve suppression file path from printSuppressionFile output: ${suppressionOutput}"
+        }
 
         echo "Suppression file and path: ${suppressionFile}"
 
