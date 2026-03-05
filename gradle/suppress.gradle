@@ -26,7 +26,13 @@ void suppressCves(String reportName = Globals.REPORT_NAME) {
 
     if (!unSuppressedCves.isEmpty()) {
         // Suppression file must be specified as 'suppressionFile=...' in build.gradle.
-        File suppressionFile = project.file(dependencyCheck.getSuppressionFile())
+        def suppressionFileValue = dependencyCheck.getSuppressionFile()
+        if (suppressionFileValue?.metaClass?.respondsTo(suppressionFileValue, "getOrNull")) {
+            suppressionFileValue = suppressionFileValue.getOrNull()
+        } else if (suppressionFileValue?.metaClass?.respondsTo(suppressionFileValue, "get")) {
+            suppressionFileValue = suppressionFileValue.get()
+        }
+        File suppressionFile = project.file(suppressionFileValue)
         validateSection(suppressionFile, new XmlSlurper(false, false).parse(suppressionFile))
 
         String suppressionXml = new String(suppressionFile.readBytes(), "UTF-8")
