@@ -223,16 +223,19 @@ apply from: './gradle/suppress.gradle'
 dependencyCheck {
   // suppress.gradle parses dependency-check-report.xml
   formats = ['HTML', 'XML']
-  suppressionFile = 'config/owasp/suppressions.xml'
+  suppressionFiles = ['config/owasp/suppressions.xml']
 }
 
 tasks.register("printSuppressionFile") {
   doLast {
-    def suppressionFile = dependencyCheck.getSuppressionFile()
+    def suppressionFile = dependencyCheck.getSuppressionFiles()
     if (suppressionFile?.metaClass?.respondsTo(suppressionFile, "getOrNull")) {
       suppressionFile = suppressionFile.getOrNull()
     } else if (suppressionFile?.metaClass?.respondsTo(suppressionFile, "get")) {
       suppressionFile = suppressionFile.get()
+    }
+    if (suppressionFile instanceof Collection) {
+      suppressionFile = suppressionFile.find { it }?.toString()
     }
     println "SUPPRESSION_FILE=${suppressionFile}"
   }
