@@ -24,7 +24,7 @@ ext {
   junitPlatform       = '1.14.3'
   lombok              = '1.18.42'
   netty               = '4.2.10.Final'
-  reformLogging       = '6.1.9'
+  reformLogging       = '8.0.0'
   testcontainers      = '1.21.4'
 }
 
