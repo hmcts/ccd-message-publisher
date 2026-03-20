@@ -1,4 +1,3 @@
-import groovy.util.slurpersupport.GPathResult
 import groovy.xml.DOMBuilder
 import groovy.xml.XmlUtil
 import org.w3c.dom.Document
@@ -19,7 +18,7 @@ void suppressCves(String reportName = Globals.REPORT_NAME) {
     }
 
     // Creates a unique set of non-suppressed vulnerabilities
-    GPathResult vulnerabilityReport = new XmlSlurper().parse(new FileReader(reportFile))
+    def vulnerabilityReport = new XmlSlurper().parse(new FileReader(reportFile))
     Set<String> unSuppressedCves = vulnerabilityReport.'**'
             .findAll { node -> node.name() == 'vulnerability' }
             .collect { it.name.text() } as Set<String>
