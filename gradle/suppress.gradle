@@ -1,3 +1,4 @@
+import groovy.xml.XmlSlurper
 import groovy.xml.DOMBuilder
 import groovy.xml.XmlUtil
 import org.w3c.dom.Document
