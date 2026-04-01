@@ -140,7 +140,6 @@ task functional(type: Test) {
 }
 
 task integration(type: Test) {
-  println "JCDEBUG: START1 task integration , generateCucumberReports.enabled = ${generateCucumberReports.enabled}"
   description = "Runs integration tests"
   group = "Verification"
   testClassesDirs = sourceSets.integrationTest.output.classesDirs
