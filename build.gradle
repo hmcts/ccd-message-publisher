@@ -151,21 +151,8 @@ task integration(type: Test) {
   // Gradle task logging
   doFirst {
     println "JCDEBUG: START2 task integration , generateCucumberReports.enabled = ${generateCucumberReports.enabled}"
-    logger.info("integration testClassesDirs = ${testClassesDirs.asPath}")
-    logger.info("integration classpath size = ${classpath.files.size()}")
-  }
-
-  testLogging {
-    events "failed", "skipped", "passed", "standardOut", "standardError"
-    exceptionFormat "full"
-    showExceptions true
-    showCauses true
-    showStackTraces true
-    showStandardStreams true
-  }
-
-  finalizedBy {
-    println "JCDEBUG: END task integration , generateCucumberReports.enabled = ${generateCucumberReports.enabled}"
+    println "JCDEBUG: integration testClassesDirs = ${testClassesDirs.asPath}"
+    println "JCDEBUG: integration classpath size = ${classpath.files.size()}"
   }
 }
 
