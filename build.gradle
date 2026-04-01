@@ -140,12 +140,33 @@ task functional(type: Test) {
 }
 
 task integration(type: Test) {
+  println "JCDEBUG: START1 task integration , generateCucumberReports.enabled = ${generateCucumberReports.enabled}"
   description = "Runs integration tests"
   group = "Verification"
   testClassesDirs = sourceSets.integrationTest.output.classesDirs
   classpath = sourceSets.integrationTest.runtimeClasspath
   failFast = true
   shouldRunAfter test
+
+  // Gradle task logging
+  doFirst {
+    println "JCDEBUG: START2 task integration , generateCucumberReports.enabled = ${generateCucumberReports.enabled}"
+    logger.info("integration testClassesDirs = ${testClassesDirs.asPath}")
+    logger.info("integration classpath size = ${classpath.files.size()}")
+  }
+
+  testLogging {
+    events "failed", "skipped", "passed", "standardOut", "standardError"
+    exceptionFormat "full"
+    showExceptions true
+    showCauses true
+    showStackTraces true
+    showStandardStreams true
+  }
+
+  finalizedBy {
+    println "JCDEBUG: END task integration , generateCucumberReports.enabled = ${generateCucumberReports.enabled}"
+  }
 }
 
 task fortifyScan(type: JavaExec) {
