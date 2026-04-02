@@ -140,6 +140,8 @@ task functional(type: Test) {
 }
 
 task integration(type: Test) {
+  generateCucumberReports.enabled = false
+
   description = "Runs integration tests"
   group = "Verification"
   testClassesDirs = sourceSets.integrationTest.output.classesDirs
