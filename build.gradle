@@ -163,12 +163,7 @@ task integration(type: Test) {
     generateCucumberReports.enabled = false
   }
 
-  finalizedBy {
-    generateCucumberReports.enabled = false
-    doLast {
-      generateCucumberReports.enabled = false
-    }
-  }
+  generateCucumberReports.enabled = false
 }
 
 task fortifyScan(type: JavaExec) {
