@@ -158,6 +158,17 @@ task integration(type: Test) {
     println "JCDEBUG: integration testClassesDirs = ${testClassesDirs.asPath}"
     println "JCDEBUG: integration classpath size = ${classpath.files.size()}"
   }
+
+  doLast {
+    generateCucumberReports.enabled = false
+  }
+
+  finalizedBy {
+    generateCucumberReports.enabled = false
+    doLast {
+      generateCucumberReports.enabled = false
+    }
+  }
 }
 
 task fortifyScan(type: JavaExec) {
