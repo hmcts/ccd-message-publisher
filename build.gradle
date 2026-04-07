@@ -285,6 +285,16 @@ dependencyManagement {
 }
 
 tasks.named('generateCucumberReports').configure {
+  onlyIf {
+    def cucumberJsonExists = file("${projectDir}/target/cucumber.json").exists()
+    if (!cucumberJsonExists) {
+      logger.lifecycle("Skipping generateCucumberReports.  Cucumber JSON reports file not found.")
+    }
+    return cucumberJsonExists
+  }
+}
+
+tasks.named('generateCucumberReports').configure {
   doFirst {
     // generateCucumberReports pre-processing logic
     println "JCDEBUG: generateCucumberReports.doFirst , generateCucumberReports.enabled = ${generateCucumberReports.enabled}"
