@@ -154,13 +154,16 @@ task integration(type: Test) {
   // Gradle task logging
   doFirst {
     generateCucumberReports.enabled = false
-    println "JCDEBUG: START2 task integration , generateCucumberReports.enabled = ${generateCucumberReports.enabled}"
-    println "JCDEBUG: integration testClassesDirs = ${testClassesDirs.asPath}"
-    println "JCDEBUG: integration classpath size = ${classpath.files.size()}"
+    println "JCDEBUG: integration.doFirst , generateCucumberReports.enabled = ${generateCucumberReports.enabled}"
+    println "JCDEBUG: integration.doFirst , testClassesDirs = ${testClassesDirs.asPath}"
+    println "JCDEBUG: integration.doFirst , classpath size = ${classpath.files.size()}"
   }
 
   doLast {
     generateCucumberReports.enabled = false
+    println "JCDEBUG: integration.doLast , generateCucumberReports.enabled = ${generateCucumberReports.enabled}"
+    println "JCDEBUG: integration.doLast , testClassesDirs = ${testClassesDirs.asPath}"
+    println "JCDEBUG: integration.doLast , classpath size = ${classpath.files.size()}"
   }
 
   generateCucumberReports.enabled = false
@@ -278,6 +281,18 @@ tasks.register("printSuppressionFile") {
 dependencyManagement {
   imports {
     mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+  }
+}
+
+tasks.named('generateCucumberReports').configure {
+  doFirst {
+    // generateCucumberReports pre-processing logic
+    println "JCDEBUG: generateCucumberReports.doFirst , generateCucumberReports.enabled = ${generateCucumberReports.enabled}"
+  }
+
+  doLast {
+    // generateCucumberReports post-processing logic
+    println "JCDEBUG: generateCucumberReports.doLast , generateCucumberReports.enabled = ${generateCucumberReports.enabled}"
   }
 }
 
