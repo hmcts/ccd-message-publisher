@@ -167,7 +167,8 @@ task fortifyScan(type: JavaExec) {
   jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
 }
 
-task smoke(type: Test) {
+task smoke(type: JavaExec) {
+  println "JCDEBUG: smoke start"
   description = 'Executes smoke tests against an the CCD Data Store API instance just deployed'
   dependsOn aatClasses
 
@@ -176,20 +177,20 @@ task smoke(type: Test) {
     into "${buildDir}/test-results/test"
   }
 
-  doLast {
-    generateCucumberReports.enabled = true
-    javaexec {
-      main = "uk.gov.hmcts.ccd.messagepublisher.befta.MessagePublisherBeftaMain"
-      classpath += configurations.cucumberRuntime + sourceSets.aat.runtimeClasspath
-      args = ['--plugin', "json:${rootDir}/target/cucumber.json", '--tags', '@Smoke and not @Ignore', '--glue',
-              'uk.gov.hmcts.befta.player', '--glue', "uk.gov.hmcts.ccd.messagepublisher.befta", 'src/aat/resources/features']
-      jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
-    }
-  }
+  generateCucumberReports.enabled = true
+
+  mainClass = "uk.gov.hmcts.ccd.messagepublisher.befta.MessagePublisherBeftaMain"
+  classpath += configurations.cucumberRuntime + sourceSets.aat.runtimeClasspath
+  args = ['--plugin', "json:${rootDir}/target/cucumber.json", '--tags', '@Smoke and not @Ignore', '--glue',
+          'uk.gov.hmcts.befta.player', '--glue', "uk.gov.hmcts.ccd.messagepublisher.befta", 'src/aat/resources/features']
+  jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
 
   finalizedBy {
+    println "JCDEBUG: smoke.finalizedBy"
     generateCucumberReports {
+      println "JCDEBUG: smoke.finalizedBy.generateCucumberReports"
       doLast {
+        println "JCDEBUG: smoke.finalizedBy.generateCucumberReports.doLast"
         delete "${rootDir}/BEFTA Report for Smoke Tests/"
         new File("${rootDir}/BEFTA Report for Smoke Tests").mkdirs()
         file("${rootDir}/target/cucumber/cucumber-html-reports").renameTo(file("${rootDir}/BEFTA Report for Smoke Tests"))
@@ -199,6 +200,8 @@ task smoke(type: Test) {
   }
 
   outputs.upToDateWhen { false }
+
+  println "JCDEBUG: smoke end"
 }
 
 check.dependsOn integration
