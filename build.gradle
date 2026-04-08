@@ -168,6 +168,7 @@ task fortifyScan(type: JavaExec) {
 }
 
 task smoke(type: Test) {
+  println "JCDEBUG: smoke start"
   description = 'Executes smoke tests against an the CCD Data Store API instance just deployed'
   dependsOn aatClasses
 
@@ -188,8 +189,11 @@ task smoke(type: Test) {
   }
 
   finalizedBy {
+    println "JCDEBUG: smoke.finalizedBy"
     generateCucumberReports {
+      println "JCDEBUG: smoke.finalizedBy.generateCucumberReports"
       doLast {
+        println "JCDEBUG: smoke.finalizedBy.generateCucumberReports.doLast"
         delete "${rootDir}/BEFTA Report for Smoke Tests/"
         new File("${rootDir}/BEFTA Report for Smoke Tests").mkdirs()
         file("${rootDir}/target/cucumber/cucumber-html-reports").renameTo(file("${rootDir}/BEFTA Report for Smoke Tests"))
@@ -199,6 +203,8 @@ task smoke(type: Test) {
   }
 
   outputs.upToDateWhen { false }
+
+  println "JCDEBUG: smoke end"
 }
 
 check.dependsOn integration
