@@ -193,7 +193,8 @@ task smoke(type: Test) {
     generateCucumberReports {
       println "JCDEBUG: smoke.finalizedBy.generateCucumberReports"
       doLast {
-        println "JCDEBUG: smoke.finalizedBy.generateCucumberReports.doLast"
+        println "JCDEBUG: smoke.finalizedBy.generateCucumberReports.doLast  -----------------------------------------"
+        exec { commandLine 'ls' }
         delete "${rootDir}/BEFTA Report for Smoke Tests/"
         new File("${rootDir}/BEFTA Report for Smoke Tests").mkdirs()
         file("${rootDir}/target/cucumber/cucumber-html-reports").renameTo(file("${rootDir}/BEFTA Report for Smoke Tests"))
