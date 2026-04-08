@@ -199,6 +199,8 @@ task smoke(type: JavaExec) {
       println "JCDEBUG: smoke.finalizedBy.generateCucumberReports"
       doLast {
         println "JCDEBUG: smoke.finalizedBy.generateCucumberReports.doLast  -----------------------------------------"
+        println "JCDEBUG: rootDir    = ${rootDir}"
+        println "JCDEBUG: projectDir = ${projectDir}"
 
         def directory = projectDir
         println "Listing files in: ${directory}"
