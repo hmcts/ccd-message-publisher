@@ -198,24 +198,19 @@ task smoke(type: JavaExec) {
     generateCucumberReports {
       println "JCDEBUG: smoke.finalizedBy.generateCucumberReports"
       doLast {
-        println "JCDEBUG: smoke.finalizedBy.generateCucumberReports.doLast  -----------------------------------------"
-        println "JCDEBUG: rootDir    = ${rootDir}"
-        println "JCDEBUG: projectDir = ${projectDir}"
-
-        def directory = projectDir
-        println "Listing files in: ${directory}"
-        if (directory.exists() && directory.isDirectory()) {
-          directory.eachFile { file ->
-            println file.name
-          }
-        } else {
-          println "Current directory does not exist or is not a directory."
-        }
+        println "JCDEBUG: smoke.finalizedBy.generateCucumberReports.doLast  (1) -----------------------------------------"
+        println "JCDEBUG: Listing files in: ${projectDir}"
+        projectDir.eachFile { file -> println file.name }
 
         delete "${rootDir}/BEFTA Report for Smoke Tests/"
         new File("${rootDir}/BEFTA Report for Smoke Tests").mkdirs()
-        file("${rootDir}/target/cucumber/cucumber-html-reports").renameTo(file("${rootDir}/BEFTA Report for Smoke Tests"))
+        def success = file("${rootDir}/target/cucumber/cucumber-html-reports").renameTo(file("${rootDir}/BEFTA Report for Smoke Tests"))
         logger.quiet("Smoke test report moved to ---> file://${rootDir}/BEFTA%20Report%20for%20Smoke%20Tests/overview-features.html")
+
+        println "JCDEBUG: smoke.finalizedBy.generateCucumberReports.doLast  (2) -----------------------------------------"
+        println "JCDEBUG: success = ${success}"
+        println "JCDEBUG: Listing files in: ${projectDir}"
+        projectDir.eachFile { file -> println file.name }
       }
     }
   }
