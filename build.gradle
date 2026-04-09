@@ -206,6 +206,11 @@ task smoke(type: Test) {
         println "JCDEBUG: success = ${success}"
         println "JCDEBUG: Listing files in: ${projectDir}"
         projectDir.eachFile { file -> println file.name }
+
+        println "JCDEBUG: smoke.finalizedBy.generateCucumberReports.doLast  (3) -----------------------------------------"
+        def reportDir = new File("${rootDir}/BEFTA Report for Smoke Tests")
+        println "JCDEBUG: Listing files in: ${reportDir}"
+        reportDir.eachFile { file -> println file.name }
       }
     }
   }
