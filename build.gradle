@@ -146,6 +146,19 @@ task integration(type: Test) {
   classpath = sourceSets.integrationTest.runtimeClasspath
   failFast = true
   shouldRunAfter test
+
+  // Gradle task logging
+  doFirst {
+    println "JCDEBUG: integration.doFirst , generateCucumberReports.enabled = ${generateCucumberReports.enabled}"
+    println "JCDEBUG: integration.doFirst , testClassesDirs = ${testClassesDirs.asPath}"
+    println "JCDEBUG: integration.doFirst , classpath size = ${classpath.files.size()}"
+  }
+
+  doLast {
+    println "JCDEBUG: integration.doLast , generateCucumberReports.enabled = ${generateCucumberReports.enabled}"
+    println "JCDEBUG: integration.doLast , testClassesDirs = ${testClassesDirs.asPath}"
+    println "JCDEBUG: integration.doLast , classpath size = ${classpath.files.size()}"
+  }
 }
 
 task fortifyScan(type: JavaExec) {
@@ -155,6 +168,7 @@ task fortifyScan(type: JavaExec) {
 }
 
 task smoke(type: Test) {
+  println "JCDEBUG: smoke start"
   description = 'Executes smoke tests against an the CCD Data Store API instance just deployed'
   dependsOn aatClasses
 
@@ -175,17 +189,35 @@ task smoke(type: Test) {
   }
 
   finalizedBy {
+    println "JCDEBUG: smoke.finalizedBy"
     generateCucumberReports {
+      println "JCDEBUG: smoke.finalizedBy.generateCucumberReports"
       doLast {
+        println "JCDEBUG: smoke.finalizedBy.generateCucumberReports.doLast  (1) -----------------------------------------"
+        println "JCDEBUG: Listing files in: ${projectDir}"
+        projectDir.eachFile { file -> println file.name }
+
         delete "${rootDir}/BEFTA Report for Smoke Tests/"
         new File("${rootDir}/BEFTA Report for Smoke Tests").mkdirs()
-        file("${rootDir}/target/cucumber/cucumber-html-reports").renameTo(file("${rootDir}/BEFTA Report for Smoke Tests"))
+        def success = file("${rootDir}/target/cucumber/cucumber-html-reports").renameTo(file("${rootDir}/BEFTA Report for Smoke Tests"))
         logger.quiet("Smoke test report moved to ---> file://${rootDir}/BEFTA%20Report%20for%20Smoke%20Tests/overview-features.html")
+
+        println "JCDEBUG: smoke.finalizedBy.generateCucumberReports.doLast  (2) -----------------------------------------"
+        println "JCDEBUG: success = ${success}"
+        println "JCDEBUG: Listing files in: ${projectDir}"
+        projectDir.eachFile { file -> println file.name }
+
+        println "JCDEBUG: smoke.finalizedBy.generateCucumberReports.doLast  (3) -----------------------------------------"
+        def reportDir = new File("${rootDir}/BEFTA Report for Smoke Tests")
+        println "JCDEBUG: Listing files in: ${reportDir}"
+        reportDir.eachFile { file -> println file.name }
       }
     }
   }
 
   outputs.upToDateWhen { false }
+
+  println "JCDEBUG: smoke end"
 }
 
 check.dependsOn integration
@@ -263,6 +295,18 @@ tasks.register("printSuppressionFile") {
 dependencyManagement {
   imports {
     mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+  }
+}
+
+tasks.named('generateCucumberReports').configure {
+  doFirst {
+    // generateCucumberReports pre-processing logic
+    println "JCDEBUG: generateCucumberReports.doFirst , generateCucumberReports.enabled = ${generateCucumberReports.enabled}"
+  }
+
+  doLast {
+    // generateCucumberReports post-processing logic
+    println "JCDEBUG: generateCucumberReports.doLast , generateCucumberReports.enabled = ${generateCucumberReports.enabled}"
   }
 }
 
