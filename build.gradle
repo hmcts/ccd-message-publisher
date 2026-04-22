@@ -25,7 +25,7 @@ ext {
   lombok              = '1.18.44'
   netty               = '4.2.10.Final'
   reformLogging       = '8.0.0'
-  testcontainers      = '1.21.4'
+  testcontainers      = '2.0.5'
 }
 
 configurations {
@@ -368,8 +368,8 @@ dependencies {
   integrationTestImplementation sourceSets.main.runtimeClasspath
   integrationTestImplementation sourceSets.test.runtimeClasspath
   integrationTestImplementation group: 'org.testcontainers', name: 'testcontainers', version: testcontainers
-  integrationTestImplementation group: 'org.testcontainers', name: 'junit-jupiter', version: testcontainers
-  integrationTestImplementation group: 'org.testcontainers', name: 'postgresql', version: testcontainers
+  integrationTestImplementation group: 'org.testcontainers', name: 'testcontainers-junit-jupiter', version: testcontainers
+  integrationTestImplementation group: 'org.testcontainers', name: 'testcontainers-postgresql', version: testcontainers
 
   smokeTestImplementation sourceSets.main.runtimeClasspath
   smokeTestImplementation sourceSets.test.runtimeClasspath
