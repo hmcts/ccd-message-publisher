@@ -25,7 +25,7 @@ ext {
   lombok              = '1.18.44'
   netty               = '4.2.10.Final'
   reformLogging       = '8.0.0'
-  testcontainers      = '1.21.4'
+  testcontainers      = '2.0.5'
 }
 
 configurations {
