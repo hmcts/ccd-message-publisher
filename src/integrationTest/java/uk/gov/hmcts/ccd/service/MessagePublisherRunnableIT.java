@@ -89,7 +89,9 @@ class MessagePublisherRunnableIT extends BaseTest {
         assertAll(
             () -> assertThat(enqueuedMessages.size(), is(5)),
             () -> assertEnqueuedMessages(enqueuedMessages),
-            () -> assertAllPublishedValues(StreamSupport.stream(allMessageQueueCandidates.spliterator(), false).toList())
+            () -> assertAllPublishedValues(
+                StreamSupport.stream(allMessageQueueCandidates.spliterator(), false).toList()
+            )
         );
     }
 
