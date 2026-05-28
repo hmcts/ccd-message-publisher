@@ -346,8 +346,8 @@ dependencies {
   implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.6.0'
   implementation group: 'com.azure.spring', name: 'spring-cloud-azure-starter-servicebus-jms', version: '7.2.0'
   implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: reformLogging
-  implementation group: 'com.microsoft.azure', name: 'applicationinsights-logging-logback', version: appInsightsVersion
-  implementation group: 'com.microsoft.azure', name: 'applicationinsights-spring-boot-starter', version: appInsightsVersion
+  //implementation group: 'com.microsoft.azure', name: 'applicationinsights-logging-logback', version: appInsightsVersion
+  //implementation group: 'com.microsoft.azure', name: 'applicationinsights-spring-boot-starter', version: appInsightsVersion
   implementation group: 'com.vladmihalcea', name: 'hibernate-types-60', version: '2.21.1'
   implementation group: 'io.hawt', name: 'hawtio-springboot', version: '4.6.2'
   implementation group: 'jakarta.el', name: 'jakarta.el-api', version: '6.0.1'
