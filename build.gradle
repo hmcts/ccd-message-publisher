@@ -157,6 +157,15 @@ task fortifyScan(type: JavaExec) {
 task smoke(type: JavaExec) {
   description = 'Executes smoke tests against an the CCD Data Store API instance just deployed'
   dependsOn aatClasses
+  def localSmokeTestUrl = providers.environmentVariable('SERVER_PORT')
+    .map { "http://localhost:${it}" }
+    .orElse('http://localhost:4456')
+  def smokeTestUrl = providers.gradleProperty('smokeTestUrl')
+    .orElse(providers.environmentVariable('SMOKE_TEST_URL'))
+    .orElse(providers.environmentVariable('TEST_URL').map { testUrl ->
+      testUrl.contains('://localhost') ? localSmokeTestUrl.get() : testUrl
+    })
+    .orElse(localSmokeTestUrl)
 
   copy {
     from "src/aat/resources/DummyTest.xml"
@@ -164,6 +173,8 @@ task smoke(type: JavaExec) {
   }
 
   doFirst {
+    environment 'TEST_URL', smokeTestUrl.get()
+    logger.lifecycle("Running smoke tests against ${smokeTestUrl.get()}")
     generateCucumberReports.enabled = true
   }
 
