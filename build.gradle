@@ -163,7 +163,9 @@ task smoke(type: JavaExec) {
     into "${buildDir}/test-results/test"
   }
 
-  generateCucumberReports.enabled = true
+  doFirst {
+    generateCucumberReports.enabled = true
+  }
 
   mainClass = "uk.gov.hmcts.ccd.messagepublisher.befta.MessagePublisherBeftaMain"
   classpath += configurations.cucumberRuntime + sourceSets.aat.runtimeClasspath
@@ -310,71 +312,71 @@ dependencies {
   // start::CVE Vulnerability dependency overrides                                                        // MAIN PARENT DEPENDEDNCY
 
   // Put CVE vulnerability dependency overrides here e.g.
-  // implementation group: 'com.example', name: 'example-lib', version: '1.2.3'
+  // implementation 'com.example:example-lib:1.2.3'
 
   // end::CVE Vulnerability dependency overrides                                                          // MAIN PARENT DEPENDEDNCY
 
   // Spring
-  implementation group: 'org.springframework.boot', name: 'spring-boot-starter'
-  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
-  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
-  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
-  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-json'
-  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
-  implementation group: 'org.springframework.boot', name: 'spring-boot-autoconfigure'
-  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-activemq'
-  implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter'
-  implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap'
-  implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.8.17'
+  implementation 'org.springframework.boot:spring-boot-starter'
+  implementation 'org.springframework.boot:spring-boot-starter-web'
+  implementation 'org.springframework.boot:spring-boot-starter-actuator'
+  implementation 'org.springframework.boot:spring-boot-starter-aop'
+  implementation 'org.springframework.boot:spring-boot-starter-json'
+  implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+  implementation 'org.springframework.boot:spring-boot-autoconfigure'
+  implementation 'org.springframework.boot:spring-boot-starter-activemq'
+  implementation 'org.springframework.cloud:spring-cloud-starter'
+  implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
+  implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.17'
 
   // Netty
-  implementation group: 'io.netty', name: 'netty-buffer', version: netty
-  implementation group: 'io.netty', name: 'netty-codec', version: netty
-  implementation group: 'io.netty', name: 'netty-codec-http', version: netty
-  implementation group: 'io.netty', name: 'netty-common', version: netty
-  implementation group: 'io.netty', name: 'netty-handler', version: netty
-  implementation group: 'io.netty', name: 'netty-resolver', version: netty
-  implementation group: 'io.netty', name: 'netty-transport', version: netty
-  implementation group: 'io.netty', name: 'netty-transport-native-epoll', version: netty
-  implementation group: 'io.netty', name: 'netty-transport-native-kqueue', version: netty
-  implementation group: 'io.netty', name: 'netty-transport-native-unix-common', version: netty
+  implementation "io.netty:netty-buffer:${netty}"
+  implementation "io.netty:netty-codec:${netty}"
+  implementation "io.netty:netty-codec-http:${netty}"
+  implementation "io.netty:netty-common:${netty}"
+  implementation "io.netty:netty-handler:${netty}"
+  implementation "io.netty:netty-resolver:${netty}"
+  implementation "io.netty:netty-transport:${netty}"
+  implementation "io.netty:netty-transport-native-epoll:${netty}"
+  implementation "io.netty:netty-transport-native-kqueue:${netty}"
+  implementation "io.netty:netty-transport-native-unix-common:${netty}"
 
 
-  implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.6.0'
-  implementation group: 'com.azure.spring', name: 'spring-cloud-azure-starter-servicebus-jms', version: '5.25.0'
-  implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: reformLogging
-  implementation group: 'com.microsoft.azure', name: 'applicationinsights-logging-logback', version: appInsightsVersion
-  implementation group: 'com.microsoft.azure', name: 'applicationinsights-spring-boot-starter', version: appInsightsVersion
-  implementation group: 'com.vladmihalcea', name: 'hibernate-types-60', version: '2.21.1'
-  implementation group: 'io.hawt', name: 'hawtio-springboot', version: '5.2.0'
-  implementation group: 'jakarta.el', name: 'jakarta.el-api', version: '6.0.1'
-  implementation group: 'org.apache.activemq', name: 'activemq-client', version: '6.2.6'
-  implementation group: 'org.apache.activemq', name: 'activemq-broker', version: '6.2.6'
-  implementation group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.6.1'
-  implementation group: 'org.projectlombok', name: 'lombok', version: lombok
+  implementation 'commons-fileupload:commons-fileupload:1.6.0'
+  implementation 'com.azure.spring:spring-cloud-azure-starter-servicebus-jms:5.25.0'
+  implementation "com.github.hmcts.java-logging:logging:${reformLogging}"
+  implementation "com.microsoft.azure:applicationinsights-logging-logback:${appInsightsVersion}"
+  implementation "com.microsoft.azure:applicationinsights-spring-boot-starter:${appInsightsVersion}"
+  implementation 'com.vladmihalcea:hibernate-types-60:2.21.1'
+  implementation 'io.hawt:hawtio-springboot:5.2.0'
+  implementation 'jakarta.el:jakarta.el-api:6.0.1'
+  implementation 'org.apache.activemq:activemq-client:6.2.6'
+  implementation 'org.apache.activemq:activemq-broker:6.2.6'
+  implementation 'org.apache.httpcomponents.client5:httpclient5:5.6.1'
+  implementation "org.projectlombok:lombok:${lombok}"
 
-  annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombok
-  runtimeOnly group: 'org.postgresql', name: 'postgresql', version: '42.7.11'
+  annotationProcessor "org.projectlombok:lombok:${lombok}"
+  runtimeOnly 'org.postgresql:postgresql:42.7.11'
 
 
   testImplementation libraries.junit5
-  testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
-  testImplementation group: 'com.github.hmcts', name: 'fortify-client', version: '1.4.10', classifier: 'all'
-  testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombok
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  testImplementation 'com.github.hmcts:fortify-client:1.4.10:all'
+  testAnnotationProcessor "org.projectlombok:lombok:${lombok}"
 
   integrationTestImplementation sourceSets.main.runtimeClasspath
   integrationTestImplementation sourceSets.test.runtimeClasspath
-  integrationTestImplementation group: 'org.testcontainers', name: 'testcontainers', version: testcontainers
-  integrationTestImplementation group: 'org.testcontainers', name: 'junit-jupiter', version: testcontainers
-  integrationTestImplementation group: 'org.testcontainers', name: 'postgresql', version: testcontainers
+  integrationTestImplementation "org.testcontainers:testcontainers:${testcontainers}"
+  integrationTestImplementation "org.testcontainers:junit-jupiter:${testcontainers}"
+  integrationTestImplementation "org.testcontainers:postgresql:${testcontainers}"
 
   smokeTestImplementation sourceSets.main.runtimeClasspath
   smokeTestImplementation sourceSets.test.runtimeClasspath
 
   aatImplementation sourceSets.main.runtimeClasspath
   aatImplementation sourceSets.test.runtimeClasspath
-  aatImplementation group: 'com.github.hmcts', name: 'ccd-test-definitions', version: '7.27.7-prerelease-CME-537'
-  aatImplementation group: 'com.github.hmcts', name: 'befta-fw', version: '9.2.6'
+  aatImplementation 'com.github.hmcts:ccd-test-definitions:7.27.7-prerelease-CME-537'
+  aatImplementation 'com.github.hmcts:befta-fw:9.2.6'
 
 }
 

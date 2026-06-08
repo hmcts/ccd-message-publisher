@@ -2,12 +2,13 @@ plugins {
   id 'application'
 }
 
-allprojects {
-  sourceCompatibility = '21'
-  targetCompatibility = '21'
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(21)
+  }
 }
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
   options.compilerArgs << "-Xlint:unchecked" << "-Werror"
 }
 
@@ -17,7 +18,7 @@ repositories {
 }
 
 application {
-    mainClass = 'topic.TopicReader'
+  mainClass = 'topic.TopicReader'
 }
 
 dependencies {
