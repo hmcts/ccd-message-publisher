@@ -2,7 +2,7 @@
 
 import uk.gov.hmcts.contino.GithubAPI
 
-@Library("Infrastructure")
+@Library("Infrastructure@2.0.0")
 
 import uk.gov.hmcts.contino.GradleBuilder
 
@@ -174,4 +174,3 @@ withPipeline(type, product, component) {
 def copyIgnore(filePath, destinationDir) {
   steps.sh("cp -R '${filePath}' '${destinationDir}' || :")
 }
-
