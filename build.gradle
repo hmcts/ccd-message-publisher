@@ -163,7 +163,9 @@ task smoke(type: JavaExec) {
     into "${buildDir}/test-results/test"
   }
 
-  generateCucumberReports.enabled = true
+  doFirst {
+    generateCucumberReports.enabled = true
+  }
 
   mainClass = "uk.gov.hmcts.ccd.messagepublisher.befta.MessagePublisherBeftaMain"
   classpath += configurations.cucumberRuntime + sourceSets.aat.runtimeClasspath
