@@ -13,7 +13,6 @@ import uk.gov.hmcts.ccd.BaseTest;
 import uk.gov.hmcts.ccd.data.MessageQueueCandidateEntity;
 import uk.gov.hmcts.ccd.data.MessageQueueCandidateRepository;
 
-import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
@@ -33,9 +32,6 @@ class MessagePublisherLivenessHealthIndicatorWebIT extends BaseTest {
     @Autowired
     private MessageQueueCandidateRepository repository;
 
-    @Autowired
-    private Clock clock;
-
     @Test
     @Sql(scripts = {CLEANUP_SCRIPT}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @DirtiesContext
@@ -49,7 +45,7 @@ class MessagePublisherLivenessHealthIndicatorWebIT extends BaseTest {
     void shouldReportUpWhenRecentUnpublishedMessageExists() throws Exception {
         // create a recent unpublished message (within 5 minutes window)
         MessageQueueCandidateEntity msg = createMessageEntity(
-            LocalDateTime.now(clock).minusMinutes(1),
+            LocalDateTime.now().minusMinutes(1),
             "UNPUBLISHED_RECENT",
             "{\"test\": \"recent\"}"
         );
@@ -83,4 +79,3 @@ class MessagePublisherLivenessHealthIndicatorWebIT extends BaseTest {
         }
     }
 }
-

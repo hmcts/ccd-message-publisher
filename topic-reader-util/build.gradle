@@ -2,13 +2,12 @@ plugins {
   id 'application'
 }
 
-java {
-  toolchain {
-    languageVersion = JavaLanguageVersion.of(21)
-  }
+allprojects {
+  sourceCompatibility = '21'
+  targetCompatibility = '21'
 }
 
-tasks.withType(JavaCompile).configureEach {
+tasks.withType(JavaCompile) {
   options.compilerArgs << "-Xlint:unchecked" << "-Werror"
 }
 
@@ -18,11 +17,11 @@ repositories {
 }
 
 application {
-  mainClass = 'topic.TopicReader'
+    mainClass = 'topic.TopicReader'
 }
 
 dependencies {
-  implementation "com.azure:azure-messaging-servicebus:7.17.18"
-  implementation "org.slf4j:slf4j-api:2.0.18"
-  implementation "org.slf4j:slf4j-simple:2.0.18"
+  implementation "com.azure:azure-messaging-servicebus:7.17.17"
+  implementation "org.slf4j:slf4j-api:2.0.17"
+  implementation "org.slf4j:slf4j-simple:2.0.17"
 }
