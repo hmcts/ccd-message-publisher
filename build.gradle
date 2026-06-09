@@ -163,6 +163,11 @@ task smoke(type: JavaExec) {
     into "${buildDir}/test-results/test"
   }
 
+  copy {
+    from "src/aat/resources/DummyTest.xml"
+    into "${buildDir}/test-results/smoke"
+  }
+
   doFirst {
     generateCucumberReports.enabled = true
   }
