@@ -101,35 +101,34 @@ test {
   failFast = true
 }
 
-task functional(type: Test) {
+task functional(type: JavaExec) {
   description = 'Executes functional tests against an the CCD Message Publisher API instance just deployed'
   dependsOn aatClasses
-  copy {
-    from "src/aat/resources/DummyTest.xml"
-    into "${buildDir}/test-results/test"
-  }
-
-  copy {
-    from "src/aat/resources/DummyTest.xml"
-    into "${buildDir}/test-results/functional"
-  }
 
   doFirst {
     generateCucumberReports.enabled = true
-    javaexec {
-      main = "uk.gov.hmcts.ccd.messagepublisher.befta.MessagePublisherBeftaMain"
-      classpath += configurations.cucumberRuntime + sourceSets.aat.runtimeClasspath + sourceSets.main.output + sourceSets.test.output
-      args = [
-        '--threads', '10',
-        '--plugin', "json:${rootDir}/target/cucumber.json",
-        '--tags', 'not @Ignore',
-        '--glue', 'uk.gov.hmcts.befta.player',
-        '--glue', 'uk.gov.hmcts.ccd.messagepublisher.befta', 'src/aat/resources/features'
-      ]
-      jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
+
+    copy {
+      from "src/aat/resources/DummyTest.xml"
+      into "${buildDir}/test-results/test"
     }
 
+    copy {
+      from "src/aat/resources/DummyTest.xml"
+      into "${buildDir}/test-results/functional"
+    }
   }
+
+  mainClass = "uk.gov.hmcts.ccd.messagepublisher.befta.MessagePublisherBeftaMain"
+  classpath += configurations.cucumberRuntime + sourceSets.aat.runtimeClasspath + sourceSets.main.output + sourceSets.test.output
+  args = [
+    '--threads', '10',
+    '--plugin', "json:${rootDir}/target/cucumber.json",
+    '--tags', 'not @Ignore',
+    '--glue', 'uk.gov.hmcts.befta.player',
+    '--glue', 'uk.gov.hmcts.ccd.messagepublisher.befta', 'src/aat/resources/features'
+  ]
+  jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
 
   finalizedBy {
     generateCucumberReports {
