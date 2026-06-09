@@ -109,6 +109,11 @@ task functional(type: Test) {
     into "${buildDir}/test-results/test"
   }
 
+  copy {
+    from "src/aat/resources/DummyTest.xml"
+    into "${buildDir}/test-results/functional"
+  }
+
   doFirst {
     generateCucumberReports.enabled = true
     javaexec {
