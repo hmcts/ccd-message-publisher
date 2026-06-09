@@ -1,5 +1,4 @@
 plugins {
-  //test
   id 'application'
   id 'java'
   id 'checkstyle'
