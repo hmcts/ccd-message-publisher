@@ -2,7 +2,7 @@
 
 import uk.gov.hmcts.contino.GithubAPI
 
-@Library("Infrastructure@2.0.0")
+@Library("Infrastructure@master")
 
 import uk.gov.hmcts.contino.GradleBuilder
 
