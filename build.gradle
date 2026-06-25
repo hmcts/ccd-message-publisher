@@ -13,6 +13,7 @@ plugins {
 }
 
 ext {
+  set('springBootVersion', '4.1.0')
   set('springCloudVersion', '2025.1.2')
   set('spring-framework.version', '7.0.8')
   set('spring-security.version', '7.1.0')
@@ -262,6 +263,7 @@ tasks.register("printSuppressionFile") {
 
 dependencyManagement {
   imports {
+    mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
     mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
   }
 }
