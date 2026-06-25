@@ -1,8 +1,6 @@
 #!groovy
 
-import uk.gov.hmcts.contino.GithubAPI
-
-@Library("Infrastructure@2.0.0")
+@Library("Infrastructure@2.0.0") _
 
 import uk.gov.hmcts.contino.GradleBuilder
 
