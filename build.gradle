@@ -13,12 +13,12 @@ plugins {
 }
 
 ext {
-  set('springCloudVersion', '2025.0.0')
-  set('spring-framework.version', '6.2.14')
-  set('spring-security.version', '6.5.7')
-  set('log4j2.version', '2.24.3')
-  set('jackson.version', '2.18.2')
-  set('snakeyaml.version', '2.3')
+  set('springCloudVersion', '2025.1.2')
+  set('spring-framework.version', '7.0.8')
+  set('spring-security.version', '7.1.0')
+  set('log4j2.version', '2.25.4')
+  set('jackson-2-bom.version', '2.21.4')
+  set('snakeyaml.version', '2.6')
   appInsightsVersion  = '2.6.4'
   junit               = '6.1.0'
   junitPlatform       = '6.1.0'
@@ -326,6 +326,11 @@ dependencies {
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
   implementation group: 'org.springframework.boot', name: 'spring-boot-autoconfigure'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-activemq'
+  implementation group: 'org.springframework.boot', name: 'spring-boot-jackson2'
+  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind'
+  implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jdk8'
+  implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310'
+  implementation group: 'com.fasterxml.jackson.module', name: 'jackson-module-parameter-names'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap'
   implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.8.17'

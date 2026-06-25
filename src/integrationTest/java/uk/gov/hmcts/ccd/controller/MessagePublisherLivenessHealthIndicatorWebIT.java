@@ -16,7 +16,7 @@ import uk.gov.hmcts.ccd.data.MessageQueueCandidateRepository;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
-import static org.springframework.boot.actuate.health.Status.UP;
+import static org.springframework.boot.health.contributor.Status.UP;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -54,7 +54,7 @@ class MessagePublisherLivenessHealthIndicatorWebIT extends BaseTest {
         assertLivenessHealthStatus(UP);
     }
 
-    private void assertLivenessHealthStatus(org.springframework.boot.actuate.health.Status status) throws Exception {
+    private void assertLivenessHealthStatus(org.springframework.boot.health.contributor.Status status) throws Exception {
         mockMvc.perform(get("/health/liveness"))
             .andExpect(
                 jsonPath("$.components.messagePublisherLiveness.status")
@@ -79,5 +79,4 @@ class MessagePublisherLivenessHealthIndicatorWebIT extends BaseTest {
         }
     }
 }
-
 
