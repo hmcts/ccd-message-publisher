@@ -312,6 +312,17 @@ ext.libraries = [
 
 dependencies {
 
+  implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+  implementation platform("org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}")
+  testImplementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+  testImplementation platform("org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}")
+  integrationTestImplementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+  integrationTestImplementation platform("org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}")
+  smokeTestImplementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+  smokeTestImplementation platform("org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}")
+  aatImplementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+  aatImplementation platform("org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}")
+
   // start::CVE Vulnerability dependency overrides                                                        // MAIN PARENT DEPENDEDNCY
 
   // Put CVE vulnerability dependency overrides here e.g.
