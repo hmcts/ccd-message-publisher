@@ -20,8 +20,8 @@ ext {
   set('jackson.version', '2.18.2')
   set('snakeyaml.version', '2.3')
   appInsightsVersion  = '2.6.4'
-  junit               = '6.1.0'
-  junitPlatform       = '6.1.0'
+  junit               = '6.1.1'
+  junitPlatform       = '6.1.1'
   lombok              = '1.18.46'
   netty               = '4.2.15.Final'
   reformLogging       = '8.0.0'
