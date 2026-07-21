@@ -8,7 +8,6 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
-import org.testcontainers.shaded.com.google.common.collect.Streams;
 
 import uk.gov.hmcts.ccd.BaseTest;
 import uk.gov.hmcts.ccd.data.MessageQueueCandidateEntity;
@@ -24,6 +23,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.StreamSupport;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -89,7 +89,9 @@ class MessagePublisherRunnableIT extends BaseTest {
         assertAll(
             () -> assertThat(enqueuedMessages.size(), is(5)),
             () -> assertEnqueuedMessages(enqueuedMessages),
-            () -> assertAllPublishedValues(Streams.stream(allMessageQueueCandidates).toList())
+            () -> assertAllPublishedValues(
+                StreamSupport.stream(allMessageQueueCandidates.spliterator(), false).toList()
+            )
         );
     }
 
@@ -99,7 +101,8 @@ class MessagePublisherRunnableIT extends BaseTest {
     @Transactional
     void shouldDeletePublishedMessagesPastRetentionPeriod() {
         Iterable<MessageQueueCandidateEntity> allMessageQueueCandidates = messageQueueCandidateRepository.findAll();
-        List<MessageQueueCandidateEntity> entitiesBefore = Streams.stream(allMessageQueueCandidates).toList();
+        List<MessageQueueCandidateEntity> entitiesBefore =
+            StreamSupport.stream(allMessageQueueCandidates.spliterator(), false).toList();
 
         // Count only the entities that match our message type
         List<MessageQueueCandidateEntity> entitiesOfMessageType = entitiesBefore.stream()
@@ -116,7 +119,8 @@ class MessagePublisherRunnableIT extends BaseTest {
         messagePublisher.run();
 
         Iterable<MessageQueueCandidateEntity> allMQCAfter = messageQueueCandidateRepository.findAll();
-        List<MessageQueueCandidateEntity> entitiesAfter = Streams.stream(allMQCAfter).toList();
+        List<MessageQueueCandidateEntity> entitiesAfter =
+            StreamSupport.stream(allMQCAfter.spliterator(), false).toList();
 
         // Count only the entities that match our message type after processing
         List<MessageQueueCandidateEntity> entitiesOfMessageTypeAfter = entitiesAfter.stream()
