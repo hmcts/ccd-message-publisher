@@ -2,7 +2,7 @@
 
 import uk.gov.hmcts.contino.GithubAPI
 
-@Library("Infrastructure@2.4.9")
+@Library("Infrastructure@cve-dashboard")
 
 import uk.gov.hmcts.contino.GradleBuilder
 
@@ -60,6 +60,7 @@ def vaultOverrides = [
 
 
 withPipeline(type, product, component) {
+  enableCveDashboardIngestion()
 
   if (env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'demo' || env.BRANCH_NAME == 'perftest' || env.BRANCH_NAME == 'ithc' || prsToUseAat.toLowerCase().contains(env.BRANCH_NAME.toLowerCase())) {
     environmentOfDependencies = env.BRANCH_NAME
@@ -174,4 +175,3 @@ withPipeline(type, product, component) {
 def copyIgnore(filePath, destinationDir) {
   steps.sh("cp -R '${filePath}' '${destinationDir}' || :")
 }
-
