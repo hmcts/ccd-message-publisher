@@ -21,7 +21,7 @@ application {
 }
 
 dependencies {
-  implementation "com.azure:azure-messaging-servicebus:7.17.19"
+  implementation "com.azure:azure-messaging-servicebus:7.17.20"
   implementation "org.slf4j:slf4j-api:2.0.18"
   implementation "org.slf4j:slf4j-simple:2.0.18"
 }
