@@ -13,6 +13,8 @@ plugins {
 }
 
 ext {
+  // CVE-2025-7962: versions of Angus Mail before 2.0.4 are vulnerable to SMTP injection.
+  set('angus-mail.version', '2.0.5')
   set('springCloudVersion', '2025.0.3')
   set('spring-framework.version', '6.2.14')
   set('spring-security.version', '6.5.7')
