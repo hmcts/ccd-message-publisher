@@ -88,6 +88,7 @@ ccd-definition-store-api:
         disabled: true
     environment:
       DEFINITION_STORE_DB_HOST: "{{ .Release.Name }}-postgresql"
+      DEFINITION_STORE_DB_NAME: "definition-store"
       ELASTIC_SEARCH_ENABLED: true
       ELASTIC_SEARCH_HOST: "{{ .Release.Name }}-es-master"
       DEFINITION_STORE_DB_USERNAME: "{{ .Values.postgresql.auth.username}}"
@@ -112,6 +113,7 @@ ccd-data-store-api:
     environment:
       DATA_STORE_IDAM_KEY: ${CCD_DATA_S2S_SECRET}
       DATA_STORE_DB_HOST: '{{ .Release.Name }}-postgresql'
+      DATA_STORE_DB_NAME: "data-store"
       DATA_STORE_DB_USERNAME: "{{ .Values.postgresql.auth.username}}"
       DATA_STORE_DB_PASSWORD: "{{ .Values.postgresql.auth.password}}"
       DATA_STORE_DB_OPTIONS: "?stringtype=unspecified&sslmode=disable"
