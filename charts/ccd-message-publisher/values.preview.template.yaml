@@ -73,6 +73,7 @@ ccd-core:
 
 ccd-definition-store-api:
   java:
+    releaseNameOverride: "{{ .Release.Name }}-ccd-definition-store"
     ingressHost: ccd-definition-store-${SERVICE_FQDN}
     image: hmctsprod.azurecr.io/ccd/definition-store-api:latest
     imagePullPolicy: Always
@@ -97,6 +98,7 @@ ccd-definition-store-api:
 
 ccd-data-store-api:
   java:
+    releaseNameOverride: "{{ .Release.Name }}-ccd-data-store-api"
     ingressHost: ccd-data-store-api-${SERVICE_FQDN}
     imagePullPolicy: Always
     devmemoryRequests: '1524Mi'
