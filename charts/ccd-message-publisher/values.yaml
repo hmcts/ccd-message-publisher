@@ -30,3 +30,6 @@ servicebus:
 
 ccd-core:
   enabled: false
+
+ccd-data-store-api:
+  enabled: false
