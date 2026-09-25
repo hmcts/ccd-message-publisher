@@ -28,5 +28,8 @@ java:
 servicebus:
   enabled: false
 
+ccd-core:
+  enabled: false
+
 ccd-data-store-api:
   enabled: false

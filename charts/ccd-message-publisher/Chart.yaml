@@ -13,6 +13,12 @@ dependencies:
     version: 1.2.2
     repository: 'oci://hmctsprod.azurecr.io/helm'
     condition: servicebus.enabled
+  # Keep ccd-core before other ccd-* dependencies until the shared pipeline's
+  # deprecated-chart check uses an exact chart-name match.
+  - name: ccd-core
+    version: 9.3.0
+    repository: 'oci://hmctsprod.azurecr.io/helm'
+    condition: ccd-core.enabled
   - name: ccd-data-store-api
     version: 2.0.47
     repository: 'oci://hmctsprod.azurecr.io/helm'
