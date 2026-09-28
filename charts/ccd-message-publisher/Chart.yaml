@@ -2,7 +2,7 @@ apiVersion: v2
 description: A Helm chart for the HMCTS CCD Message Publisher
 name: ccd-message-publisher
 home: https://github.com/hmcts/ccd-message-publisher
-version: 0.1.28
+version: 0.1.29
 maintainers:
   - name: HMCTS CCD Dev Team
 dependencies:
@@ -18,7 +18,7 @@ dependencies:
     repository: 'oci://hmctsprod.azurecr.io/helm'
     condition: ccd-core.enabled
   - name: ccd-definition-store-api
-    version: 1.6.30
+    version: 1.6.31
     repository: 'oci://hmctsprod.azurecr.io/helm'
     condition: ccd-core.enabled
   - name: ccd-data-store-api
