@@ -245,24 +245,6 @@ dependencyCheck {
   suppressionFiles = ['config/owasp/suppressions.xml']
 }
 
-tasks.register("printSuppressionFile") {
-  doLast {
-    def suppressionFile = dependencyCheck.getSuppressionFiles()
-    if (suppressionFile?.metaClass?.respondsTo(suppressionFile, "getOrNull")) {
-      suppressionFile = suppressionFile.getOrNull()
-    } else if (suppressionFile?.metaClass?.respondsTo(suppressionFile, "get")) {
-      suppressionFile = suppressionFile.get()
-    }
-    if (suppressionFile instanceof Collection) {
-      suppressionFile = suppressionFile.find { it }?.toString()
-    }
-    if (!suppressionFile) {
-      throw new GradleException("No dependency-check suppression file configured")
-    }
-    println "SUPPRESSION_FILE=${suppressionFile}"
-  }
-}
-
 dependencyManagement {
   imports {
     mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
