@@ -13,12 +13,14 @@ import uk.gov.hmcts.ccd.BaseTest;
 import uk.gov.hmcts.ccd.data.MessageQueueCandidateEntity;
 import uk.gov.hmcts.ccd.data.MessageQueueCandidateRepository;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
 import static org.springframework.boot.actuate.health.Status.UP;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
@@ -31,6 +33,9 @@ class MessagePublisherLivenessHealthIndicatorWebIT extends BaseTest {
 
     @Autowired
     private MessageQueueCandidateRepository repository;
+
+    @Autowired
+    private Clock clock;
 
     @Test
     @Sql(scripts = {CLEANUP_SCRIPT}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -45,7 +50,7 @@ class MessagePublisherLivenessHealthIndicatorWebIT extends BaseTest {
     void shouldReportUpWhenRecentUnpublishedMessageExists() throws Exception {
         // create a recent unpublished message (within 5 minutes window)
         MessageQueueCandidateEntity msg = createMessageEntity(
-            LocalDateTime.now().minusMinutes(1),
+            LocalDateTime.now(clock).minusMinutes(1),
             "UNPUBLISHED_RECENT",
             "{\"test\": \"recent\"}"
         );
@@ -54,11 +59,15 @@ class MessagePublisherLivenessHealthIndicatorWebIT extends BaseTest {
         assertLivenessHealthStatus(UP);
     }
 
-    private void assertLivenessHealthStatus(org.springframework.boot.actuate.health.Status status) throws Exception {
+    private void assertLivenessHealthStatus(org.springframework.boot.actuate.health.Status expectedStatus)
+        throws Exception {
         mockMvc.perform(get("/health/liveness"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.status").value(expectedStatus.toString()))
+            .andExpect(jsonPath("$.components.livenessState.status").value(UP.toString()))
             .andExpect(
                 jsonPath("$.components.messagePublisherLiveness.status")
-                    .value(status.toString())
+                    .value(expectedStatus.toString())
             );
     }
 
