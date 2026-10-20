@@ -5,6 +5,9 @@ import uk.gov.hmcts.contino.GithubAPI
 @Library("Infrastructure@cve-dashboard")
 
 import uk.gov.hmcts.contino.GradleBuilder
+import uk.gov.hmcts.contino.Kubectl
+import uk.gov.hmcts.contino.Subscription
+import uk.gov.hmcts.pipeline.AKSSubscriptions
 
 def type = "java"
 def product = "ccd"
@@ -144,33 +147,27 @@ withPipeline(type, product, component) {
     ]
   }
 
-  afterAlways('functionalTest:preview') {
-    copyIgnore('./build/reports/tests/test', './BEFTA Report for Functional Tests/')
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/BEFTA Report for Functional Tests/**/*'
-
-    publishHTML target: [
-      allowMissing         : true,
-      alwaysLinkToLastBuild: true,
-      keepAll              : true,
-      reportDir            : "BEFTA Report for Functional Tests",
-      reportFiles          : "overview-features.html",
-      reportName           : "Functional Test Report"
-    ]
+  before('functionalTest:preview') {
+    def subscription = new Subscription(env).previewName
+    withAksClient(subscription, 'preview', product) {
+      new Kubectl(this, subscription, env.TEAM_NAMESPACE, new AKSSubscriptions(this).preview.name).login()
+    }
   }
 
-  afterAlways('functionalTest:aat') {
-    copyIgnore('./build/reports/tests/test', './BEFTA Report for Functional Tests/')
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/BEFTA Report for Functional Tests/**/*'
-
-    publishHTML target: [
-      allowMissing         : true,
-      alwaysLinkToLastBuild: true,
-      keepAll              : true,
-      reportDir            : "BEFTA Report for Functional Tests",
-      reportFiles          : "overview-features.html",
-      reportName           : "Functional Test Report"
-    ]
+  ['preview', 'aat'].each { environment ->
+    afterAlways("functionalTest:${environment}") {
+      steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/functional/**/*'
+      publishHTML target: [
+        allowMissing         : true,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : 'build/reports/tests/functional',
+        reportFiles          : 'index.html',
+        reportName           : 'Functional Test Report'
+      ]
+    }
   }
+
 }
 
 /**
