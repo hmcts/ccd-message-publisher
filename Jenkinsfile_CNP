@@ -117,53 +117,57 @@ withPipeline(type, product, component) {
   }
 
   afterAlways('smoketest:preview') {
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/smoke/**/*'
+    copyIgnore('./build/reports/tests/test', './BEFTA Report for Smoke Tests/')
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/BEFTA Report for Smoke Tests/**/*'
 
     publishHTML target: [
       allowMissing         : true,
       alwaysLinkToLastBuild: true,
       keepAll              : true,
-      reportDir            : "build/reports/tests/smoke",
-      reportFiles          : "index.html",
+      reportDir            : "BEFTA Report for Smoke Tests",
+      reportFiles          : "overview-features.html",
       reportName           : "Smoke Test Report"
     ]
   }
 
   afterAlways('smoketest:aat') {
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/smoke/**/*'
+    copyIgnore('./build/reports/tests/test', './BEFTA Report for Smoke Tests/')
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/BEFTA Report for Smoke Tests/**/*'
 
     publishHTML target: [
       allowMissing         : true,
       alwaysLinkToLastBuild: true,
       keepAll              : true,
-      reportDir            : "build/reports/tests/smoke",
-      reportFiles          : "index.html",
+      reportDir            : "BEFTA Report for Smoke Tests",
+      reportFiles          : "overview-features.html",
       reportName           : "Smoke Test Report"
     ]
   }
 
   afterAlways('functionalTest:preview') {
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/functional/**/*'
+    copyIgnore('./build/reports/tests/test', './BEFTA Report for Functional Tests/')
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/BEFTA Report for Functional Tests/**/*'
 
     publishHTML target: [
       allowMissing         : true,
       alwaysLinkToLastBuild: true,
       keepAll              : true,
-      reportDir            : "build/reports/tests/functional",
-      reportFiles          : "index.html",
+      reportDir            : "BEFTA Report for Functional Tests",
+      reportFiles          : "overview-features.html",
       reportName           : "Functional Test Report"
     ]
   }
 
   afterAlways('functionalTest:aat') {
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/functional/**/*'
+    copyIgnore('./build/reports/tests/test', './BEFTA Report for Functional Tests/')
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/BEFTA Report for Functional Tests/**/*'
 
     publishHTML target: [
       allowMissing         : true,
       alwaysLinkToLastBuild: true,
       keepAll              : true,
-      reportDir            : "build/reports/tests/functional",
-      reportFiles          : "index.html",
+      reportDir            : "BEFTA Report for Functional Tests",
+      reportFiles          : "overview-features.html",
       reportName           : "Functional Test Report"
     ]
   }

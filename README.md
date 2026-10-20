@@ -128,23 +128,6 @@ To run all local checks execute the following command:
 Additionally, [SonarQube](https://sonarcloud.io/dashboard?id=uk.gov.hmcts.reform%3Accd-message-publisher)
 analyses are performed on all remote code.
 
-### Deployed smoke checks
-
-With the existing BEFTA environment configured and `TEST_URL` pointing to the
-deployment, run `./gradlew smoke`. This executes `/health`, `/health/liveness`,
-and `/health/readiness` through Cucumber. `./gradlew functional` runs the full
-feature set. Both commands produce real JUnit XML and HTML reports under
-`build/test-results/<task>` and `build/reports/tests/<task>`.
-
-The shared Jenkins pipeline reads the XML results from these directories. The
-repository's `afterAlways` hooks archive and publish the HTML reports, including
-when a scenario fails. A failed scenario, zero selected scenarios, or skipped
-scenario steps makes the Gradle task fail; placeholder results are not used.
-
-To verify CI, check the PR's smoke and functional stages for all three scenarios
-(health, liveness, readiness), zero failures/skips, and working HTML report links.
-Local runner checks do not replace that deployed Jenkins verification.
-
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
