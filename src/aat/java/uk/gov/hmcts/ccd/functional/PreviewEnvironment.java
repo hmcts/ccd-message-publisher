@@ -117,16 +117,39 @@ final class PreviewEnvironment implements AutoCloseable {
         }
         // The topic may be shared within preview; each scenario uses its own filtered subscription.
         brokerConnectionString = environment(publisher, "SERVICE_BUS_CONNECTION_STRING");
-        boolean previewBroker = List.of(brokerConnectionString.split(";")).stream().anyMatch(part ->
-            part.matches("Endpoint=sb://ccd-servicebus-preview\\.servicebus\\.windows\\.net/?"));
-        if (!previewBroker) {
-            throw new IllegalStateException("Refusing to use a broker outside the preview Service Bus namespace");
-        }
+        validatePreviewBroker(brokerConnectionString);
         int port = forwardDatabase(databaseHost);
         database = DriverManager.getConnection(
             "jdbc:postgresql://127.0.0.1:" + port + "/" + databaseName
                 + "?connectTimeout=10&socketTimeout=15&sslmode=disable",
             environment(publisher, "DATA_STORE_DB_USERNAME"), environment(publisher, "DATA_STORE_DB_PASSWORD"));
+    }
+
+    static void validatePreviewBroker(String connectionString) {
+        List<String> parts = List.of(connectionString.split(";"));
+        if (parts.stream().anyMatch(part ->
+            part.matches("Endpoint=sb://ccd-servicebus-preview\\.servicebus\\.windows\\.net/?"))) {
+            return;
+        }
+        String host = "missing or malformed Endpoint";
+        for (String part : parts) {
+            if (part.strip().startsWith("Endpoint=")) {
+                try {
+                    String parsedHost = URI.create(part.strip().substring("Endpoint=".length()).strip()).getHost();
+                    if (parsedHost != null) {
+                        host = parsedHost;
+                    }
+                } catch (IllegalArgumentException ignored) {
+                    // URI exception messages can contain credentials; report only a successfully parsed host.
+                }
+                break;
+            }
+        }
+        throw new IllegalStateException("Refusing to use a broker outside the preview Service Bus namespace: "
+            + "expected Endpoint=sb://ccd-servicebus-preview.servicebus.windows.net/ (final slash optional, "
+            + "no surrounding whitespace); detected host: " + host
+            + ". Check SERVICE_BUS_CONNECTION_STRING on the selected publisher pod"
+            + " and its referenced Kubernetes secret.");
     }
 
     private String environment(JsonNode container, String name) throws Exception {
