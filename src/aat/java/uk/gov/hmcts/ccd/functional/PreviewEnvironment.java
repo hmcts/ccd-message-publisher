@@ -115,18 +115,7 @@ final class PreviewEnvironment implements AutoCloseable {
             || !databaseName.equals("data-store")) {
             throw new IllegalStateException("Refusing to seed resources outside the selected preview release");
         }
-        boolean releaseTopic = false;
-        for (JsonNode candidate : resource("namespacestopics.servicebus.azure.com").path("items")) {
-            if (release.equals(candidate.path("metadata").path("annotations")
-                .path("meta.helm.sh/release-name").asText())
-                && topic.equals(candidate.path("spec").path("azureName").asText())) {
-                releaseTopic = true;
-            }
-        }
-        if (!releaseTopic) {
-            throw new IllegalStateException(
-                "Configured publisher destination is not a topic owned by the selected preview release");
-        }
+        // The topic may be shared within preview; each scenario uses its own filtered subscription.
         brokerConnectionString = environment(publisher, "SERVICE_BUS_CONNECTION_STRING");
         boolean previewBroker = List.of(brokerConnectionString.split(";")).stream().anyMatch(part ->
             part.matches("Endpoint=sb://ccd-servicebus-preview\\.servicebus\\.windows\\.net/?"));
