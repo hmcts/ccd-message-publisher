@@ -18,6 +18,15 @@ class PreviewEnvironmentTest {
     }
 
     @Test
+    void acceptsDeployedPreviewEndpointWithOrWithoutTrailingSlash() {
+        for (String suffix : new String[] {"", "/"}) {
+            assertThatCode(() -> PreviewEnvironment.validatePreviewBroker(
+                "Endpoint=sb://ccd-sb-preview.servicebus.windows.net" + suffix + CREDENTIALS))
+                .doesNotThrowAnyException();
+        }
+    }
+
+    @Test
     void reportsUnexpectedHostWithoutCredentials() {
         assertThatThrownBy(() -> PreviewEnvironment.validatePreviewBroker(
             "Endpoint=sb://ccd-servicebus-aat.servicebus.windows.net/" + CREDENTIALS))
@@ -26,6 +35,19 @@ class PreviewEnvironmentTest {
             .hasMessageContaining("expected Endpoint=sb://ccd-servicebus-preview.servicebus.windows.net/")
             .hasMessageNotContaining("secret-test-key")
             .hasMessageNotContaining("test-policy");
+    }
+
+    @Test
+    void rejectsNonPreviewAndLookalikeHosts() {
+        for (String host : new String[] {"ccd-sb-aat.servicebus.windows.net",
+            "ccd-sb-prod.servicebus.windows.net", "ccd-sb-preview.servicebus.windows.net.example.com"}) {
+            assertThatThrownBy(() -> PreviewEnvironment.validatePreviewBroker(
+                "Endpoint=sb://" + host + "/" + CREDENTIALS))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("detected host: " + host)
+                .hasMessageNotContaining("secret-test-key")
+                .hasMessageNotContaining("test-policy");
+        }
     }
 
     @Test

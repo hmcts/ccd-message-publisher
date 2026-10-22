@@ -128,7 +128,7 @@ final class PreviewEnvironment implements AutoCloseable {
     static void validatePreviewBroker(String connectionString) {
         List<String> parts = List.of(connectionString.split(";"));
         if (parts.stream().anyMatch(part ->
-            part.matches("Endpoint=sb://ccd-servicebus-preview\\.servicebus\\.windows\\.net/?"))) {
+            part.matches("Endpoint=sb://ccd-(?:servicebus|sb)-preview\\.servicebus\\.windows\\.net/?"))) {
             return;
         }
         String host = "missing or malformed Endpoint";
@@ -146,7 +146,8 @@ final class PreviewEnvironment implements AutoCloseable {
             }
         }
         throw new IllegalStateException("Refusing to use a broker outside the preview Service Bus namespace: "
-            + "expected Endpoint=sb://ccd-servicebus-preview.servicebus.windows.net/ (final slash optional, "
+            + "expected Endpoint=sb://ccd-servicebus-preview.servicebus.windows.net/"
+            + " or Endpoint=sb://ccd-sb-preview.servicebus.windows.net/ (final slash optional, "
             + "no surrounding whitespace); detected host: " + host
             + ". Check SERVICE_BUS_CONNECTION_STRING on the selected publisher pod"
             + " and its referenced Kubernetes secret.");
