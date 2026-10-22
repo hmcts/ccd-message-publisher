@@ -17,6 +17,7 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
+import static org.springframework.boot.actuate.health.Status.DOWN;
 import static org.springframework.boot.actuate.health.Status.UP;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -55,6 +56,31 @@ class MessagePublisherLivenessHealthIndicatorWebIT extends BaseTest {
             "{\"test\": \"recent\"}"
         );
         repository.saveAll(Arrays.asList(msg));
+
+        assertLivenessHealthStatus(UP);
+    }
+
+    @Test
+    @Sql(scripts = {CLEANUP_SCRIPT}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {CLEANUP_SCRIPT}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @DirtiesContext
+    void shouldReportDownForStaleBacklogAndRecoverWhenPublished() throws Exception {
+        MessageQueueCandidateEntity staleMessage = createMessageEntity(
+            LocalDateTime.now(clock).minusMinutes(10),
+            "UNPUBLISHED_STALE",
+            "{\"test\": \"stale\"}"
+        );
+        MessageQueueCandidateEntity savedMessage = repository.saveAll(Arrays.asList(staleMessage))
+            .iterator().next();
+
+        mockMvc.perform(get("/health/liveness"))
+            .andExpect(status().isServiceUnavailable())
+            .andExpect(jsonPath("$.status").value(DOWN.toString()))
+            .andExpect(jsonPath("$.components.livenessState.status").value(UP.toString()))
+            .andExpect(jsonPath("$.components.messagePublisherLiveness.status").value(DOWN.toString()));
+
+        savedMessage.setPublished(LocalDateTime.now(clock));
+        repository.saveAll(Arrays.asList(savedMessage));
 
         assertLivenessHealthStatus(UP);
     }
