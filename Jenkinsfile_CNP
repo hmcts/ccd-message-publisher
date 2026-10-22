@@ -5,9 +5,6 @@ import uk.gov.hmcts.contino.GithubAPI
 @Library("Infrastructure@cve-dashboard")
 
 import uk.gov.hmcts.contino.GradleBuilder
-import uk.gov.hmcts.contino.Kubectl
-import uk.gov.hmcts.contino.Subscription
-import uk.gov.hmcts.pipeline.AKSSubscriptions
 
 def type = "java"
 def product = "ccd"
@@ -145,13 +142,6 @@ withPipeline(type, product, component) {
       reportFiles          : "overview-features.html",
       reportName           : "Smoke Test Report"
     ]
-  }
-
-  before('functionalTest:preview') {
-    def subscription = new Subscription(env).previewName
-    withAksClient(subscription, 'preview', product) {
-      new Kubectl(this, subscription, env.TEAM_NAMESPACE, new AKSSubscriptions(this).preview.name).login()
-    }
   }
 
   ['preview', 'aat'].each { environment ->
