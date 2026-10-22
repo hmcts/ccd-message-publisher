@@ -49,18 +49,29 @@ class PublishingTest {
         preview = PreviewEnvironment.connect();
         administration = new ServiceBusAdministrationClientBuilder()
             .connectionString(preview.brokerConnectionString()).buildClient();
+        requireConfiguredTopic(administration, preview.topic());
+    }
+
+    static void requireConfiguredTopic(ServiceBusAdministrationClient client, String topic) {
+        boolean exists = client.listTopics().stream().anyMatch(properties -> topic.equals(properties.getName()));
+        if (!exists) {
+            throw new IllegalStateException("Configured publisher topic '" + topic
+                + "' was not found in the preview Service Bus namespace. Check the selected publisher's "
+                + "CCD_CASE_EVENTS_DESTINATION and SERVICE_BUS_CONNECTION_STRING; no candidates were inserted.");
+        }
     }
 
     @BeforeEach
     @Timeout(60)
     void createFilteredSubscription() {
         String marker = UUID.randomUUID().toString();
-        subscription = "ccd-8294-" + marker;
+        String requestedSubscription = "ccd-8294-" + marker;
         caseType = "FUNCTIONAL_" + marker;
         // This subscription receives only this scenario's messages, never another consumer's traffic.
-        administration.createSubscription(preview.topic(), subscription, "scenario",
+        administration.createSubscription(preview.topic(), requestedSubscription, "scenario",
             new CreateSubscriptionOptions().setAutoDeleteOnIdle(Duration.ofMinutes(5)),
             new CreateRuleOptions(new SqlRuleFilter("case_type_id = '" + caseType + "'")));
+        subscription = requestedSubscription;
         receiver = new ServiceBusClientBuilder().connectionString(preview.brokerConnectionString())
             .retryOptions(new AmqpRetryOptions().setMaxRetries(1).setTryTimeout(Duration.ofSeconds(15)))
             .receiver().topicName(preview.topic()).subscriptionName(subscription).buildClient();
@@ -193,7 +204,7 @@ class PublishingTest {
                     }
                 }
             } finally {
-                if (subscription != null && administration.getSubscriptionExists(preview.topic(), subscription)) {
+                if (subscription != null) {
                     administration.deleteSubscription(preview.topic(), subscription);
                 }
             }
