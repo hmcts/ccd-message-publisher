@@ -102,12 +102,14 @@ test {
 }
 
 task functional(type: Test) {
-  description = 'Reports deferred publishing functional coverage pending a framework-based approach'
+  description = 'Runs deployed BEFTA functional scenarios'
   group = 'Verification'
   dependsOn aatClasses
   testClassesDirs = sourceSets.aat.output.classesDirs
   classpath = sourceSets.aat.runtimeClasspath
-  include '**/functional/*Test.class'
+  useJUnit()
+  include '**/MessagePublisherBeftaRunner.class'
+  jvmArgs '--add-opens=java.base/java.lang.reflect=ALL-UNNAMED'
   outputs.upToDateWhen { false }
 }
 
@@ -140,7 +142,7 @@ task smoke(type: Test) {
     javaexec {
       main = "uk.gov.hmcts.ccd.messagepublisher.befta.MessagePublisherBeftaMain"
       classpath += configurations.cucumberRuntime + sourceSets.aat.runtimeClasspath
-      args = ['--plugin', "json:${rootDir}/target/cucumber.json", '--tags', '@Smoke and not @Ignore', '--glue',
+      args = ['--plugin', "json:${rootDir}/target/cucumber.json", '--tags', '@Smoke and not @Functional and not @Ignore', '--glue',
               'uk.gov.hmcts.befta.player', '--glue', "uk.gov.hmcts.ccd.messagepublisher.befta", 'src/aat/resources/features']
       jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
     }
@@ -335,6 +337,7 @@ dependencies {
   aatImplementation sourceSets.test.runtimeClasspath
   aatImplementation group: 'com.github.hmcts', name: 'ccd-test-definitions', version: '7.26.12'
   aatImplementation group: 'com.github.hmcts', name: 'befta-fw', version: '9.2.12_CCD-8388'
+  aatImplementation 'com.azure:azure-messaging-servicebus:7.17.20'
 
 }
 

@@ -1,0 +1,42 @@
+{
+  "_guid_": "Publishing_CreateCase_Token",
+  "productName": "CCD Data Store",
+  "operationName": "Start case creation",
+  "method": "GET",
+  "uri": "{{PUBLISHING_E2E_DATA_STORE_URL}}/caseworkers/{uid}/jurisdictions/{jid}/case-types/{ctid}/event-triggers/{etid}/token",
+  "specs": ["As a prerequisite"],
+  "users": {
+    "invokingUser": {
+      "username": "[[$PUBLISHING_E2E_USERNAME]]",
+      "password": "[[$PUBLISHING_E2E_PASSWORD]]"
+    }
+  },
+  "request": {
+    "headers": {
+      "Authorization": "[[DEFAULT_AUTO_VALUE]]",
+      "ServiceAuthorization": "[[DEFAULT_AUTO_VALUE]]",
+      "Accept": "application/json"
+    },
+    "pathVariables": {
+      "uid": "[[DEFAULT_AUTO_VALUE]]", "jid": "BEFTA_MASTER", "ctid": "FT_MultiplePages", "etid": "createCase"
+    }
+  },
+  "expectedResponse": {
+    "responseCode": 200,
+    "responseMessage": "OK",
+    "headers": {
+      "Content-Type": "application/json",
+      "Content-Length": "[[ANY_NULLABLE]]",
+      "Date": "[[ANY_NULLABLE]]",
+      "Content-Encoding": "[[ANY_NULLABLE]]",
+      "Transfer-Encoding": "[[ANY_NULLABLE]]",
+      "Connection": "[[ANY_NULLABLE]]",
+      "Keep-Alive": "[[ANY_NULLABLE]]"
+    },
+    "body": {
+      "token": "[[ANY_STRING_NOT_NULLABLE]]",
+      "case_details": "[[ANYTHING_PRESENT]]",
+      "event_id": "createCase"
+    }
+  }
+}
