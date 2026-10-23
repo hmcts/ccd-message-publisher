@@ -1,5 +1,6 @@
 package uk.gov.hmcts.ccd.data;
 
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -12,12 +13,14 @@ import uk.gov.hmcts.ccd.BaseTest;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.StreamSupport;
 import java.util.stream.IntStream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Transactional
@@ -91,6 +94,38 @@ class MessageQueueCandidateRepositoryIT extends BaseTest {
         assertAll(
             () -> assertThat(result, is(2))
         );
+    }
+
+    @Test
+    @Sql(CLEANUP_SCRIPT)
+    void shouldDeleteOnlyPublishedRecordsBeforeRetentionCutoffForSelectedType() {
+        LocalDateTime cutoff = LocalDateTime.of(2024, 1, 15, 12, 0);
+        MessageQueueCandidateEntity expired = retentionCandidate(MESSAGE_TYPE, cutoff.minusSeconds(1));
+        List<MessageQueueCandidateEntity> preserved = List.of(
+            retentionCandidate(MESSAGE_TYPE, cutoff),
+            retentionCandidate(MESSAGE_TYPE, cutoff.plusSeconds(1)),
+            retentionCandidate(MESSAGE_TYPE, null),
+            retentionCandidate("OTHER_TYPE", cutoff.minusDays(1))
+        );
+        repository.saveAll(List.of(expired));
+        repository.saveAll(preserved);
+
+        int deleted = repository.deletePublishedMessages(cutoff, MESSAGE_TYPE);
+
+        assertEquals(1, deleted);
+        assertEquals(preserved.stream().map(MessageQueueCandidateEntity::getId).sorted().toList(),
+            StreamSupport.stream(repository.findAll().spliterator(), false)
+                .map(MessageQueueCandidateEntity::getId).sorted().toList());
+    }
+
+    private MessageQueueCandidateEntity retentionCandidate(String type, LocalDateTime published) {
+        MessageQueueCandidateEntity candidate = new MessageQueueCandidateEntity();
+        candidate.setMessageType(type);
+        // Retention must use the publication time, rather than the old candidate creation time.
+        candidate.setTimeStamp(LocalDateTime.of(2023, 1, 1, 0, 0));
+        candidate.setMessageInformation(JsonNodeFactory.instance.objectNode().put("test", "retention"));
+        candidate.setPublished(published);
+        return candidate;
     }
 
     private void assertOrderedByTimestamp(List<MessageQueueCandidateEntity> list) {

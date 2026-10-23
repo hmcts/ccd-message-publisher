@@ -17,6 +17,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jms.IllegalStateException;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessagePostProcessor;
+import org.springframework.jms.support.converter.MessageConversionException;
+import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -43,6 +45,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.doThrow;
 
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @Sql("classpath:sql/cleanup-message-queue-candidates.sql")
@@ -215,6 +218,37 @@ class MessagePublisherRecoveryIT extends BaseTest {
         List<String> recoveredBodies = new ArrayList<>(expectedBodies.subList(0, 2));
         recoveredBodies.addAll(expectedBodies.subList(1, expectedBodies.size()));
         assertThat(messageBodies()).containsExactlyElementsOf(recoveredBodies);
+        assertPublishedMarkers(candidateIds);
+    }
+
+    @Test
+    void shouldRetainRejectedCandidateAndLaterMessagesUntilPayloadIsCorrected() throws Exception {
+        seedCandidates(3, false);
+        JsonNode rejectedPayload = objectMapper.readTree(expectedBodies.get(1));
+        MessageConverter converter = mock(MessageConverter.class, delegatesTo(jmsTemplate.getMessageConverter()));
+        doThrow(new MessageConversionException("Simulated payload conversion rejection"))
+            .when(converter).toMessage(eq(rejectedPayload), any(jakarta.jms.Session.class));
+        JmsTemplate rejectingBroker = new JmsTemplate(jmsTemplate.getConnectionFactory());
+        rejectingBroker.setMessageConverter(converter);
+
+        publisher(repository, rejectingBroker, 2).run();
+
+        assertThat(messageBodies()).containsExactly(expectedBodies.get(0));
+        assertPublishedMarkers(candidateIds.subList(0, 1));
+        assertUnpublished(candidateIds.subList(1, 3));
+
+        // A repeated attempt still cannot pass the rejected candidate, but must not duplicate earlier sends.
+        publisher(repository, rejectingBroker, 2).run();
+        assertThat(messageBodies()).containsExactly(expectedBodies.get(0));
+        assertUnpublished(candidateIds.subList(1, 3));
+
+        JsonNode correctedPayload = objectMapper.createObjectNode().put("key", "corrected-message-2");
+        jdbcTemplate.update("update message_queue_candidates set message_information = ?::jsonb where id = ?",
+            correctedPayload.toString(), candidateIds.get(1));
+        publisher(repository, rejectingBroker, 2).run();
+
+        assertThat(messageBodies()).containsExactly(
+            expectedBodies.get(0), correctedPayload.toString(), expectedBodies.get(2));
         assertPublishedMarkers(candidateIds);
     }
 
