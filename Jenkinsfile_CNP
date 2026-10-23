@@ -80,36 +80,40 @@ withPipeline(type, product, component) {
 
   afterAlways('test') {
 
-    builder.gradle('integration')
-    // hmcts/cnp-jenkins-library may fail to copy artifacts after checkstyle error so repeat command (see /src/uk/gov/hmcts/contino/GradleBuilder.groovy)
+    try {
+      builder.gradle('integration')
+    } finally {
+      steps.junit allowEmptyResults: true, testResults: 'build/test-results/integration/TEST-*.xml'
+      // hmcts/cnp-jenkins-library may fail to copy artifacts after checkstyle error so repeat command (see /src/uk/gov/hmcts/contino/GradleBuilder.groovy)
 
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/reports/checkstyle/*.html'
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/reports/pmd/*.html'
+      steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/reports/checkstyle/*.html'
+      steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/reports/pmd/*.html'
 
-    copyIgnore('.build/reports/tests/integration', './Integration Tests/')
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Integration Tests/**/*'
+      copyIgnore('./build/reports/tests/integration', './Integration Tests/')
+      steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Integration Tests/**/*'
 
 
-    copyIgnore('./build/reports/tests/test', './Unit Tests/')
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Unit Tests/**/*'
+      copyIgnore('./build/reports/tests/test', './Unit Tests/')
+      steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Unit Tests/**/*'
 
-    publishHTML target: [
+      publishHTML target: [
+          allowMissing         : true,
+          alwaysLinkToLastBuild: true,
+          keepAll              : true,
+          reportDir            : "Unit Tests",
+          reportFiles          : "index.html",
+          reportName           : "Unit Test Report"
+      ]
+
+      publishHTML target: [
         allowMissing         : true,
         alwaysLinkToLastBuild: true,
         keepAll              : true,
-        reportDir            : "Unit Tests",
+        reportDir            : "Integration Tests",
         reportFiles          : "index.html",
-        reportName           : "Unit Test Report"
-    ]
-
-    publishHTML target: [
-      allowMissing         : true,
-      alwaysLinkToLastBuild: true,
-      keepAll              : true,
-      reportDir            : "Integration Tests",
-      reportFiles          : "index.html",
-      reportName           : "Integration Test Report"
-    ]
+        reportName           : "Integration Test Report"
+      ]
+    }
   }
 
   afterAlways('smoketest:preview') {
@@ -140,33 +144,20 @@ withPipeline(type, product, component) {
     ]
   }
 
-  afterAlways('functionalTest:preview') {
-    copyIgnore('./build/reports/tests/test', './BEFTA Report for Functional Tests/')
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/BEFTA Report for Functional Tests/**/*'
-
-    publishHTML target: [
-      allowMissing         : true,
-      alwaysLinkToLastBuild: true,
-      keepAll              : true,
-      reportDir            : "BEFTA Report for Functional Tests",
-      reportFiles          : "overview-features.html",
-      reportName           : "Functional Test Report"
-    ]
+  ['preview', 'aat'].each { environment ->
+    afterAlways("functionalTest:${environment}") {
+      steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/functional/**/*'
+      publishHTML target: [
+        allowMissing         : true,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : 'build/reports/tests/functional',
+        reportFiles          : 'index.html',
+        reportName           : 'Functional Test Report'
+      ]
+    }
   }
 
-  afterAlways('functionalTest:aat') {
-    copyIgnore('./build/reports/tests/test', './BEFTA Report for Functional Tests/')
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/BEFTA Report for Functional Tests/**/*'
-
-    publishHTML target: [
-      allowMissing         : true,
-      alwaysLinkToLastBuild: true,
-      keepAll              : true,
-      reportDir            : "BEFTA Report for Functional Tests",
-      reportFiles          : "overview-features.html",
-      reportName           : "Functional Test Report"
-    ]
-  }
 }
 
 /**

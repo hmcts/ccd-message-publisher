@@ -1,0 +1,28 @@
+{
+  "_guid_": "S-002",
+  "title": "must return a successful response from the Readiness Operation",
+  "productName": "CCD Message Publisher",
+  "operationName": "Readiness",
+  "method": "GET",
+  "uri": "/health/readiness",
+  "specs": [
+    "has the 200 OK code"
+  ],
+  "request": {
+    "headers": {
+      "Accept": "application/json"
+    }
+  },
+  "expectedResponse": {
+    "responseCode": 200,
+    "responseMessage": "OK",
+    "body": {
+      "status": "UP",
+      "components": {
+        "readinessState": {
+          "status": "UP"
+        }
+      }
+    }
+  }
+}
