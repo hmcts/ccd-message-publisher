@@ -3,7 +3,7 @@ plugins {
   id 'java'
   id 'checkstyle'
   id 'jacoco'
-  id 'com.github.ben-manes.versions' version '0.61.0'
+  id 'com.github.ben-manes.versions' version '0.66.0'
   id 'com.github.spacialcircumstances.gradle-cucumber-reporting' version '0.1.25'
   id 'io.spring.dependency-management' version '1.1.7'
   id 'org.owasp.dependencycheck' version '13.0.0'
@@ -306,7 +306,7 @@ dependencies {
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-logging-logback', version: appInsightsVersion
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-spring-boot-starter', version: appInsightsVersion
   implementation group: 'com.vladmihalcea', name: 'hibernate-types-60', version: '2.21.1'
-  implementation group: 'io.hawt', name: 'hawtio-springboot', version: '5.2.1'
+  implementation group: 'io.hawt', name: 'hawtio-springboot', version: '5.3.0'
   implementation group: 'jakarta.el', name: 'jakarta.el-api', version: '6.0.1'
   implementation group: 'org.apache.activemq', name: 'activemq-client', version: '6.3.2'
   implementation group: 'org.apache.activemq', name: 'activemq-broker', version: '6.3.2'
