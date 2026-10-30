@@ -16,11 +16,11 @@ import java.util.List;
 import java.util.stream.StreamSupport;
 import java.util.stream.IntStream;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Transactional
@@ -112,10 +112,10 @@ class MessageQueueCandidateRepositoryIT extends BaseTest {
 
         int deleted = repository.deletePublishedMessages(cutoff, MESSAGE_TYPE);
 
-        assertEquals(1, deleted);
-        assertEquals(preserved.stream().map(MessageQueueCandidateEntity::getId).sorted().toList(),
-            StreamSupport.stream(repository.findAll().spliterator(), false)
-                .map(MessageQueueCandidateEntity::getId).sorted().toList());
+        assertThat(deleted).isEqualTo(1);
+        assertThat(StreamSupport.stream(repository.findAll().spliterator(), false)
+            .map(MessageQueueCandidateEntity::getId).toList())
+            .containsExactlyInAnyOrderElementsOf(preserved.stream().map(MessageQueueCandidateEntity::getId).toList());
     }
 
     private MessageQueueCandidateEntity retentionCandidate(String type, LocalDateTime published) {
