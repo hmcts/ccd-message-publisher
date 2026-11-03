@@ -5,15 +5,16 @@ import uk.gov.hmcts.contino.GithubAPI
 @Library("Infrastructure@cve-dashboard")
 
 import uk.gov.hmcts.contino.GradleBuilder
-import uk.gov.hmcts.contino.SpringBootPipelineType
+import uk.gov.hmcts.contino.Builder
+import uk.gov.hmcts.contino.PipelineType
 
 def product = "ccd"
 def component = "message-publisher"
 def branchesToSync = ['demo', 'ithc', 'perftest']
 
-GradleBuilder builder = new MessagePublisherGradleBuilder(this, product)
-def type = new SpringBootPipelineType(this, product, component)
-type.builder = builder
+GradleBuilder builder = new GradleBuilder(this, product)
+env.PRODUCT = product
+def type = new MessagePublisherPipelineType(builder: new MessagePublisherBuilder(builder, this))
 
 // Variables to switch pipeline logic and wiring per type of build
 def definitionStoreDevelopPr = "PR-575" // This doesn't change frequently, but when it does, only change this value.
@@ -155,13 +156,27 @@ def copyIgnore(filePath, destinationDir) {
   steps.sh("cp -R '${filePath}' '${destinationDir}' || :")
 }
 
-class MessagePublisherGradleBuilder extends GradleBuilder {
-  MessagePublisherGradleBuilder(steps, product) {
-    super(steps, product)
+class MessagePublisherPipelineType implements PipelineType, Serializable {
+  Builder builder
+}
+
+class MessagePublisherBuilder implements Builder, Serializable {
+  @Delegate(excludes = ['functionalTest', 'fullFunctionalTest'])
+  private final GradleBuilder delegate
+  private final def steps
+
+  MessagePublisherBuilder(GradleBuilder delegate, steps) {
+    this.delegate = delegate
+    this.steps = steps
   }
 
   @Override
   def functionalTest() {
-    localSteps.echo('Skipping deployed functional tests: publishing E2E requires verified isolation. Smoke and integration tests remain enabled.')
+    steps.echo('Skipping deployed functional tests: publishing E2E requires verified isolation. Smoke and integration tests remain enabled.')
+  }
+
+  @Override
+  def fullFunctionalTest() {
+    functionalTest()
   }
 }
