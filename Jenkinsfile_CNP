@@ -5,13 +5,15 @@ import uk.gov.hmcts.contino.GithubAPI
 @Library("Infrastructure@cve-dashboard")
 
 import uk.gov.hmcts.contino.GradleBuilder
+import uk.gov.hmcts.contino.SpringBootPipelineType
 
-def type = "java"
 def product = "ccd"
 def component = "message-publisher"
 def branchesToSync = ['demo', 'ithc', 'perftest']
 
-GradleBuilder builder = new GradleBuilder(this, product)
+GradleBuilder builder = new MessagePublisherGradleBuilder(this, product)
+def type = new SpringBootPipelineType(this, product, component)
+type.builder = builder
 
 // Variables to switch pipeline logic and wiring per type of build
 def definitionStoreDevelopPr = "PR-575" // This doesn't change frequently, but when it does, only change this value.
@@ -77,8 +79,6 @@ withPipeline(type, product, component) {
   loadVaultSecrets(secrets)
   enableAksStagingDeployment()
   disableLegacyDeployment()
-  // Publishing E2E is deferred until an isolated route is available; smoke and integration still run.
-  disableFunctionalTest()
 
   afterAlways('test') {
 
@@ -153,4 +153,15 @@ withPipeline(type, product, component) {
  */
 def copyIgnore(filePath, destinationDir) {
   steps.sh("cp -R '${filePath}' '${destinationDir}' || :")
+}
+
+class MessagePublisherGradleBuilder extends GradleBuilder {
+  MessagePublisherGradleBuilder(steps, product) {
+    super(steps, product)
+  }
+
+  @Override
+  def functionalTest() {
+    localSteps.echo('Skipping deployed functional tests: publishing E2E requires verified isolation. Smoke and integration tests remain enabled.')
+  }
 }
