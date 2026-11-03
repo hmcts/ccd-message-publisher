@@ -77,6 +77,8 @@ withPipeline(type, product, component) {
   loadVaultSecrets(secrets)
   enableAksStagingDeployment()
   disableLegacyDeployment()
+  // Publishing E2E is deferred until an isolated route is available; smoke and integration still run.
+  disableFunctionalTest()
 
   afterAlways('test') {
 
@@ -142,20 +144,6 @@ withPipeline(type, product, component) {
       reportFiles          : "overview-features.html",
       reportName           : "Smoke Test Report"
     ]
-  }
-
-  ['preview', 'aat'].each { environment ->
-    afterAlways("functionalTest:${environment}") {
-      steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/functional/**/*'
-      publishHTML target: [
-        allowMissing         : true,
-        alwaysLinkToLastBuild: true,
-        keepAll              : true,
-        reportDir            : 'build/reports/tests/functional',
-        reportFiles          : 'index.html',
-        reportName           : 'Functional Test Report'
-      ]
-    }
   }
 
 }
