@@ -1,0 +1,31 @@
+{
+  "_guid_": "S-001",
+  "title": "must return a successful response from the Liveness Operation",
+  "productName": "CCD Message Publisher",
+  "operationName": "Liveness",
+  "method": "GET",
+  "uri": "/health/liveness",
+  "specs": [
+    "has the 200 OK code"
+  ],
+  "request": {
+    "headers": {
+      "Accept": "application/json"
+    }
+  },
+  "expectedResponse": {
+    "responseCode": 200,
+    "responseMessage": "OK",
+    "body": {
+      "status": "UP",
+      "components": {
+        "livenessState": {
+          "status": "UP"
+        },
+        "messagePublisherLiveness": {
+          "status": "UP"
+        }
+      }
+    }
+  }
+}

@@ -22,3 +22,6 @@ lib/applicationinsights.log
 *.ipr
 
 .DS_Store
+
+### Local development environment ###
+.tool-versions
