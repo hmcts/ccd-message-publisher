@@ -15,7 +15,7 @@ import java.util.Optional;
 public interface MessageQueueCandidateRepository extends PagingAndSortingRepository<MessageQueueCandidateEntity, Long> {
 
     @Query("select m from MessageQueueCandidateEntity m where m.published is null "
-        + "and m.messageType = :messageType order by m.timeStamp asc")
+        + "and m.messageType = :messageType order by m.timeStamp asc, m.id asc")
     Slice<MessageQueueCandidateEntity> findUnpublishedMessages(@Param("messageType") String messageType,
                                                                Pageable pageable);
 

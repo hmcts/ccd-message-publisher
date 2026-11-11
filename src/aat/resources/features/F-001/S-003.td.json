@@ -1,0 +1,28 @@
+{
+  "_guid_": "S-003",
+  "title": "must identify the deployed Message Publisher",
+  "productName": "CCD Message Publisher",
+  "operationName": "Welcome",
+  "method": "GET",
+  "uri": "/",
+  "specs": ["has the 200 OK code"],
+  "request": {
+    "headers": {"Accept": "text/plain"}
+  },
+  "expectedResponse": {
+    "responseCode": 200,
+    "responseMessage": "OK",
+    "headers": {
+      "Content-Type": "text/plain;charset=UTF-8",
+      "Content-Length": "[[ANY_NULLABLE]]",
+      "Content-Encoding": "[[ANY_NULLABLE]]",
+      "Transfer-Encoding": "[[ANY_NULLABLE]]",
+      "Date": "[[ANYTHING_PRESENT]]",
+      "Vary": "[[ANY_NULLABLE]]",
+      "Connection": "[[ANY_NULLABLE]]",
+      "Keep-Alive": "[[ANY_NULLABLE]]",
+      "Request-Context": "[[ANY_NULLABLE]]"
+    },
+    "body": {"__plainTextValue__": "Welcome to ccd-message-publisher"}
+  }
+}
