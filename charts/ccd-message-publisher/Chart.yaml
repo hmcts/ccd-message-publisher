@@ -18,7 +18,7 @@ dependencies:
   # Keep ccd-core before other ccd-* dependencies until the shared pipeline's
   # deprecated-chart check uses an exact chart-name match.
   - name: ccd-core
-    version: 9.3.0
+    version: 9.3.1
     repository: 'oci://hmctsprod.azurecr.io/helm'
     condition: ccd-core.enabled
   - name: ccd-data-store-api
