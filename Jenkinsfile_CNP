@@ -5,13 +5,16 @@ import uk.gov.hmcts.contino.GithubAPI
 @Library("Infrastructure@cve-dashboard")
 
 import uk.gov.hmcts.contino.GradleBuilder
+import uk.gov.hmcts.contino.Builder
+import uk.gov.hmcts.contino.PipelineType
 
-def type = "java"
 def product = "ccd"
 def component = "message-publisher"
 def branchesToSync = ['demo', 'ithc', 'perftest']
 
 GradleBuilder builder = new GradleBuilder(this, product)
+env.PRODUCT = product
+def type = new MessagePublisherPipelineType(builder: new MessagePublisherBuilder(builder, this))
 
 // Variables to switch pipeline logic and wiring per type of build
 def definitionStoreDevelopPr = "PR-575" // This doesn't change frequently, but when it does, only change this value.
@@ -80,36 +83,40 @@ withPipeline(type, product, component) {
 
   afterAlways('test') {
 
-    builder.gradle('integration')
-    // hmcts/cnp-jenkins-library may fail to copy artifacts after checkstyle error so repeat command (see /src/uk/gov/hmcts/contino/GradleBuilder.groovy)
+    try {
+      builder.gradle('integration')
+    } finally {
+      steps.junit allowEmptyResults: true, testResults: 'build/test-results/integration/TEST-*.xml'
+      // hmcts/cnp-jenkins-library may fail to copy artifacts after checkstyle error so repeat command (see /src/uk/gov/hmcts/contino/GradleBuilder.groovy)
 
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/reports/checkstyle/*.html'
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/reports/pmd/*.html'
+      steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/reports/checkstyle/*.html'
+      steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/reports/pmd/*.html'
 
-    copyIgnore('.build/reports/tests/integration', './Integration Tests/')
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Integration Tests/**/*'
+      copyIgnore('./build/reports/tests/integration', './Integration Tests/')
+      steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Integration Tests/**/*'
 
 
-    copyIgnore('./build/reports/tests/test', './Unit Tests/')
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Unit Tests/**/*'
+      copyIgnore('./build/reports/tests/test', './Unit Tests/')
+      steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Unit Tests/**/*'
 
-    publishHTML target: [
+      publishHTML target: [
+          allowMissing         : true,
+          alwaysLinkToLastBuild: true,
+          keepAll              : true,
+          reportDir            : "Unit Tests",
+          reportFiles          : "index.html",
+          reportName           : "Unit Test Report"
+      ]
+
+      publishHTML target: [
         allowMissing         : true,
         alwaysLinkToLastBuild: true,
         keepAll              : true,
-        reportDir            : "Unit Tests",
+        reportDir            : "Integration Tests",
         reportFiles          : "index.html",
-        reportName           : "Unit Test Report"
-    ]
-
-    publishHTML target: [
-      allowMissing         : true,
-      alwaysLinkToLastBuild: true,
-      keepAll              : true,
-      reportDir            : "Integration Tests",
-      reportFiles          : "index.html",
-      reportName           : "Integration Test Report"
-    ]
+        reportName           : "Integration Test Report"
+      ]
+    }
   }
 
   afterAlways('smoketest:preview') {
@@ -140,33 +147,6 @@ withPipeline(type, product, component) {
     ]
   }
 
-  afterAlways('functionalTest:preview') {
-    copyIgnore('./build/reports/tests/test', './BEFTA Report for Functional Tests/')
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/BEFTA Report for Functional Tests/**/*'
-
-    publishHTML target: [
-      allowMissing         : true,
-      alwaysLinkToLastBuild: true,
-      keepAll              : true,
-      reportDir            : "BEFTA Report for Functional Tests",
-      reportFiles          : "overview-features.html",
-      reportName           : "Functional Test Report"
-    ]
-  }
-
-  afterAlways('functionalTest:aat') {
-    copyIgnore('./build/reports/tests/test', './BEFTA Report for Functional Tests/')
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/BEFTA Report for Functional Tests/**/*'
-
-    publishHTML target: [
-      allowMissing         : true,
-      alwaysLinkToLastBuild: true,
-      keepAll              : true,
-      reportDir            : "BEFTA Report for Functional Tests",
-      reportFiles          : "overview-features.html",
-      reportName           : "Functional Test Report"
-    ]
-  }
 }
 
 /**
@@ -174,4 +154,29 @@ withPipeline(type, product, component) {
  */
 def copyIgnore(filePath, destinationDir) {
   steps.sh("cp -R '${filePath}' '${destinationDir}' || :")
+}
+
+class MessagePublisherPipelineType implements PipelineType, Serializable {
+  Builder builder
+}
+
+class MessagePublisherBuilder implements Builder, Serializable {
+  @Delegate(excludes = ['functionalTest', 'fullFunctionalTest'])
+  private final GradleBuilder delegate
+  private final def steps
+
+  MessagePublisherBuilder(GradleBuilder delegate, steps) {
+    this.delegate = delegate
+    this.steps = steps
+  }
+
+  @Override
+  def functionalTest() {
+    steps.echo('Skipping deployed functional tests: publishing E2E requires verified isolation. Smoke and integration tests remain enabled.')
+  }
+
+  @Override
+  def fullFunctionalTest() {
+    functionalTest()
+  }
 }

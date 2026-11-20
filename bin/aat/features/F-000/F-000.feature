@@ -19,3 +19,23 @@ Scenario: must return a successful response from the Healthcheck Operation
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+@S-001 @Smoke
+Scenario: must return a successful response from the Liveness Operation
+
+     When a request is prepared with appropriate values
+      And it is submitted to call the [Liveness] operation of [CCD Message Publisher]
+
+     Then a positive response is received
+      And the response [has the 200 OK code]
+      And the response has all other details as expected.
+
+@S-002 @Smoke
+Scenario: must return a successful response from the Readiness Operation
+
+     When a request is prepared with appropriate values
+      And it is submitted to call the [Readiness] operation of [CCD Message Publisher]
+
+     Then a positive response is received
+      And the response [has the 200 OK code]
+      And the response has all other details as expected.
+

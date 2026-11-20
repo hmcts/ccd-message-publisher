@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.StreamSupport;
@@ -50,11 +51,11 @@ class MessagePublisherRunnableIT extends BaseTest {
 
     private static final String SCHEDULE = "SCHEDULE";
     private static final String MESSAGE_TYPE = "FIRST_MESSAGE_TYPE";
-    private static final String DESTINATION = "DESTINATION";
     private static final int BATCH_SIZE = 1000;
     private static final int RETENTION_DAYS = 30;
 
     private MessagePublisherRunnable messagePublisher;
+    private String destination;
 
     @Autowired
     private MessageQueueCandidateRepository messageQueueCandidateRepository;
@@ -64,11 +65,12 @@ class MessagePublisherRunnableIT extends BaseTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        destination = "publisher-runnable-" + UUID.randomUUID();
 
         PublishMessageTask publishMessageTask = PublishMessageTask.builder()
             .schedule(SCHEDULE)
             .messageType(MESSAGE_TYPE)
-            .destination(DESTINATION)
+            .destination(destination)
             .batchSize(BATCH_SIZE)
             .publishedRetentionDays(RETENTION_DAYS).build();
 
@@ -173,7 +175,7 @@ class MessagePublisherRunnableIT extends BaseTest {
     @SuppressWarnings("unchecked")
     private List<Message> getMessagesFromDestination() {
         return jmsTemplate
-            .browse(DESTINATION, (session, browser) -> Collections.list(browser.getEnumeration()));
+            .browse(destination, (session, browser) -> Collections.list(browser.getEnumeration()));
     }
 
     private void assertEnqueuedMessages(List<Message> enqueuedMessages) {

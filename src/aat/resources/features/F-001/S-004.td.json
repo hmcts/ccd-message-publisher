@@ -1,0 +1,46 @@
+{
+  "_guid_": "S-004",
+  "title": "must serve the Message Publisher OpenAPI document",
+  "productName": "CCD Message Publisher",
+  "operationName": "OpenAPI",
+  "method": "GET",
+  "uri": "/v3/api-docs",
+  "specs": ["has the 200 OK code"],
+  "request": {
+    "headers": {"Accept": "application/json"}
+  },
+  "expectedResponse": {
+    "responseCode": 200,
+    "responseMessage": "OK",
+    "headers": {
+      "Content-Type": "application/json",
+      "Content-Length": "[[ANY_NULLABLE]]",
+      "Content-Encoding": "[[ANY_NULLABLE]]",
+      "Transfer-Encoding": "[[ANY_NULLABLE]]",
+      "Date": "[[ANYTHING_PRESENT]]",
+      "Vary": "[[ANY_NULLABLE]]",
+      "Connection": "[[ANY_NULLABLE]]",
+      "Keep-Alive": "[[ANY_NULLABLE]]",
+      "Request-Context": "[[ANY_NULLABLE]]"
+    },
+    "body": {
+      "openapi": "3.1.0",
+      "info": {
+        "title": "CCD Message Publisher API",
+        "description": "CCD Message Publisher API",
+        "version": "[[ANY_STRING_NOT_NULLABLE]]"
+      },
+      "servers": "[[ANYTHING_PRESENT]]",
+      "paths": {
+        "/": {
+          "get": {
+            "operationId": "welcome",
+            "responses": "[[ANYTHING_PRESENT]]",
+            "tags": "[[ANYTHING_PRESENT]]"
+          }
+        }
+      },
+      "components": "[[ANYTHING_PRESENT]]"
+    }
+  }
+}

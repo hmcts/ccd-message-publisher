@@ -78,7 +78,7 @@ class MessagePublisherLivenessHealthIndicatorIT extends BaseTest {
     void shouldReturnCorrectWhenMessagesAreWithinAllowedStalePeriod() {
         // Given - create messages that are within the time delay
         MessageQueueCandidateEntity recentMessage = createMessageEntity(
-            LocalDateTime.now().minusMinutes(2), // Within 5-minute delay
+            LocalDateTime.now(clock).minusMinutes(2), // Within 5-minute delay
             "RECENT_MESSAGE",
             "{\"test\": \"recent\"}"
         );
@@ -98,12 +98,12 @@ class MessagePublisherLivenessHealthIndicatorIT extends BaseTest {
     void shouldReturnBrokenWhenOldestMessageIsBeyondAllowedStalePeriod() {
         // Given - create messages where the oldest is beyond the time delay
         MessageQueueCandidateEntity oldMessage = createMessageEntity(
-            LocalDateTime.now().minusMinutes(10), // Beyond 5-minute delay
+            LocalDateTime.now(clock).minusMinutes(10), // Beyond 5-minute delay
             "OLD_MESSAGE",
             "{\"test\": \"old\"}"
         );
         MessageQueueCandidateEntity recentMessage = createMessageEntity(
-            LocalDateTime.now().minusMinutes(2), // Within 5-minute delay
+            LocalDateTime.now(clock).minusMinutes(2), // Within 5-minute delay
             "RECENT_MESSAGE",
             "{\"test\": \"recent\"}"
         );
@@ -124,18 +124,18 @@ class MessagePublisherLivenessHealthIndicatorIT extends BaseTest {
         // Given - create messages that are all published (should still return BROKEN
         // because no unpublished messages)
         MessageQueueCandidateEntity publishedMessage1 = createMessageEntity(
-            LocalDateTime.now().minusMinutes(10),
+            LocalDateTime.now(clock).minusMinutes(10),
             "PUBLISHED_MESSAGE_1",
             "{\"test\": \"published1\"}"
         );
-        publishedMessage1.setPublished(LocalDateTime.now().minusMinutes(5));
+        publishedMessage1.setPublished(LocalDateTime.now(clock).minusMinutes(5));
 
         MessageQueueCandidateEntity publishedMessage2 = createMessageEntity(
-            LocalDateTime.now().minusMinutes(8),
+            LocalDateTime.now(clock).minusMinutes(8),
             "PUBLISHED_MESSAGE_2",
             "{\"test\": \"published2\"}"
         );
-        publishedMessage2.setPublished(LocalDateTime.now().minusMinutes(3));
+        publishedMessage2.setPublished(LocalDateTime.now(clock).minusMinutes(3));
 
         repository.saveAll(Arrays.asList(publishedMessage1, publishedMessage2));
 
@@ -152,7 +152,7 @@ class MessagePublisherLivenessHealthIndicatorIT extends BaseTest {
     void shouldReturnCorrectWhenUnpublishedMessageIsRecent() {
         // Given - create only an unpublished message that is very recent
         MessageQueueCandidateEntity unpublishedMessage = createMessageEntity(
-            LocalDateTime.now().minusMinutes(1), // Very recent - well within 5 minute delay
+            LocalDateTime.now(clock).minusMinutes(1), // Very recent - well within 5 minute delay
             "UNPUBLISHED_MESSAGE",
             "{\"test\": \"unpublished\"}"
         );
@@ -173,7 +173,7 @@ class MessagePublisherLivenessHealthIndicatorIT extends BaseTest {
     void shouldReturnCorrectWhenMessageIsExactlyAtAllowedStalePeriod() {
         // Given - create a message that is exactly at the time delay boundary
         MessageQueueCandidateEntity message = createMessageEntity(
-            LocalDateTime.now().minusMinutes(5), // Exactly at 5-minute delay
+            LocalDateTime.now(clock).minusMinutes(5), // Exactly at 5-minute delay
             "BOUNDARY_MESSAGE",
             "{\"test\": \"boundary\"}"
         );
