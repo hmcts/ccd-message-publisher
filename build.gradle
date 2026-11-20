@@ -3,7 +3,7 @@ plugins {
   id 'java'
   id 'checkstyle'
   id 'jacoco'
-  id 'com.github.ben-manes.versions' version '0.56.0'
+  id 'com.github.ben-manes.versions' version '0.67.0'
   id 'com.github.spacialcircumstances.gradle-cucumber-reporting' version '0.1.25'
   id 'io.spring.dependency-management' version '1.1.7'
   id 'org.owasp.dependencycheck' version '12.2.0'
@@ -13,7 +13,7 @@ plugins {
 }
 
 ext {
-  set('springCloudVersion', '2025.0.3')
+  set('springCloudVersion', '2025.1.5')
   set('spring-framework.version', '6.2.14')
   set('spring-security.version', '6.5.7')
   set('log4j2.version', '2.24.3')
