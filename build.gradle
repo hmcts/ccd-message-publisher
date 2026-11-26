@@ -314,7 +314,7 @@ dependencies {
   implementation group: 'org.projectlombok', name: 'lombok', version: lombok
 
   annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombok
-  runtimeOnly group: 'org.postgresql', name: 'postgresql', version: '42.7.14'
+  runtimeOnly group: 'org.postgresql', name: 'postgresql', version: '42.7.15'
 
 
   testImplementation libraries.junit5
